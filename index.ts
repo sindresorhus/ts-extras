@@ -3,7 +3,7 @@ import {Mutable} from 'type-fest';
 /**
 Check whether a value is defined (non-nullable), meaning it is neither `null` or `undefined`.
 
-This can be useful as a type-guard, as for example, `[1, null].filter(Boolean)` does not always type-guard correctly.
+This can be useful as a type guard, as for example, `[1, null].filter(Boolean)` does not always type-guard correctly.
 
 @example
 ```
