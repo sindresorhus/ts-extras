@@ -1,6 +1,6 @@
 import test from 'ava';
 import {expectTypeOf} from 'expect-type';
-import {isDefined, assertError, asMutable} from './index.js';
+import {isDefined, assertError, asMutable, isEmpty} from './index.js';
 
 test('isDefined()', t => {
 	t.false(isDefined(null));
@@ -37,4 +37,9 @@ test('asMutable()', t => {
 	const mutableFixture = asMutable(fixture);
 	mutableFixture.a = 2;
 	t.is(mutableFixture.a, 2);
+});
+
+test('isEmpty()', t => {
+	t.false(isEmpty([1, 2, 3]));
+	t.true(isEmpty([]));
 });
