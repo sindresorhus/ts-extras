@@ -36,6 +36,8 @@ export function asMutable<T>(value: T): Mutable<T> {
 /**
 Check whether an array is empty.
 
+This is useful because doing `array.length === 0` on its own won't work as a type-guard.
+
 @example
 ```
 import {isEmpty} from 'ts-extras';
