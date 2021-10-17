@@ -21,7 +21,7 @@ import {isDefined} from 'ts-extras';
 
 ## API
 
-See the [source](index.ts) for now. Proper docs will come at some point.
+See the [source](source) for now. Proper docs will come at some point.
 
 ## FAQ
 

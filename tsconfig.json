@@ -3,7 +3,7 @@
 	"compilerOptions": {
 		"outDir": "distribution"
 	},
-	"files": [
-		"index.ts"
+	"include": [
+		"source"
 	]
 }
