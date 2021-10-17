@@ -15,8 +15,8 @@ isEmpty([]);
 ```
 */
 /* eslint-disable @typescript-eslint/ban-types */
-export function isEmpty(array: unknown[]): array is [];
 export function isEmpty(array: readonly unknown[]): array is readonly [];
+export function isEmpty(array: unknown[]): array is [];
 export function isEmpty(array: readonly unknown[]): array is [] | readonly [] {
 	return array.length === 0;
 }
