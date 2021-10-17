@@ -1,6 +1,6 @@
 import test from 'ava';
 import {expectTypeOf} from 'expect-type';
-import {isDefined, asMutable, isEmpty} from './index.js';
+import {isDefined, assertError, asMutable, isEmpty} from './index.js';
 
 test('isDefined()', t => {
 	t.false(isDefined(null));
@@ -10,6 +10,18 @@ test('isDefined()', t => {
 
 	const fixture = [1, null].filter(x => isDefined(x));
 	expectTypeOf(fixture).not.toBeNullable();
+});
+
+test('assertError()', t => {
+	t.notThrows(() => {
+		assertError(new Error('x'));
+	});
+
+	t.throws(() => {
+		assertError('x');
+	}, {
+		instanceOf: TypeError,
+	});
 });
 
 test('asMutable()', t => {
