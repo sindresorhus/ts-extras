@@ -9,12 +9,12 @@ test('isEmpty()', t => {
 
 	if (isEmpty(immutable)) {
 		// @ts-expect-error Should not change immutability
-		immutable.push(4 as never); // eslint-disable-line @typescript-eslint/no-unsafe-call
+		immutable.pop(); // eslint-disable-line @typescript-eslint/no-unsafe-call
 	}
 
 	const mutable = [1, 2, 3];
 
 	if (!isEmpty(mutable)) {
-		mutable.push(4);
+		mutable.pop();
 	}
 });
