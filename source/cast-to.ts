@@ -22,6 +22,6 @@ const add = castTo<(a: number, b:number) => number>(
 add(1,1) //=> 2
 ```
  */
-export function castTo<T>(value: any): T {
-	return value as T;
+export function castTo<ThisType>(value: any): ThisType {
+	return value as ThisType;
 }
