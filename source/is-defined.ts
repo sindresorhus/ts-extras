@@ -7,8 +7,10 @@ This can be useful as a type guard, as for example, `[1, null].filter(Boolean)` 
 ```
 import {isDefined} from 'ts-extras';
 
-[1, null, 2, undefined].filter(isDefined);
-//=> [1, 2]
+const array = [1, null, 2, undefined]
+//=> (number | undefined | null)[]
+array.filter(isDefined);
+//=> number[]
 ```
 */
 export function isDefined<T>(value: T | null | undefined): value is T {
