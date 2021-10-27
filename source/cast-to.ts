@@ -1,11 +1,13 @@
 /**
 Cast anything to a type.
 
-Typescript offers a `as` keyword, but it can be finicky; it won't always work. To avoid the hassle it's easier to just cast directly to a type and avoid all type checking
+Typescript offers an `as` keyword, but it doesn't always work.
 
- @example
- ```
- import {castTo} from 'ts-extras';
+`castTo` will avoid all type checking.
+
+@example
+```
+import {castTo} from 'ts-extras';
 
 const curryAdd = (foo: number) => (bar: number): number => {
 	return foo + bar
@@ -18,7 +20,7 @@ const add = castTo<(a: number, b:number) => number>(
 //=> (a:number, b:number) => number
 
 add(1,1) //=> 2
- ```
+```
  */
 export function castTo<T>(value: any): T {
 	return value as T;
