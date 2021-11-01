@@ -4,6 +4,8 @@ A strongly-typed version of `Object.keys()`.
 - Closed in issue: https://github.com/microsoft/TypeScript/issues/45390
 - Reasoning: https://stackoverflow.com/questions/55012174/why-doesnt-object-keys-return-a-keyof-type-in-typescript
 
+This is useful since `Object.keys()` returns an array of strings. This function returns a strongly-typed array of the keys of the given object.
+
 @example
 ```ts
 import {objectKeys} from 'ts-extras';
