@@ -13,7 +13,14 @@ test('arrayIncludes()', t => {
 	if (arrayIncludes(values, validValue)) {
 		testValueType = validValue;
 	} else {
+		doNothing(); // Removes the `unicorn/prefer-ternary` failure;
 		// @ts-expect-error
 		testValueType = validValue;
 	}
+
+	t.is(testValueType, 'a');
 });
+
+function doNothing() {
+	// Do nothing
+}
