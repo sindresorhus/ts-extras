@@ -1,16 +1,15 @@
 /**
-A typed implementation of `Object.keys()`.
+A strongly-typed version of `Object.keys()`.
 
-This is useful since `Object.keys()` returns an array of strings. This function returns an array of the type keys of the given object.
+- Closed in issue: https://github.com/microsoft/TypeScript/issues/45390
+- Reasoning: https://stackoverflow.com/questions/55012174/why-doesnt-object-keys-return-a-keyof-type-in-typescript
 
 @example
 ```ts
 import {objectKeys} from 'ts-extras';
 
-type Item = ['a', 'b', 'c'];
-declare let: items: Item[];
-
-items = objectKeys({a: 1, b: 2, c: 3}); // This is valid.
+const stronglyTypedItems = objectKeys({a: 1, b: 2, c: 3}); // => Array<'a' | 'b' | 'c'>
+const untypedItems = Object.keys(items); // => Array<string>
 ```
 */
 export function objectKeys<Type extends Record<string, unknown>, Key extends Extract<keyof Type, string>>(
