@@ -1,10 +1,10 @@
 /**
 A strongly-typed version of `Object.keys()`.
 
-- Closed in issue: https://github.com/microsoft/TypeScript/issues/45390
-- Reasoning: https://stackoverflow.com/questions/55012174/why-doesnt-object-keys-return-a-keyof-type-in-typescript
+This is useful since `Object.keys()` always returns an array of strings. This function returns a strongly-typed array of the keys of the given object.
 
-This is useful since `Object.keys()` returns an array of strings. This function returns a strongly-typed array of the keys of the given object.
+- [Explanation](https://stackoverflow.com/questions/55012174/why-doesnt-object-keys-return-a-keyof-type-in-typescript)
+- [TypeScript issues about this](https://github.com/microsoft/TypeScript/issues/45390)
 
 @example
 ```
