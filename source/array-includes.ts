@@ -1,7 +1,7 @@
 /**
-A better version `Array.prototype.includes` which allows other types to be included and also acts as a type guard when the provided array is of a specific type.
+An alternative to `Array.prototype.includes` but acting as a type guard
 
-This is needed because `Array.prototype.includes` doesn't allow for other types to be included.
+The proposal was rejected in this issue: https://github.com/microsoft/TypeScript/issues/26255#issuecomment-748211891
 
 @example
 ```

@@ -7,20 +7,16 @@ test('arrayIncludes()', t => {
 	const invalidValue: unknown = 'd';
 	let testValueType: typeof values[number];
 
-	t.is(arrayIncludes(values, validValue), true);
-	t.is(arrayIncludes(values, invalidValue), false);
+	t.true(arrayIncludes(values, validValue));
+	t.false(arrayIncludes(values, invalidValue));
 
+	// eslint-disable-next-line unicorn/prefer-ternary
 	if (arrayIncludes(values, validValue)) {
 		testValueType = validValue;
 	} else {
-		doNothing(); // Removes the `unicorn/prefer-ternary` failure;
 		// @ts-expect-error
 		testValueType = validValue;
 	}
 
 	t.is(testValueType, 'a');
 });
-
-function doNothing() {
-	// Do nothing
-}
