@@ -10,12 +10,19 @@ test('arrayIncludes()', t => {
 	t.true(arrayIncludes(values, validValue));
 	t.false(arrayIncludes(values, invalidValue));
 
-	// eslint-disable-next-line unicorn/prefer-ternary
 	if (arrayIncludes(values, validValue)) {
+		// @ts-expect-error
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+		values.push(); // Ensure readonly array is still readonly.
+
 		testValueType = validValue;
 	} else {
 		// @ts-expect-error
 		testValueType = validValue;
+
+		// @ts-expect-error
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+		values.push(); // Ensure readonly array is still readonly.
 	}
 
 	t.is(testValueType, 'a');
