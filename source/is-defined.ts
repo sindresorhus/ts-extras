@@ -9,6 +9,7 @@ import {isDefined} from 'ts-extras';
 
 const array = [1, null, 2, undefined]
 //=> (number | undefined | null)[]
+
 array.filter(isDefined);
 //=> number[]
 ```
