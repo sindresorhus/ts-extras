@@ -4,14 +4,14 @@ A better version `Array.prototype.includes` which allows other types to be inclu
 This is needed because `Array.prototype.includes` doesn't allow for other types to be included.
 
 @example
-```ts
+```
 import {arrayIncludes} from 'ts-extras';
 
 const values = ['a', 'b', 'c'] as const;
 const valueToCheck: unknown = 'a';
 
 if (arrayIncludes(values, valueToCheck)) {
-  // Now we know that the value is of type `typeof values[number]`.
+	// Now we know that the value is of type `typeof values[number]`.
 }
 ```
 */
