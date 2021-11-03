@@ -1,3 +1,4 @@
+export {arrayIncludes} from './array-includes.js';
 export {isDefined} from './is-defined.js';
 export {isEmpty} from './is-empty.js';
 export {assertError} from './assert-error.js';
