@@ -1,7 +1,7 @@
 /**
-An alternative to `Array.prototype.includes` but acting as a type guard
+An alternative to `Array.prototype.includes` that properly acts as a type guard.
 
-The proposal was rejected in this issue: https://github.com/microsoft/TypeScript/issues/26255#issuecomment-748211891
+It was [rejected](https://github.com/microsoft/TypeScript/issues/26255#issuecomment-748211891) from being done in TypeScript itself.
 
 @example
 ```
@@ -11,7 +11,7 @@ const values = ['a', 'b', 'c'] as const;
 const valueToCheck: unknown = 'a';
 
 if (arrayIncludes(values, valueToCheck)) {
-	// Now we know that the value is of type `typeof values[number]`.
+	// We now know that the value is of type `typeof values[number]`.
 }
 ```
 */
