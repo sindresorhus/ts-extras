@@ -3,7 +3,7 @@ import {expectTypeOf} from 'expect-type';
 import {objectEntries} from '../source/index.js';
 
 test('objectEntries()', t => {
-	type Entry = [1 | 'stringKey', number | string];
+	type Entry = ['1' | 'stringKey', number | string];
 	const entries = objectEntries({
 		1: 123,
 		stringKey: 'someString',

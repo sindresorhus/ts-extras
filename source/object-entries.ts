@@ -13,6 +13,6 @@ const stronglyTypedEntries = objectEntries({a: 1, b: 2, c: 3}); // =>  Array<["a
 const untypedEntries = Object.entries(items); // => Array<[string, number]>
 ```
 */
-export function objectEntries<Type extends Record<PropertyKey, unknown>, Key extends Exclude<keyof Type, symbol>>(value: Type): Array<[Key, Type[Key]]> {
+export function objectEntries<Type extends Record<PropertyKey, unknown>, Key extends `${Exclude<keyof Type, symbol>}`>(value: Type): Array<[Key, Type[Key]]> {
 	return Object.entries(value) as Array<[Key, Type[Key]]>;
 }
