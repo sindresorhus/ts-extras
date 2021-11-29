@@ -13,6 +13,8 @@ isEmpty([1, 2, 3]);
 isEmpty([]);
 //=> true
 ```
+
+@category Type guard
 */
 /* eslint-disable @typescript-eslint/ban-types */
 export function isEmpty(array: readonly unknown[]): array is readonly [];

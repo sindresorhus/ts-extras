@@ -11,6 +11,8 @@ import {asMutable} from 'ts-extras';
 
 const mutableContext = asMutable((await import('x')).context);
 ```
+
+@category General
 */
 export function asMutable<T>(value: T): Mutable<T> {
 	return value as any; // eslint-disable-line @typescript-eslint/no-unsafe-return

@@ -10,6 +10,8 @@ import {isDefined} from 'ts-extras';
 [1, null, 2, undefined].filter(isDefined);
 //=> [1, 2]
 ```
+
+@category Type guard
 */
 export function isDefined<T>(value: T | null | undefined): value is T {
 	return value !== null && value !== undefined;

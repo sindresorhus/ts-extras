@@ -26,6 +26,8 @@ try {
 	throw error;
 }
 ```
+
+@category Type guard
 */
 export function assertError(value: unknown): asserts value is Error {
 	if (!(value instanceof Error || toString.call(value) === '[object Error]')) {

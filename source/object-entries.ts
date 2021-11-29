@@ -1,4 +1,4 @@
-import {ObjectKeys} from './object-keys';
+import {ObjectKeys} from './object-keys.js';
 
 /**
 A strongly-typed version of `Object.entries()`.
@@ -17,6 +17,9 @@ const stronglyTypedEntries = objectEntries({a: 1, b: 2, c: 3});
 const untypedEntries = Object.entries(items);
 //=> Array<[string, number]>
 ```
+
+@category Improved builtin
+@category Type guard
 */
 export function objectEntries<Type extends Record<PropertyKey, unknown>>(value: Type): Array<[ObjectKeys<Type>, Type[ObjectKeys<Type>]]> {
 	return Object.entries(value) as Array<[ObjectKeys<Type>, Type[ObjectKeys<Type>]]>;

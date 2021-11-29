@@ -15,6 +15,9 @@ import {objectKeys} from 'ts-extras';
 const stronglyTypedItems = objectKeys({a: 1, b: 2, c: 3}); // => Array<'a' | 'b' | 'c'>
 const untypedItems = Object.keys(items); // => Array<string>
 ```
+
+@category Improved builtin
+@category Type guard
 */
 export function objectKeys<Type extends Record<PropertyKey, unknown>>(value: Type): Array<ObjectKeys<Type>> {
 	return Object.keys(value) as Array<ObjectKeys<Type>>;

@@ -1,5 +1,5 @@
 /**
-An alternative to `Array.prototype.includes` that properly acts as a type guard.
+An alternative to `Array#includes()` that properly acts as a type guard.
 
 It was [rejected](https://github.com/microsoft/TypeScript/issues/26255#issuecomment-748211891) from being done in TypeScript itself.
 
@@ -14,6 +14,9 @@ if (arrayIncludes(values, valueToCheck)) {
 	// We now know that the value is of type `typeof values[number]`.
 }
 ```
+
+@category Improved builtin
+@category Type guard
 */
 export function arrayIncludes<Type>(
 	array: Type[] | readonly Type[],
