@@ -1,3 +1,5 @@
+import {ObjectKeys} from './object-keys';
+
 /**
 A strongly-typed version of `Object.entries()`.
 
@@ -16,6 +18,6 @@ const untypedEntries = Object.entries(items);
 //=> Array<[string, number]>
 ```
 */
-export function objectEntries<Type extends Record<PropertyKey, unknown>, Key extends `${Exclude<keyof Type, symbol>}`>(value: Type): Array<[Key, Type[Key]]> {
-	return Object.entries(value) as Array<[Key, Type[Key]]>;
+export function objectEntries<Type extends Record<PropertyKey, unknown>>(value: Type): Array<[ObjectKeys<Type>, Type[ObjectKeys<Type>]]> {
+	return Object.entries(value) as Array<[ObjectKeys<Type>, Type[ObjectKeys<Type>]]>;
 }

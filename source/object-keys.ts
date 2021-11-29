@@ -1,3 +1,5 @@
+export type ObjectKeys<T extends Record<PropertyKey, unknown>> = `${Exclude<keyof T, symbol>}`;
+
 /**
 A strongly-typed version of `Object.keys()`.
 
@@ -14,8 +16,6 @@ const stronglyTypedItems = objectKeys({a: 1, b: 2, c: 3}); // => Array<'a' | 'b'
 const untypedItems = Object.keys(items); // => Array<string>
 ```
 */
-export function objectKeys<Type extends Record<string, unknown>, Key extends Extract<keyof Type, string>>(
-	value: Type,
-): Key[] {
-	return Object.keys(value) as Key[];
+export function objectKeys<Type extends Record<PropertyKey, unknown>>(value: Type): Array<ObjectKeys<Type>> {
+	return Object.keys(value) as Array<ObjectKeys<Type>>;
 }
