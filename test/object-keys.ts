@@ -7,5 +7,5 @@ test('objectKeys()', t => {
 	const items = objectKeys({a: 1, b: 2, c: 3, 4: 4, [Symbol('5')]: 5});
 
 	expectTypeOf<Item[]>(items);
-	t.deepEqual(items, ['a', 'b', 'c']);
+	t.deepEqual(items, ['a', 'b', 'c', '4']);
 });
