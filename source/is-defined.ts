@@ -13,6 +13,6 @@ import {isDefined} from 'ts-extras';
 
 @category Type guard
 */
-export function isDefined<T>(value: T | null | undefined): value is T {
+export function isDefined<T>(value: T): value is NonNullable<T> {
 	return value !== null && value !== undefined;
 }
