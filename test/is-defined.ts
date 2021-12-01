@@ -10,4 +10,10 @@ test('isDefined()', t => {
 
 	const fixture = [1, null].filter(x => isDefined(x));
 	expectTypeOf(fixture).not.toBeNullable();
+
+	const nullable: null | undefined = null;
+
+	if (isDefined(nullable)) {
+		expectTypeOf(nullable).toBeNever();
+	}
 });
