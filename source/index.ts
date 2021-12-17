@@ -6,3 +6,4 @@ export {arrayIncludes} from './array-includes.js';
 export {objectKeys} from './object-keys.js';
 export {objectEntries} from './object-entries.js';
 export {objectHasOwn} from './object-has-own.js';
+export {isEqualType} from './is-equal.js';
