@@ -1,7 +1,7 @@
 /**
 A strongly-typed version of `Object.fromEntries()`.
 
-This is useful since `Object.fromEntries()` always returns `{ [k: string]: T }`. This function returns a strongly-typed object from given array of entries.
+This is useful since `Object.fromEntries()` always returns `{[key: string]: T}`. This function returns a strongly-typed object from the given array of entries.
 
 - [TypeScript issues about this](https://github.com/microsoft/TypeScript/issues/35745)
 
