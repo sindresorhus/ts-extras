@@ -27,10 +27,10 @@ const untypedEntries = Object.fromEntries(entries);
 @category Improved builtin
 @category Type guard
 */
-export function objectFromEntries<Key extends PropertyKey, Entries extends Array<[Key, any]>>(value: Entries): {
-	[K in Extract<Entries[number], [Key, any]>[0]]: Extract<Entries[number], [K, any]>[1]
+export function objectFromEntries<Key extends PropertyKey, Entries extends Array<[Key, unknown]>>(value: Entries): {
+	[K in Extract<Entries[number], [Key, unknown]>[0]]: Extract<Entries[number], [K, unknown]>[1]
 } {
 	return Object.fromEntries(value) as {
-		[K in Extract<Entries[number], [Key, any]>[0]]: Extract<Entries[number], [K, any]>[1]
+		[K in Extract<Entries[number], [Key, unknown]>[0]]: Extract<Entries[number], [K, unknown]>[1]
 	};
 }
