@@ -14,14 +14,10 @@ const stronglyTypedObjectFromEntries = objectFromEntries([
 	['b', 'someString'],
 	['c', true],
 ]);
-//=> {
-	a: number;
-	b: string;
-	c: boolean;
-}
+//=> {a: number; b: string; c: boolean}
 
 const untypedEntries = Object.fromEntries(entries);
-//=> { [k: string]: string; }
+//=> {[key: string]: string}
 ```
 
 @category Improved builtin
