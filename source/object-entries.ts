@@ -24,4 +24,3 @@ const untypedEntries = Object.entries(items);
 export function objectEntries<Type extends Record<PropertyKey, unknown>>(value: Type): Array<[ObjectKeys<Type>, Type[ObjectKeys<Type>]]> {
 	return Object.entries(value) as Array<[ObjectKeys<Type>, Type[ObjectKeys<Type>]]>;
 }
-
