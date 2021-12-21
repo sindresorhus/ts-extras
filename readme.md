@@ -36,6 +36,7 @@ import {isDefined} from 'ts-extras';
 - [`arrayIncludes`](source/array-includes.ts) - An alternative to `Array#includes()` that properly acts as a type guard.
 - [`objectKeys`](source/object-keys.ts) - A strongly-typed version of `Object.keys()`.
 - [`objectEntries`](source/object-entries.ts) - A strongly-typed version of `Object.entries()`.
+- [`objectFromEntries`](source/object-from-entries.ts) - A strongly-typed version of `Object.fromEntries()`.
 - [`objectHasOwn`](source/object-has-own.ts) - A strongly-typed version of `Object.hasOwn()`.
 - [`isFinite`](source/is-finite.ts) - A strongly-typed version of `Number.isFinite()`.
 - [`isInteger`](source/is-integer.ts) - A strongly-typed version of `Number.isInteger()`.
