@@ -30,6 +30,7 @@ import {isDefined} from 'ts-extras';
 - [`isDefined`](source/is-defined.ts) - Check whether a value is defined (not `null` or `undefined`).
 - [`isEmpty`](source/is-empty.ts) - Check whether an array is empty.
 - [`assertError`](source/assert-error.ts) - Assert that the given value is an `Error`.
+- [`isInfinite`](source/is-infinite.ts) - Check whether a value is infinite.
 
 **Improved builtin**
 
@@ -39,7 +40,6 @@ import {isDefined} from 'ts-extras';
 - [`objectFromEntries`](source/object-from-entries.ts) - A strongly-typed version of `Object.fromEntries()`.
 - [`objectHasOwn`](source/object-has-own.ts) - A strongly-typed version of `Object.hasOwn()`.
 - [`isFinite`](source/is-finite.ts) - A strongly-typed version of `Number.isFinite()`.
-- [`isInfinite`](source/is-infinite.ts) - A symmetric type guard with `isFinite()`.
 - [`isInteger`](source/is-integer.ts) - A strongly-typed version of `Number.isInteger()`.
 - [`isSafeInteger`](source/is-safe-integer.ts) - A strongly-typed version of `Number.isSafeInteger()`.
 

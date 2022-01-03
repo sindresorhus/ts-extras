@@ -1,7 +1,7 @@
 import {NegativeInfinity, PositiveInfinity} from 'type-fest';
 
 /**
-An symmetric type guard with `isFinite()`
+Check whether a value is infinite.
 
 @category Type guard
 */
