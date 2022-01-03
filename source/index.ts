@@ -4,6 +4,7 @@ export {assertError} from './assert-error.js';
 export {isDefined} from './is-defined.js';
 export {isEmpty} from './is-empty.js';
 export {isFinite} from './is-finite.js';
+export {isInfinite} from './is-infinite.js';
 export {isInteger} from './is-integer.js';
 export {isSafeInteger} from './is-safe-integer.js';
 export {objectEntries} from './object-entries.js';

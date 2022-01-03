@@ -39,6 +39,7 @@ import {isDefined} from 'ts-extras';
 - [`objectFromEntries`](source/object-from-entries.ts) - A strongly-typed version of `Object.fromEntries()`.
 - [`objectHasOwn`](source/object-has-own.ts) - A strongly-typed version of `Object.hasOwn()`.
 - [`isFinite`](source/is-finite.ts) - A strongly-typed version of `Number.isFinite()`.
+- [`isInfinite`](source/is-infinite.ts) - A symmetric type guard with `isFinite()`.
 - [`isInteger`](source/is-integer.ts) - A strongly-typed version of `Number.isInteger()`.
 - [`isSafeInteger`](source/is-safe-integer.ts) - A strongly-typed version of `Number.isSafeInteger()`.
 
