@@ -2,6 +2,7 @@ export {arrayIncludes} from './array-includes.js';
 export {asMutable} from './as-mutable.js';
 export {assertError} from './assert-error.js';
 export {isDefined} from './is-defined.js';
+export {isPresent} from './is-present.js';
 export {isEmpty} from './is-empty.js';
 export {isFinite} from './is-finite.js';
 export {isInfinite} from './is-infinite.js';
