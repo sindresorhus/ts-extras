@@ -23,4 +23,17 @@ test('objectFromEntries()', t => {
 		stringKey: 'someString',
 		[symbolKey]: true,
 	});
+
+	const objectFromReadonlyEntries_ = objectFromEntries([
+		[1, 123],
+		['stringKey', 'someString'],
+		[symbolKey, true],
+	] as const);
+
+	expectTypeOf<ObjectFromEntries>(objectFromReadonlyEntries_);
+	t.deepEqual(objectFromReadonlyEntries_, {
+		1: 123,
+		stringKey: 'someString',
+		[symbolKey]: true,
+	});
 });
