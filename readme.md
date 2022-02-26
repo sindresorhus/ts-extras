@@ -43,6 +43,7 @@ import {isDefined} from 'ts-extras';
 - [`isFinite`](source/is-finite.ts) - A strongly-typed version of `Number.isFinite()`.
 - [`isInteger`](source/is-integer.ts) - A strongly-typed version of `Number.isInteger()`.
 - [`isSafeInteger`](source/is-safe-integer.ts) - A strongly-typed version of `Number.isSafeInteger()`.
+- [`setHas`](source/set-has.ts) - A strongly-typed version of `Set.has()`.
 
 ## FAQ
 
