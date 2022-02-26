@@ -12,3 +12,4 @@ export {objectEntries} from './object-entries.js';
 export {objectFromEntries} from './object-from-entries.js';
 export {objectHasOwn} from './object-has-own.js';
 export {objectKeys} from './object-keys.js';
+export {setHas} from './set-has.js';
