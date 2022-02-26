@@ -20,7 +20,7 @@ if (setHas(valueSet, valueToCheck)) {
 @category Type guard
 */
 export function setHas<Type>(
-	set: Set<Type>,
+	set: ReadonlySet<Type>,
 	item: unknown,
 ): item is Type {
 	return set.has(item as Type);
