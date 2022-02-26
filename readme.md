@@ -36,6 +36,7 @@ import {isDefined} from 'ts-extras';
 **Improved builtin**
 
 - [`arrayIncludes`](source/array-includes.ts) - An alternative to `Array#includes()` that properly acts as a type guard.
+- [`setHas`](source/set-has.ts) - An alternative to `Set#has()` that properly acts as a type guard.
 - [`objectKeys`](source/object-keys.ts) - A strongly-typed version of `Object.keys()`.
 - [`objectEntries`](source/object-entries.ts) - A strongly-typed version of `Object.entries()`.
 - [`objectFromEntries`](source/object-from-entries.ts) - A strongly-typed version of `Object.fromEntries()`.
@@ -43,7 +44,6 @@ import {isDefined} from 'ts-extras';
 - [`isFinite`](source/is-finite.ts) - A strongly-typed version of `Number.isFinite()`.
 - [`isInteger`](source/is-integer.ts) - A strongly-typed version of `Number.isInteger()`.
 - [`isSafeInteger`](source/is-safe-integer.ts) - A strongly-typed version of `Number.isSafeInteger()`.
-- [`setHas`](source/set-has.ts) - A strongly-typed version of `Set.has()`.
 
 ## FAQ
 
