@@ -19,9 +19,9 @@ if (setHas(valueSet, valueToCheck)) {
 @category Improved builtin
 @category Type guard
 */
-export function setHas<Type>(
+export function setHas<Type extends SuperType, SuperType = unknown>(
 	set: ReadonlySet<Type>,
-	item: unknown,
+	item: SuperType,
 ): item is Type {
 	return set.has(item as Type);
 }
