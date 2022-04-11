@@ -1,4 +1,6 @@
-export type ObjectKeys<T extends Record<PropertyKey, unknown>> = `${Exclude<keyof T, symbol>}`;
+/* eslint-disable @typescript-eslint/ban-types */
+
+export type ObjectKeys<T extends object> = `${Exclude<keyof T, symbol>}`;
 
 /**
 A strongly-typed version of `Object.keys()`.
@@ -19,6 +21,6 @@ const untypedItems = Object.keys(items); // => Array<string>
 @category Improved builtin
 @category Type guard
 */
-export function objectKeys<Type extends Record<PropertyKey, unknown>>(value: Type): Array<ObjectKeys<Type>> {
+export function objectKeys<Type extends object>(value: Type): Array<ObjectKeys<Type>> {
 	return Object.keys(value) as Array<ObjectKeys<Type>>;
 }
