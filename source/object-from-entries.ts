@@ -23,10 +23,6 @@ const untypedEntries = Object.fromEntries(entries);
 @category Improved builtin
 @category Type guard
 */
-export function objectFromEntries<Key extends PropertyKey, Entries extends ReadonlyArray<readonly [Key, unknown]>>(value: Entries): {
+export const objectFromEntries = Object.fromEntries as <Key extends PropertyKey, Entries extends ReadonlyArray<readonly [Key, unknown]>>(values: Entries) => {
 	[K in Extract<Entries[number], readonly [Key, unknown]>[0]]: Extract<Entries[number], readonly [K, unknown]>[1]
-} {
-	return Object.fromEntries(value) as {
-		[K in Extract<Entries[number], [Key, unknown]>[0]]: Extract<Entries[number], [K, unknown]>[1]
-	};
-}
+};

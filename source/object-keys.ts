@@ -21,6 +21,4 @@ const untypedItems = Object.keys(items); // => Array<string>
 @category Improved builtin
 @category Type guard
 */
-export function objectKeys<Type extends object>(value: Type): Array<ObjectKeys<Type>> {
-	return Object.keys(value) as Array<ObjectKeys<Type>>;
-}
+export const objectKeys = Object.keys as <Type extends object>(value: Type) => Array<ObjectKeys<Type>>;
