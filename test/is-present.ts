@@ -11,6 +11,7 @@ test('isPresent()', t => {
 	const fixture = [1, null].filter(x => isPresent(x));
 	expectTypeOf(fixture).not.toBeNullable();
 
+	// eslint-disable-next-line @typescript-eslint/ban-types
 	const nullable: null | undefined = null;
 
 	if (isPresent(nullable)) {
