@@ -62,7 +62,8 @@
 	"xo": {
 		"rules": {
 			"@typescript-eslint/ban-ts-comment": "off",
-			"@typescript-eslint/naming-convention": "off"
+			"@typescript-eslint/naming-convention": "off",
+			"no-lone-blocks": "off"
 		}
 	}
 }

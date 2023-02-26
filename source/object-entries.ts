@@ -21,4 +21,4 @@ const untypedEntries = Object.entries(items);
 @category Improved builtin
 @category Type guard
 */
-export const objectEntries = Object.entries as <Type extends Record<PropertyKey, unknown>>(value: Type) => Array<[ObjectKeys<Type>, Type[ObjectKeys<Type>]]>;
+export const objectEntries = Object.entries as <Type extends Record<PropertyKey, unknown>>(value: Type) => Array<[ObjectKeys<Type>, Required<Type>[ObjectKeys<Type>]]>;
