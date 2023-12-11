@@ -14,13 +14,13 @@ import {assertError} from 'ts-extras';
 try {
 	fetchUnicorns();
 } catch (error: unknown) {
-	assertError(error)
+	assertError(error);
 
 	// `error` is now of type `Error`
 
 	if (error.message === 'Failed to fetch') {
 		retry();
-		returnl
+		return;
 	}
 
 	throw error;
