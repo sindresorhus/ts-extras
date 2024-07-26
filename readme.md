@@ -1,8 +1,8 @@
-# ts-extras [![](https://img.shields.io/badge/unicorn-approved-ff69b4.svg)](https://giphy.com/gifs/illustration-rainbow-unicorn-26AHG5KGFxSkUWw1i) <!-- Hidden until they actually show some useful info [![npm dependents](https://badgen.net/npm/dependents/ts-extras)](https://www.npmjs.com/package/ts-extras?activeTab=dependents) [![npm downloads](https://badgen.net/npm/dt/ts-extras)](https://www.npmjs.com/package/ts-extras) --> [![Docs](https://paka.dev/badges/v0/cute.svg)](https://paka.dev/npm/ts-extras)
+# ts-extras [![](https://img.shields.io/badge/unicorn-approved-ff69b4.svg)](https://giphy.com/gifs/illustration-rainbow-unicorn-26AHG5KGFxSkUWw1i) [![npm dependents](https://badgen.net/npm/dependents/ts-extras)](https://www.npmjs.com/package/ts-extras?activeTab=dependents) [![npm downloads](https://badgen.net/npm/dt/ts-extras)](https://www.npmjs.com/package/ts-extras)
 
 > Essential utilities for TypeScript projects
 
-*Still early in development. Ideas for additional **essential** utilities welcome. Type-only utilities belong in [type-fest](https://github.com/sindresorhus/type-fest).*
+*Ideas for additional **essential** utilities welcome. Type-only utilities belong in [type-fest](https://github.com/sindresorhus/type-fest).*
 
 ## Install
 

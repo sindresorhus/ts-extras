@@ -1,4 +1,4 @@
-import {Integer} from 'type-fest';
+import {type Integer} from 'type-fest';
 
 /**
 An alternative to `Number.isInteger()` that properly acts as a type guard.

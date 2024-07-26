@@ -1,4 +1,4 @@
-import {ObjectKeys} from './object-keys.js';
+import {type ObjectKeys} from './object-keys.js';
 
 /**
 A strongly-typed version of `Object.entries()`.

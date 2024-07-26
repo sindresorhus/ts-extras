@@ -1,6 +1,6 @@
 import test from 'ava';
 import {expectTypeOf} from 'expect-type';
-import {NegativeInfinity, PositiveInfinity} from 'type-fest';
+import {type NegativeInfinity, type PositiveInfinity} from 'type-fest';
 import {isInfinite} from '../source/index.js';
 
 test('isInfinite()', t => {

@@ -22,5 +22,8 @@ test('objectEntries()', t => {
 	};
 
 	const x: Foo = {};
-	expectTypeOf<Array<['a', string]>>(objectEntries(x));
+	const entries = objectEntries(x);
+	expectTypeOf<Array<['a', string]>>(entries);
+
+	expectTypeOf<['a', string] | undefined>(entries[0]);
 }

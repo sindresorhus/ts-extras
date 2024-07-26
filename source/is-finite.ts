@@ -1,4 +1,4 @@
-import {Finite} from 'type-fest';
+import {type Finite} from 'type-fest';
 
 /**
 An alternative to `Number.isFinite()` that properly acts as a type guard.

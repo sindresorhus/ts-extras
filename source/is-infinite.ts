@@ -1,4 +1,4 @@
-import {NegativeInfinity, PositiveInfinity} from 'type-fest';
+import {type NegativeInfinity, type PositiveInfinity} from 'type-fest';
 
 /**
 Check whether a value is infinite.
