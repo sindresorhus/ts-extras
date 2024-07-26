@@ -23,7 +23,7 @@ import {isDefined} from 'ts-extras';
 
 **General**
 
-- [`asMutable`](source/as-mutable.ts) - Cast the given value to be [`Mutable`](https://github.com/sindresorhus/type-fest/blob/main/source/mutable.d.ts).
+- [`asWritable`](source/as-writable.ts) - Cast the given value to be [`Writable`](https://github.com/sindresorhus/type-fest/blob/main/source/writable.d.ts).
 
 **Type guard**
 
