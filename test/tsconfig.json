@@ -1,0 +1,7 @@
+{
+	"extends": "@sindresorhus/tsconfig",
+	"include": ["."],
+	"compilerOptions": {
+		"noEmit": true
+	}
+}
