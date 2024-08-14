@@ -21,7 +21,7 @@
 	},
 	"scripts": {
 		"build": "del-cli distribution && tsc",
-		"test": "xo && ava && npm run build",
+		"test": "xo && ava && tsc -p test && npm run build",
 		"prepack": "npm run build"
 	},
 	"files": [
