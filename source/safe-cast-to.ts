@@ -1,9 +1,7 @@
 /**
 Cast a value to the given type safely.
 
-This is useful since the `as` keyword allows you to convert between two unrelated types, which is type-unsafe. For example, converting a number to a string type.
-
-However, this function only allows you to cast a given value to a type that is compatible with it, avoiding the potential risk of using "as" and not breaking the type safety of your code.
+The `as` keyword allows unsafe conversions between unrelated types, like converting a number to a string. This function restricts casting to compatible types, preserving type safety.
 
 @example
 ```
