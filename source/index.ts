@@ -1,3 +1,4 @@
+export {safeCastTo} from './safe-cast-to.js';
 export {arrayIncludes} from './array-includes.js';
 export {asWritable} from './as-writable.js';
 export {assertError} from './assert-error.js';

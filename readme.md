@@ -24,6 +24,7 @@ import {isDefined} from 'ts-extras';
 **General**
 
 - [`asWritable`](source/as-writable.ts) - Cast the given value to be [`Writable`](https://github.com/sindresorhus/type-fest/blob/main/source/writable.d.ts).
+- [`safeCastTo`](source/safe-cast-to.ts) - Cast a value to the given type safely.
 
 **Type guard**
 
