@@ -1,6 +1,7 @@
 export {safeCastTo} from './safe-cast-to.js';
 export {arrayIncludes} from './array-includes.js';
 export {asWritable} from './as-writable.js';
+export {assertDefined} from './assert-defined.js';
 export {assertError} from './assert-error.js';
 export {isDefined} from './is-defined.js';
 export {isPresent} from './is-present.js';
