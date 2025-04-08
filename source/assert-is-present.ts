@@ -9,7 +9,7 @@ If the value is not present (`undefined` or `null`), a helpful `TypeError` will 
 ```
 import {assertPresent} from 'ts-extras';
 
-let unicorn = "unicorn";
+let unicorn = 'unicorn';
 assertPresent(unicorn);
 
 let notUnicorn = null;
