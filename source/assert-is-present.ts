@@ -14,7 +14,7 @@ assertPresent(unicorn);
 
 const notUnicorn = null;
 assertPresent(notUnicorn);
-//=> throws Expected a defined value, but got `null`.
+//=> TypeError: Expected a present value, got `null`.
 ```
 
 @category Type guard
