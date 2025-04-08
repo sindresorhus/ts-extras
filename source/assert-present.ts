@@ -19,7 +19,7 @@ assertPresent(notUnicorn);
 
 @category Type guard
 */
-export function assertIsPresent<T>(value: T): asserts value is NonNullable<T> {
+export function assertPresent<T>(value: T): asserts value is NonNullable<T> {
 	if (!isPresent(value)) {
 		// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 		throw new TypeError(`Expected a present value, got \`${value}\``);
