@@ -15,6 +15,6 @@ test('assertPresent()', t => {
 
 	// eslint-disable-next-line @typescript-eslint/ban-types
 	const maybePresent = 'present' as string | undefined | null;
-	assertIsPresent(maybePresent);
+	assertPresent(maybePresent);
 	expectTypeOf(maybePresent).toMatchTypeOf<string>();
 });
