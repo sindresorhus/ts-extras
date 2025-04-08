@@ -3,7 +3,7 @@ export {arrayIncludes} from './array-includes.js';
 export {asWritable} from './as-writable.js';
 export {assertDefined} from './assert-defined.js';
 export {assertError} from './assert-error.js';
-export {assertIsPresent} from './assert-is-present.js';
+export {assertPresent} from './assert-present.js';
 export {isDefined} from './is-defined.js';
 export {isPresent} from './is-present.js';
 export {isEmpty} from './is-empty.js';
