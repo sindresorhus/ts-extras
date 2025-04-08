@@ -1,14 +1,14 @@
 import test from 'ava';
 import {expectTypeOf} from 'expect-type';
-import {assertIsPresent} from '../source/index.js';
+import {assertPresent} from '../source/index.js';
 
-test('assertIsPresent()', t => {
+test('assertPresent()', t => {
 	t.notThrows(() => {
-		assertIsPresent('present');
+		assertPresent('present');
 	});
 
 	t.throws(() => {
-		assertIsPresent(null);
+		assertPresent(null);
 	}, {
 		instanceOf: TypeError,
 	});
