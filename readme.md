@@ -31,8 +31,10 @@ import {isDefined} from 'ts-extras';
 - [`isDefined`](source/is-defined.ts) - Check whether a value is defined (not `undefined`).
 - [`isPresent`](source/is-present.ts) - Check whether a value is present (not `null` or `undefined`).
 - [`isEmpty`](source/is-empty.ts) - Check whether an array is empty.
-- [`assertError`](source/assert-error.ts) - Assert that the given value is an `Error`.
 - [`isInfinite`](source/is-infinite.ts) - Check whether a value is infinite.
+- [`assertDefined`](source/assert-defined.ts) - Assert that the given value is defined, meaning it is not `undefined`.
+- [`assertPresent`](source/assert-present.ts) - Assert that the given value is present (non-nullable), meaning it is neither `null` or `undefined`.
+- [`assertError`](source/assert-error.ts) - Assert that the given value is an `Error`.
 
 **Improved builtin**
 
