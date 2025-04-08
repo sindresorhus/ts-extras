@@ -9,10 +9,10 @@ If the value is `undefined`, a helpful `TypeError` will be thrown.
 ```
 import {assertDefined} from 'ts-extras';
 
-let unicorn = 'unicorn';
+const unicorn = 'unicorn';
 assertDefined(unicorn);
 
-let notUnicorn = undefined;
+const notUnicorn = undefined;
 assertDefined(notUnicorn);
 //=> throws Expected a defined value, but got `undefined`.
 ```
