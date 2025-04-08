@@ -14,7 +14,7 @@ assertDefined(unicorn);
 
 const notUnicorn = undefined;
 assertDefined(notUnicorn);
-//=> throws Expected a defined value, but got `undefined`.
+//=> TypeError: Expected a defined value, got `undefined`
 ```
 
 @category Type guard
