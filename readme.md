@@ -38,6 +38,7 @@ import {isDefined} from 'ts-extras';
 
 **Improved builtin**
 
+- [`arrayAt`](source/array-at.ts) - A strongly-typed version of `Array#at()` with improved tuple support (supports `-1` and positive literal indices for tuples).
 - [`arrayIncludes`](source/array-includes.ts) - An alternative to `Array#includes()` that properly acts as a type guard.
 - [`setHas`](source/set-has.ts) - An alternative to `Set#has()` that properly acts as a type guard.
 - [`objectKeys`](source/object-keys.ts) - A strongly-typed version of `Object.keys()`.
