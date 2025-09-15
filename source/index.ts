@@ -7,6 +7,7 @@ export {assertDefined} from './assert-defined.js';
 export {assertError} from './assert-error.js';
 export {assertPresent} from './assert-present.js';
 export {isDefined} from './is-defined.js';
+export {isEqualType} from './is-equal-type.js';
 export {isPresent} from './is-present.js';
 export {isEmpty} from './is-empty.js';
 export {isFinite} from './is-finite.js';

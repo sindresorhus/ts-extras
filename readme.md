@@ -29,6 +29,7 @@ import {isDefined} from 'ts-extras';
 **Type guard**
 
 - [`isDefined`](source/is-defined.ts) - Check whether a value is defined (not `undefined`).
+- [`isEqualType`](source/is-equal-type.ts) - Ensure type correctness at compile time. Useful for testing and type verification.
 - [`isPresent`](source/is-present.ts) - Check whether a value is present (not `null` or `undefined`).
 - [`isEmpty`](source/is-empty.ts) - Check whether an array is empty.
 - [`isInfinite`](source/is-infinite.ts) - Check whether a value is infinite.
