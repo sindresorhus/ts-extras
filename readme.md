@@ -41,6 +41,7 @@ import {isDefined} from 'ts-extras';
 - [`arrayAt`](source/array-at.ts) - A strongly-typed version of `Array#at()` with improved tuple support (supports `-1` and positive literal indices for tuples).
 - [`arrayIncludes`](source/array-includes.ts) - An alternative to `Array#includes()` that properly acts as a type guard.
 - [`setHas`](source/set-has.ts) - An alternative to `Set#has()` that properly acts as a type guard.
+- [`stringSplit`](source/string-split.ts) - A strongly-typed version of `String#split()` that returns a tuple for literal strings.
 - [`objectKeys`](source/object-keys.ts) - A strongly-typed version of `Object.keys()`.
 - [`objectEntries`](source/object-entries.ts) - A strongly-typed version of `Object.entries()`.
 - [`objectFromEntries`](source/object-from-entries.ts) - A strongly-typed version of `Object.fromEntries()`.
