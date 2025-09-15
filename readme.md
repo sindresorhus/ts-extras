@@ -39,13 +39,14 @@ import {isDefined} from 'ts-extras';
 **Improved builtin**
 
 - [`arrayAt`](source/array-at.ts) - A strongly-typed version of `Array#at()` with improved tuple support (supports `-1` and positive literal indices for tuples).
+- [`arrayConcat`](source/array-concat.ts) - A strongly-typed version of `Array#concat()` that properly handles arrays of different types.
 - [`arrayIncludes`](source/array-includes.ts) - An alternative to `Array#includes()` that properly acts as a type guard.
-- [`setHas`](source/set-has.ts) - An alternative to `Set#has()` that properly acts as a type guard.
-- [`stringSplit`](source/string-split.ts) - A strongly-typed version of `String#split()` that returns a tuple for literal strings.
 - [`objectKeys`](source/object-keys.ts) - A strongly-typed version of `Object.keys()`.
 - [`objectEntries`](source/object-entries.ts) - A strongly-typed version of `Object.entries()`.
 - [`objectFromEntries`](source/object-from-entries.ts) - A strongly-typed version of `Object.fromEntries()`.
 - [`objectHasOwn`](source/object-has-own.ts) - A strongly-typed version of `Object.hasOwn()`.
+- [`setHas`](source/set-has.ts) - An alternative to `Set#has()` that properly acts as a type guard.
+- [`stringSplit`](source/string-split.ts) - A strongly-typed version of `String#split()` that returns a tuple for literal strings.
 - [`isFinite`](source/is-finite.ts) - A strongly-typed version of `Number.isFinite()`.
 - [`isInteger`](source/is-integer.ts) - A strongly-typed version of `Number.isInteger()`.
 - [`isSafeInteger`](source/is-safe-integer.ts) - A strongly-typed version of `Number.isSafeInteger()`.
