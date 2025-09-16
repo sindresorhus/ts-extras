@@ -12,13 +12,18 @@ isEmpty([1, 2, 3]);
 
 isEmpty([]);
 //=> true
+
+// Works with tuples
+const tuple: [string, number] | [] = Math.random() > 0.5 ? ['hello', 42] : [];
+if (isEmpty(tuple)) {
+	// tuple is now typed as []
+} else {
+	// tuple is now typed as [string, number]
+}
 ```
 
 @category Type guard
 */
-/* eslint-disable @typescript-eslint/ban-types */
-export function isEmpty(array: readonly unknown[]): array is readonly [];
-export function isEmpty(array: unknown[]): array is [];
-export function isEmpty(array: readonly unknown[]): array is [] | readonly [] {
+export function isEmpty<T extends readonly unknown[]>(array: T): array is T extends readonly [] ? T : never {
 	return array.length === 0;
 }

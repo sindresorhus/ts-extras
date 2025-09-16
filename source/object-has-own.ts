@@ -1,5 +1,3 @@
-const has = Object.prototype.hasOwnProperty;
-
 /**
 A strongly-typed version of `Object.hasOwn()`.
 
@@ -23,6 +21,5 @@ export function objectHasOwn<ObjectType, Key extends PropertyKey>(
 	object: ObjectType,
 	key: Key,
 ): object is (ObjectType & Record<Key, unknown>) {
-	// TODO: Use `Object.hasOwn()` when targeting Node.js 16.
-	return has.call(object, key);
+	return Object.hasOwn(object as object, key);
 }

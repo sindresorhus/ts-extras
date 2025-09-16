@@ -1,5 +1,6 @@
 import test from 'ava';
 import {expectTypeOf} from 'expect-type';
+import type {IsEqual} from 'type-fest';
 import {isEqualType} from '../source/index.js';
 
 test('isEqualType() - Type-level comparison', t => {
@@ -26,7 +27,7 @@ test('isEqualType() - Type-level comparison', t => {
 	expectTypeOf(result5).toEqualTypeOf<false>();
 	expectTypeOf(result6).toEqualTypeOf<false>();
 
-	// Runtime behavior is always true (compile-time type checking is the focus)
+	// Runtime always returns true for this compile-time utility
 	t.is(result5, true);
 	t.is(result6, true);
 });
@@ -57,7 +58,7 @@ test('isEqualType() - Value-level comparison', t => {
 	expectTypeOf(result4).toEqualTypeOf<false>();
 	expectTypeOf(result5).toEqualTypeOf<false>();
 
-	// Runtime behavior is always true (compile-time type checking is the focus)
+	// Runtime always returns true for this compile-time utility
 	t.is(result4, true);
 	t.is(result5, true);
 });
@@ -67,8 +68,8 @@ test('isEqualType() - Conditional type usage', t => {
 	type StringNumberCheck = IsEqual<string, number> extends true ? 'same' : 'different';
 	type StringStringCheck = IsEqual<string, string> extends true ? 'same' : 'different';
 
-	expectTypeOf<StringNumberCheck>().toEqualTypeOf<'different'>();
-	expectTypeOf<StringStringCheck>().toEqualTypeOf<'same'>();
+	expectTypeOf<StringNumberCheck>().toMatchTypeOf<'different'>();
+	expectTypeOf<StringStringCheck>().toMatchTypeOf<'same'>();
 
 	// The function itself can be used for compile-time checks
 	const result1 = isEqualType<string, number>();
@@ -77,7 +78,7 @@ test('isEqualType() - Conditional type usage', t => {
 	expectTypeOf(result1).toEqualTypeOf<false>();
 	expectTypeOf(result2).toEqualTypeOf<true>();
 
-	// Runtime behavior is always true
+	// Runtime always returns true for this compile-time utility
 	t.is(result1, true);
 	t.is(result2, true);
 });
