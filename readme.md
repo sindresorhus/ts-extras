@@ -43,6 +43,7 @@ import {isDefined} from 'ts-extras';
 - [`arrayConcat`](source/array-concat.ts) - A strongly-typed version of `Array#concat()` that properly handles arrays of different types.
 - [`arrayFirst`](source/array-first.ts) - Return the first item of the given array with stronger typing for tuples.
 - [`arrayIncludes`](source/array-includes.ts) - An alternative to `Array#includes()` that properly acts as a type guard.
+- [`arrayLast`](source/array-last.ts) - Return the last item of the given array with stronger typing for tuples.
 - [`objectKeys`](source/object-keys.ts) - A strongly-typed version of `Object.keys()`.
 - [`objectEntries`](source/object-entries.ts) - A strongly-typed version of `Object.entries()`.
 - [`objectFromEntries`](source/object-from-entries.ts) - A strongly-typed version of `Object.fromEntries()`.
