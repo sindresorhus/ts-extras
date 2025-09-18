@@ -16,8 +16,8 @@ const stronglyTypedObjectFromEntries = objectFromEntries([
 ]);
 //=> {a: number; b: string; c: boolean}
 
-const untypedEntries = Object.fromEntries(entries);
-//=> {[key: string]: string}
+const untypedEntries = Object.fromEntries([['a', 123], ['b', 'someString'], ['c', true]]);
+//=> {[key: string]: unknown}
 ```
 
 @category Improved builtin

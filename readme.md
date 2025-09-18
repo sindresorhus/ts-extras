@@ -32,27 +32,27 @@ import {isDefined} from 'ts-extras';
 - [`isEqualType`](source/is-equal-type.ts) - Ensure type correctness at compile time. Useful for testing and type verification.
 - [`isPresent`](source/is-present.ts) - Check whether a value is present (not `null` or `undefined`).
 - [`isEmpty`](source/is-empty.ts) - Check whether an array is empty.
+- [`isFinite`](source/is-finite.ts) - A strongly-typed version of `Number.isFinite()`.
 - [`isInfinite`](source/is-infinite.ts) - Check whether a value is infinite.
+- [`isInteger`](source/is-integer.ts) - A strongly-typed version of `Number.isInteger()`.
+- [`isSafeInteger`](source/is-safe-integer.ts) - A strongly-typed version of `Number.isSafeInteger()`.
 - [`assertDefined`](source/assert-defined.ts) - Assert that the given value is defined, meaning it is not `undefined`.
-- [`assertPresent`](source/assert-present.ts) - Assert that the given value is present (non-nullable), meaning it is neither `null` or `undefined`.
+- [`assertPresent`](source/assert-present.ts) - Assert that the given value is present (non-nullable), meaning it is neither `null` nor `undefined`.
 - [`assertError`](source/assert-error.ts) - Assert that the given value is an `Error`.
 
 **Improved builtin**
 
 - [`arrayAt`](source/array-at.ts) - A strongly-typed version of `Array#at()` with improved tuple support (supports `-1` and positive literal indices for tuples).
 - [`arrayConcat`](source/array-concat.ts) - A strongly-typed version of `Array#concat()` that properly handles arrays of different types.
-- [`arrayFirst`](source/array-first.ts) - Return the first item of the given array with stronger typing for tuples.
-- [`arrayIncludes`](source/array-includes.ts) - An alternative to `Array#includes()` that properly acts as a type guard.
-- [`arrayLast`](source/array-last.ts) - Return the last item of the given array with stronger typing for tuples.
+- [`arrayFirst`](source/array-first.ts) - Return the first item of an array with stronger typing for tuples.
+- [`arrayIncludes`](source/array-includes.ts) - A strongly-typed version of `Array#includes()` that properly acts as a type guard.
+- [`arrayLast`](source/array-last.ts) - Return the last item of an array with stronger typing for tuples.
 - [`objectKeys`](source/object-keys.ts) - A strongly-typed version of `Object.keys()`.
 - [`objectEntries`](source/object-entries.ts) - A strongly-typed version of `Object.entries()`.
 - [`objectFromEntries`](source/object-from-entries.ts) - A strongly-typed version of `Object.fromEntries()`.
 - [`objectHasOwn`](source/object-has-own.ts) - A strongly-typed version of `Object.hasOwn()`.
-- [`setHas`](source/set-has.ts) - An alternative to `Set#has()` that properly acts as a type guard.
+- [`setHas`](source/set-has.ts) - A strongly-typed version of `Set#has()` that properly acts as a type guard.
 - [`stringSplit`](source/string-split.ts) - A strongly-typed version of `String#split()` that returns a tuple for literal strings.
-- [`isFinite`](source/is-finite.ts) - A strongly-typed version of `Number.isFinite()`.
-- [`isInteger`](source/is-integer.ts) - A strongly-typed version of `Number.isInteger()`.
-- [`isSafeInteger`](source/is-safe-integer.ts) - A strongly-typed version of `Number.isSafeInteger()`.
 
 ## FAQ
 

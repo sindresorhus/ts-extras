@@ -15,7 +15,7 @@ This is useful since `Object.keys()` always returns an array of strings. This fu
 import {objectKeys} from 'ts-extras';
 
 const stronglyTypedItems = objectKeys({a: 1, b: 2, c: 3}); // => Array<'a' | 'b' | 'c'>
-const untypedItems = Object.keys(items); // => Array<string>
+const untypedItems = Object.keys({a: 1, b: 2, c: 3}); // => Array<string>
 ```
 
 @category Improved builtin

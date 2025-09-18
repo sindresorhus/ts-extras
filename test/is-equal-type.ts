@@ -27,9 +27,9 @@ test('isEqualType() - Type-level comparison', t => {
 	expectTypeOf(result5).toEqualTypeOf<false>();
 	expectTypeOf(result6).toEqualTypeOf<false>();
 
-	// Runtime always returns true for this compile-time utility
-	t.is(result5, true);
-	t.is(result6, true);
+	// At runtime, this compile-time utility always returns true
+	t.true(Boolean(result5));
+	t.true(Boolean(result6));
 });
 
 test('isEqualType() - Value-level comparison', t => {
@@ -58,9 +58,9 @@ test('isEqualType() - Value-level comparison', t => {
 	expectTypeOf(result4).toEqualTypeOf<false>();
 	expectTypeOf(result5).toEqualTypeOf<false>();
 
-	// Runtime always returns true for this compile-time utility
-	t.is(result4, true);
-	t.is(result5, true);
+	// At runtime, this compile-time utility always returns true
+	t.true(Boolean(result4));
+	t.true(Boolean(result5));
 });
 
 test('isEqualType() - Conditional type usage', t => {
@@ -78,9 +78,9 @@ test('isEqualType() - Conditional type usage', t => {
 	expectTypeOf(result1).toEqualTypeOf<false>();
 	expectTypeOf(result2).toEqualTypeOf<true>();
 
-	// Runtime always returns true for this compile-time utility
-	t.is(result1, true);
-	t.is(result2, true);
+	// At runtime, this compile-time utility always returns true
+	t.true(Boolean(result1));
+	t.true(Boolean(result2));
 });
 
 test('isEqualType() - Complex types', t => {
@@ -110,7 +110,7 @@ test('isEqualType() - Complex types', t => {
 	// Different complex types should return false
 	const result2 = isEqualType<ComplexType1, ComplexType3>();
 	expectTypeOf(result2).toEqualTypeOf<false>();
-	t.is(result2, true);
+	t.true(Boolean(result2));
 });
 
 test('isEqualType() - Tuple types', t => {
@@ -126,7 +126,7 @@ test('isEqualType() - Tuple types', t => {
 	// Different tuples should return false
 	const result3 = isEqualType<[string, number], [number, string]>();
 	expectTypeOf(result3).toEqualTypeOf<false>();
-	t.is(result3, true);
+	t.true(Boolean(result3));
 });
 
 test('isEqualType() - Literal types', t => {
@@ -149,6 +149,6 @@ test('isEqualType() - Literal types', t => {
 	expectTypeOf(result4).toEqualTypeOf<false>();
 	expectTypeOf(result5).toEqualTypeOf<false>();
 
-	t.is(result4, true);
-	t.is(result5, true);
+	t.true(Boolean(result4));
+	t.true(Boolean(result5));
 });

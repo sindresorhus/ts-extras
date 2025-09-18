@@ -1,5 +1,5 @@
 /**
-Return the first item of the given array with stronger typing for tuples.
+Return the first item of an array with stronger typing for tuples.
 
 This mirrors getting `array[0]` but with better type safety and handling for empty arrays.
 

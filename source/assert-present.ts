@@ -1,7 +1,7 @@
 import {isPresent} from './is-present.js';
 
 /**
-Assert that the given value is present (non-nullable), meaning it is neither `null` or `undefined`.
+Assert that the given value is present (non-nullable), meaning it is neither `null` nor `undefined`.
 
 If the value is not present (`undefined` or `null`), a helpful `TypeError` will be thrown.
 

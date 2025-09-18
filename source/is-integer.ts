@@ -1,7 +1,7 @@
 import {type Integer} from 'type-fest';
 
 /**
-An alternative to `Number.isInteger()` that properly acts as a type guard.
+A strongly-typed version of `Number.isInteger()`.
 
 @category Improved builtin
 @category Type guard

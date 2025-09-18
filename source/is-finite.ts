@@ -1,7 +1,7 @@
 import {type Finite} from 'type-fest';
 
 /**
-An alternative to `Number.isFinite()` that properly acts as a type guard.
+A strongly-typed version of `Number.isFinite()`.
 
 @category Improved builtin
 @category Type guard

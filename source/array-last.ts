@@ -1,7 +1,7 @@
 import type {LastArrayElement} from 'type-fest';
 
 /**
-Return the last item of the given array with stronger typing for tuples.
+Return the last item of an array with stronger typing for tuples.
 
 This provides better type safety than `array[array.length - 1]` or `array.at(-1)`.
 

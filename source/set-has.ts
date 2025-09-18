@@ -1,5 +1,5 @@
 /**
-An alternative to `Set#has()` that properly acts as a type guard.
+A strongly-typed version of `Set#has()` that properly acts as a type guard.
 
 It was [rejected](https://github.com/microsoft/TypeScript/issues/42641#issuecomment-774168319) from being done in TypeScript itself.
 

@@ -1,5 +1,5 @@
 /**
-An alternative to `Array#includes()` that properly acts as a type guard.
+A strongly-typed version of `Array#includes()` that properly acts as a type guard.
 
 It was [rejected](https://github.com/microsoft/TypeScript/issues/26255#issuecomment-748211891) from being done in TypeScript itself.
 
