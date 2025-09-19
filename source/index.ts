@@ -16,6 +16,7 @@ export {isFinite} from './is-finite.js';
 export {isInfinite} from './is-infinite.js';
 export {isInteger} from './is-integer.js';
 export {isSafeInteger} from './is-safe-integer.js';
+export {not} from './not.js';
 export {objectEntries} from './object-entries.js';
 export {objectFromEntries} from './object-from-entries.js';
 export {objectHasOwn} from './object-has-own.js';

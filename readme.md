@@ -36,6 +36,7 @@ import {isDefined} from 'ts-extras';
 - [`isInfinite`](source/is-infinite.ts) - Check whether a value is infinite.
 - [`isInteger`](source/is-integer.ts) - A strongly-typed version of `Number.isInteger()`.
 - [`isSafeInteger`](source/is-safe-integer.ts) - A strongly-typed version of `Number.isSafeInteger()`.
+- [`not`](source/not.ts) - Invert a type predicate function.
 - [`assertDefined`](source/assert-defined.ts) - Assert that the given value is defined, meaning it is not `undefined`.
 - [`assertPresent`](source/assert-present.ts) - Assert that the given value is present (non-nullable), meaning it is neither `null` nor `undefined`.
 - [`assertError`](source/assert-error.ts) - Assert that the given value is an `Error`.
