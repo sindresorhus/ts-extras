@@ -36,6 +36,7 @@ import {isDefined} from 'ts-extras';
 - [`isInfinite`](source/is-infinite.ts) - Check whether a value is infinite.
 - [`isInteger`](source/is-integer.ts) - A strongly-typed version of `Number.isInteger()`.
 - [`isSafeInteger`](source/is-safe-integer.ts) - A strongly-typed version of `Number.isSafeInteger()`.
+- [`keyIn`](source/key-in.ts) - Check if a key is in an object and narrow the key to the object's keys.
 - [`not`](source/not.ts) - Invert a type predicate function.
 - [`assertDefined`](source/assert-defined.ts) - Assert that the given value is defined, meaning it is not `undefined`.
 - [`assertPresent`](source/assert-present.ts) - Assert that the given value is present (non-nullable), meaning it is neither `null` nor `undefined`.
@@ -56,6 +57,13 @@ import {isDefined} from 'ts-extras';
 - [`stringSplit`](source/string-split.ts) - A strongly-typed version of `String#split()` that returns a tuple for literal strings.
 
 ## FAQ
+
+#### What is the difference between `keyIn` and `objectHasOwn`?
+
+- `keyIn` uses the `in` operator (with guards for `__proto__` and `constructor`), checking the prototype chain. It narrows the *key* variable to the object's keys.
+- `objectHasOwn` uses `Object.hasOwn()`, checking only own properties. It narrows the *object* type to include the key.
+
+Use `keyIn` when you need to narrow a key variable, and `objectHasOwn` for own-property checks. Note that `keyIn` blocks `__proto__` and `constructor` for security.
 
 #### What is the difference between this and `type-fest`?
 

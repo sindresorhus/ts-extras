@@ -15,11 +15,11 @@ const result1 = isEqualType<string, string>(); // Type: true
 const result2 = isEqualType<string, number>(); // Type: false
 
 // Value-level comparison - checks if two values have the same type
-const str1 = 'hello';
-const str2 = 'world';
-const num = 42;
-const result3 = isEqualType(str1, str2); // Type: true (both strings)
-const result4 = isEqualType(str1, num);  // Type: false (different types)
+const string1 = 'hello';
+const string2 = 'world';
+const number = 42;
+const result3 = isEqualType(string1, string2); // Type: true (both strings)
+const result4 = isEqualType(string1, number);  // Type: false (different types)
 
 // For runtime behavior, use with type assertions or conditional types
 type CheckResult<T, U> = IsEqual<T, U> extends true ? 'match' : 'no-match';
