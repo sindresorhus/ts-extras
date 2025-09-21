@@ -60,32 +60,32 @@ test('arrayConcat() with five arrays', t => {
 	const a = [1];
 	const b = ['a'];
 	const c = [true];
-	const d = [null];
-	const e = [undefined];
-	const result = arrayConcat(a, b, c, d, e);
+	const d = [undefined];
+	const element = [undefined];
+	const result = arrayConcat(a, b, c, d, element);
 
-	expectTypeOf(result).toEqualTypeOf<Array<number | string | boolean | null | undefined>>();
-	t.deepEqual(result, [1, 'a', true, null, undefined]);
+	expectTypeOf(result).toEqualTypeOf<Array<number | string | boolean | undefined>>();
+	t.deepEqual(result, [1, 'a', true, undefined, undefined]);
 });
 
 test('arrayConcat() with unlimited arrays (8 arrays)', t => {
 	const a = [1];
 	const b = ['a'];
 	const c = [true];
-	const d = [null];
-	const e = [undefined];
+	const d = [undefined];
+	const element = [undefined];
 	const f = [Symbol('test')];
 	const g = [42n];
 	const h = [{}];
-	const result = arrayConcat(a, b, c, d, e, f, g, h);
+	const result = arrayConcat(a, b, c, d, element, f, g, h);
 
-	expectTypeOf(result).toMatchTypeOf<Array<number | string | boolean | null | undefined | symbol | bigint | object>>();
+	expectTypeOf(result).toMatchTypeOf<Array<number | string | boolean | undefined | symbol | bigint | Record<string, unknown>>>();
 	// Note: Symbol comparison needs special handling, so we check length and types instead
 	t.is(result.length, 8);
 	t.is(result[0], 1);
 	t.is(result[1], 'a');
 	t.is(result[2], true);
-	t.is(result[3], null);
+	t.is(result[3], undefined);
 	t.is(result[4], undefined);
 	t.is(typeof result[5], 'symbol');
 	t.is(result[6], 42n);

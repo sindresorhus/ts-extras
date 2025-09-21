@@ -38,12 +38,12 @@ export function isEqualType<A, B>(
 ): IsEqual<A, B>;
 
 // Implementation
-export function isEqualType<A, B>(...arguments_: [A, B] | []): any {
+export function isEqualType<A, B>(...arguments_: [A, B] | never[]): IsEqual<A, B> {
 	// This is primarily a compile-time utility
 	// Runtime always returns true for simplicity
 	if (arguments_.length === 0) {
-		return true as any;
+		return true as any; // eslint-disable-line @typescript-eslint/no-unsafe-return
 	}
 
-	return true as any;
+	return true as any; // eslint-disable-line @typescript-eslint/no-unsafe-return
 }

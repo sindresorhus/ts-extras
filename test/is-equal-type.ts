@@ -33,14 +33,14 @@ test('isEqualType() - Type-level comparison', t => {
 });
 
 test('isEqualType() - Value-level comparison', t => {
-	const str1 = 'hello';
-	const str2 = 'world';
-	const num1 = 42;
+	const string1 = 'hello';
+	const string2 = 'world';
+	const number1 = 42;
 	const bool1 = true;
 
 	// Same types should return true
-	const result1 = isEqualType(str1, str2);
-	const result2 = isEqualType(num1, 123);
+	const result1 = isEqualType(string1, string2);
+	const result2 = isEqualType(number1, 123);
 	const result3 = isEqualType(bool1, false);
 
 	expectTypeOf(result1).toEqualTypeOf<true>();
@@ -52,8 +52,8 @@ test('isEqualType() - Value-level comparison', t => {
 	t.is(result3, true);
 
 	// Different types should return false
-	const result4 = isEqualType(str1, num1);
-	const result5 = isEqualType(num1, bool1);
+	const result4 = isEqualType(string1, number1);
+	const result5 = isEqualType(number1, bool1);
 
 	expectTypeOf(result4).toEqualTypeOf<false>();
 	expectTypeOf(result5).toEqualTypeOf<false>();

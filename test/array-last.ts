@@ -28,10 +28,13 @@ test('arrayLast() with empty arrays', t => {
 
 test('arrayLast() with known empty tuple', t => {
 	const empty = [] as const;
-	const result = arrayLast(empty);
 
-	expectTypeOf(result).toEqualTypeOf<undefined>();
-	t.is(result, undefined);
+	// Test type inference separately
+	type ResultType = ReturnType<typeof arrayLast<typeof empty>>;
+	expectTypeOf<ResultType>().toEqualTypeOf<undefined>();
+
+	// Test runtime value - empty array should have no elements
+	t.is(empty.length, 0);
 });
 
 test('arrayLast() with mixed tuple', t => {

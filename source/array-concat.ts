@@ -37,11 +37,11 @@ export function arrayConcat<T extends readonly unknown[]>(
 // Unlimited arrays using variadic tuple types and recursive conditional types
 export function arrayConcat<
 	T extends readonly unknown[],
-	U extends readonly (readonly unknown[])[]
+	U extends ReadonlyArray<readonly unknown[]>,
 >(
 	array: T,
 	...items: U
-): ArrayConcatUnlimited<T, U> extends readonly (infer R)[] ? R[] : unknown[];
+): ArrayConcatUnlimited<T, U> extends ReadonlyArray<infer R> ? R[] : unknown[];
 export function arrayConcat(
 	array: readonly unknown[],
 	...items: ReadonlyArray<readonly unknown[]>
@@ -52,10 +52,10 @@ export function arrayConcat(
 // Helper type for recursive concatenation of unlimited arrays
 type ArrayConcatUnlimited<
 	First extends readonly unknown[],
-	Rest extends readonly (readonly unknown[])[],
+	Rest extends ReadonlyArray<readonly unknown[]>,
 > = Rest extends readonly [
 	infer Next extends readonly unknown[],
-	...infer Remaining extends readonly (readonly unknown[])[],
+	...infer Remaining extends ReadonlyArray<readonly unknown[]>,
 ]
 	? ArrayConcatUnlimited<[...First, ...Next], Remaining>
 	: First;

@@ -29,9 +29,13 @@ const noFirst = arrayFirst(empty);
 export function arrayFirst<ArrayType extends readonly unknown[]>(
 	array: ArrayType,
 ): ArrayType extends readonly never[]
-	? undefined
-	: ArrayType extends readonly [any, ...any[]]
-		? ArrayType[0]
-		: ArrayType[number] | undefined {
-	return array[0] as any;
+		? undefined
+		: ArrayType extends readonly [any, ...any[]]
+			? ArrayType[0]
+			: ArrayType[number] | undefined {
+	if (array.length === 0) {
+		return undefined as any; // eslint-disable-line @typescript-eslint/no-unsafe-return
+	}
+
+	return array[0] as any; // eslint-disable-line @typescript-eslint/no-unsafe-return
 }

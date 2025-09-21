@@ -31,9 +31,13 @@ const noLast = arrayLast(empty);
 export function arrayLast<ArrayType extends readonly unknown[]>(
 	array: ArrayType,
 ): ArrayType extends readonly never[]
-	? undefined
-	: ArrayType extends readonly [...any[], infer Last]
-		? Last
-		: LastArrayElement<ArrayType> | undefined {
-	return array[array.length - 1] as any;
+		? undefined
+		: ArrayType extends readonly [...any[], infer Last]
+			? Last
+			: LastArrayElement<ArrayType> | undefined {
+	if (array.length === 0) {
+		return undefined as any; // eslint-disable-line @typescript-eslint/no-unsafe-return
+	}
+
+	return array.at(-1) as any; // eslint-disable-line @typescript-eslint/no-unsafe-return
 }

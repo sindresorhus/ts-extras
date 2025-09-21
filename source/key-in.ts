@@ -27,14 +27,14 @@ if (keyIn(objectWithSymbol, symbol)) {
 
 @category Type guard
 */
-export function keyIn<ObjectType extends object, Key extends PropertyKey>(
+export function keyIn<ObjectType extends Record<PropertyKey, unknown>, Key extends PropertyKey>(
 	object: ObjectType,
 	key: Key,
 ): key is Extract<Key, Exclude<keyof ObjectType, '__proto__' | 'constructor'>> {
 	// Guard against prototype pollution
 	if (key === '__proto__' || key === 'constructor') {
-		return false as any;
+		return false as any; // eslint-disable-line @typescript-eslint/no-unsafe-return
 	}
 
-	return key in object;
+	return key in (object as any);
 }

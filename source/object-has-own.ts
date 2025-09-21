@@ -21,5 +21,5 @@ export function objectHasOwn<ObjectType, Key extends PropertyKey>(
 	object: ObjectType,
 	key: Key,
 ): object is (ObjectType & Record<Key, unknown>) {
-	return Object.hasOwn(object as object, key);
+	return Object.hasOwn(object as any, key); // eslint-disable-line @typescript-eslint/no-unsafe-argument
 }

@@ -24,6 +24,6 @@ if (isEmpty(tuple)) {
 
 @category Type guard
 */
-export function isEmpty<T extends readonly unknown[]>(array: T): array is T extends readonly [] ? T : never {
+export function isEmpty<T extends readonly unknown[]>(array: T): array is T extends readonly never[] ? T : never {
 	return array.length === 0;
 }
