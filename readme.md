@@ -110,3 +110,4 @@ The `type-fest` package contains only types, meaning they are only used at compi
 
 - [type-fest](https://github.com/sindresorhus/type-fest) - A collection of essential TypeScript types
 - [is](https://github.com/sindresorhus/is) - Type guards for any situation
+- [camelcase-keys](https://github.com/sindresorhus/camelcase-keys) - Runtime transformation of object properties to camel-case (like `type-fest`'s `CamelCasedPropertiesDeep`)
