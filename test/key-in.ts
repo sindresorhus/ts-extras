@@ -101,3 +101,27 @@ test('keyIn() with index signatures', t => {
 		t.pass();
 	}
 });
+
+test('keyIn() does not narrow in false branch', t => {
+	const object = {foo: 1, bar: 2};
+	const key = 'baz' as 'foo' | 'bar' | 'baz';
+
+	if (!keyIn(object, key)) {
+		// In the false branch, key should remain 'foo' | 'bar' | 'baz'
+		// This assignment would fail if the type was incorrectly narrowed
+		const preserved: 'foo' | 'bar' | 'baz' = key;
+		t.is(typeof preserved, 'string');
+	}
+
+	// Test that true branch still narrows correctly
+	const key2 = 'foo' as 'foo' | 'bar' | 'baz';
+	if (keyIn(object, key2)) {
+		// Key should be narrowed to 'foo' | 'bar'
+		const narrowed: 'foo' | 'bar' = key2;
+		t.is(narrowed, 'foo');
+	}
+
+	// Additional runtime test
+	t.true(keyIn(object, 'foo'));
+	t.false(keyIn(object, 'baz'));
+});

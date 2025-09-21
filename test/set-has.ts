@@ -29,3 +29,30 @@ test('setHas()', t => {
 
 	t.is(testValueType, 'a');
 });
+
+test('setHas() does not narrow in false branch (issue #59)', t => {
+	const knownSet = new Set(['a', 'b', 'c'] as const);
+	const value: unknown = 'd';
+
+	if (setHas(knownSet, value)) {
+		// Value is narrowed to 'a' | 'b' | 'c'
+		expectTypeOf(value).toEqualTypeOf<'a' | 'b' | 'c'>();
+	} else {
+		// Value should remain unknown, not be narrowed
+		// Before the fix, this would incorrectly be narrowed to never
+		expectTypeOf(value).toEqualTypeOf<unknown>();
+		t.pass(); // Value correctly remains unknown
+	}
+
+	// Test with union type
+	const unionValue: string | number = 'not-in-set' as string | number;
+
+	if (setHas(knownSet, unionValue)) {
+		// Value is narrowed to the intersection
+		expectTypeOf(unionValue).toEqualTypeOf<'a' | 'b' | 'c'>();
+	} else {
+		// Value should remain as string | number, not be incorrectly narrowed
+		expectTypeOf(unionValue).toEqualTypeOf<string | number>();
+		t.pass(); // Type correctly preserved
+	}
+});
