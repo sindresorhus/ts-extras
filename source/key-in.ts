@@ -1,7 +1,9 @@
 /**
-Check if a key is in an object and narrow the key to the object's keys.
+Check if a key exists in an object and narrow the key type.
 
-This narrows the key variable to only the keys that actually exist in the object, using TypeScript's `Extract` utility type. Unlike `objectHasOwn`, this uses the `in` operator and checks the entire prototype chain.
+This function performs __key narrowing__ - it narrows the key variable to only keys that actually exist in the object. Uses the `in` operator to check the entire prototype chain.
+
+Unlike `objectHasIn` and `objectHasOwn` (both do object narrowing), this narrows the _key_ type, making it useful for validating union types of possible keys.
 
 @example
 ```
@@ -11,19 +13,19 @@ const object = {foo: 1, bar: 2};
 const key = 'foo' as 'foo' | 'bar' | 'baz';
 
 if (keyIn(object, key)) {
-	key;
-	//=> 'foo' | 'bar'
+	// `key` is now: 'foo' | 'bar' (narrowed from union)
+	console.log(object[key]); // Safe access
 }
 
 // Works with symbols
 const symbol = Symbol.for('myKey');
 const objectWithSymbol = {[symbol]: 'value'};
 if (keyIn(objectWithSymbol, symbol)) {
-	// symbol is narrowed to the symbol keys
+	// symbol is narrowed to existing symbol keys
 }
 ```
 
-@note This uses the `in` operator for all keys except `__proto__` and `constructor`, which are blocked for security. For own properties only, use `objectHasOwn`.
+@note This uses the `in` operator and checks the prototype chain, but blocks `__proto__` and `constructor` for security.
 
 @category Type guard
 */
@@ -33,8 +35,8 @@ export function keyIn<ObjectType extends Record<PropertyKey, unknown>, Key exten
 ): key is Extract<Key, Exclude<keyof ObjectType, '__proto__' | 'constructor'>> {
 	// Guard against prototype pollution
 	if (key === '__proto__' || key === 'constructor') {
-		return false as any; // eslint-disable-line @typescript-eslint/no-unsafe-return
+		return false;
 	}
 
-	return key in (object as any);
+	return key in (object as Record<PropertyKey, unknown>);
 }

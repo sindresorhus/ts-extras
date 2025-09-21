@@ -20,6 +20,7 @@ export {keyIn} from './key-in.js';
 export {not} from './not.js';
 export {objectEntries} from './object-entries.js';
 export {objectFromEntries} from './object-from-entries.js';
+export {objectHasIn} from './object-has-in.js';
 export {objectHasOwn} from './object-has-own.js';
 export {objectKeys} from './object-keys.js';
 export {setHas} from './set-has.js';

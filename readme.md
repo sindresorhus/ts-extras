@@ -38,6 +38,7 @@ import {isDefined} from 'ts-extras';
 - [`isSafeInteger`](source/is-safe-integer.ts) - A strongly-typed version of `Number.isSafeInteger()`.
 - [`keyIn`](source/key-in.ts) - Check if a key is in an object and narrow the key to the object's keys.
 - [`not`](source/not.ts) - Invert a type predicate function.
+- [`objectHasIn`](source/object-has-in.ts) - Check if an object has a property (including inherited) and narrow the object type.
 - [`assertDefined`](source/assert-defined.ts) - Assert that the given value is defined, meaning it is not `undefined`.
 - [`assertPresent`](source/assert-present.ts) - Assert that the given value is present (non-nullable), meaning it is neither `null` nor `undefined`.
 - [`assertError`](source/assert-error.ts) - Assert that the given value is an `Error`.
@@ -58,12 +59,48 @@ import {isDefined} from 'ts-extras';
 
 ## FAQ
 
-#### What is the difference between `keyIn` and `objectHasOwn`?
+#### What is the difference between `keyIn`, `objectHasIn`, and `objectHasOwn`?
 
-- `keyIn` uses the `in` operator (with guards for `__proto__` and `constructor`), checking the prototype chain. It narrows the *key* variable to the object's keys.
-- `objectHasOwn` uses `Object.hasOwn()`, checking only own properties. It narrows the *object* type to include the key.
+These functions solve different problems despite all checking property existence:
 
-Use `keyIn` when you need to narrow a key variable, and `objectHasOwn` for own-property checks. Note that `keyIn` blocks `__proto__` and `constructor` for security.
+**`keyIn`** - **Key narrowing** for union types:
+- Uses the `in` operator, checking the prototype chain
+- Narrows the *key* variable to only keys that exist in the object
+- Best for: "Which of these possible keys actually exists?"
+- Guards against `__proto__` and `constructor` for security
+
+**`objectHasIn`** - **Object narrowing** with prototype chain:
+- Uses the `in` operator, checking the prototype chain
+- Narrows the *object* type to include the checked property
+- Best for: "Can I safely access this property (including inherited)?"
+- Guards against `__proto__` and `constructor` for security
+
+**`objectHasOwn`** - **Object narrowing** for own properties:
+- Uses `Object.hasOwn()`, checking only own properties
+- Narrows the *object* type to include the checked property
+- Best for: "Can I safely access this own property on this object?"
+
+```typescript
+// keyIn - narrows the key (prototype chain)
+const key = 'foo' as 'foo' | 'bar' | 'baz';
+if (keyIn(object, key)) {
+	// `key` is now: 'foo' | 'bar' (only existing keys)
+	console.log(object[key]); // Safe
+}
+
+// objectHasIn - narrows the object (prototype chain)
+const data: unknown = {foo: 1};
+if (objectHasIn(data, 'toString')) {
+	// `data` is now: unknown & {toString: unknown}
+	console.log(data.toString); // Safe (inherited method)
+}
+
+// objectHasOwn - narrows the object (own properties only)
+if (objectHasOwn(data, 'foo')) {
+	// `data` is now: unknown & {foo: unknown}
+	console.log(data.foo); // Safe (own property)
+}
+```
 
 #### What is the difference between this and `type-fest`?
 
