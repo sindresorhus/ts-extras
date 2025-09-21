@@ -17,11 +17,11 @@
 	},
 	"sideEffects": false,
 	"engines": {
-		"node": ">=18"
+		"node": ">=20"
 	},
 	"scripts": {
 		"build": "del-cli distribution && tsc",
-		"test": "xo && ava && tsc --project test && npm run build",
+		"test": "node --test --import=tsx/esm test/*.ts && tsc --project test && npm run build",
 		"prepack": "npm run build"
 	},
 	"files": [
@@ -42,25 +42,16 @@
 		"helpers"
 	],
 	"dependencies": {
-		"type-fest": "^4.39.1"
+		"type-fest": "^5.0.1"
 	},
 	"devDependencies": {
-		"@sindresorhus/tsconfig": "^7.0.0",
-		"ava": "^6.2.0",
-		"del-cli": "^6.0.0",
-		"expect-type": "^1.2.1",
-		"tsx": "^4.19.3",
-		"typescript": "^5.8.3",
-		"xo": "^0.60.0"
-	},
-	"ava": {
-		"extensions": {
-			"ts": "module"
-		},
-		"nodeArguments": [
-			"--import=tsx/esm"
-		],
-		"workerThreads": false
+		"@sindresorhus/tsconfig": "^8.0.1",
+		"@types/node": "^20.0.0",
+		"del-cli": "^7.0.0",
+		"expect-type": "^1.2.2",
+		"tsx": "^4.20.5",
+		"typescript": "^5.9.2",
+		"xo": "^1.2.2"
 	},
 	"xo": {
 		"rules": {

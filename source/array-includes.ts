@@ -24,12 +24,11 @@ if (arrayIncludes(values, valueToCheck)) {
 @category Type guard
 */
 export function arrayIncludes<Type extends SuperType, SuperType = unknown>(
-	array: Type[] | readonly Type[],
+	array: readonly Type[],
 	item: SuperType,
 	fromIndex?: number,
 	// The `& {}` prevents TypeScript from narrowing the type in the `else` branch,
 	// since an item not being in the array doesn't mean it isn't of that type.
-	// eslint-disable-next-line @typescript-eslint/ban-types
 ): item is Type & {} {
 	return array.includes(item as Type, fromIndex);
 }

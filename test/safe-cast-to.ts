@@ -1,9 +1,10 @@
-/* eslint-disable @typescript-eslint/ban-types */
-import test from 'ava';
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
 import {expectTypeOf} from 'expect-type';
 import {safeCastTo} from '../source/index.js';
 
-test('safeCastTo()', t => {
+test('safeCastTo()', () => {
 	type Foo = {
 		a: string;
 		b?: number;
@@ -15,8 +16,8 @@ test('safeCastTo()', t => {
 		b: 0,
 	};
 
-	t.is(EmptyObject, safeCastTo(EmptyObject));
-	t.is(foo, safeCastTo(foo));
+	assert.equal(EmptyObject, safeCastTo(EmptyObject));
+	assert.equal(foo, safeCastTo(foo));
 
 	expectTypeOf({}).toEqualTypeOf<{}>();
 	expectTypeOf(safeCastTo({})).toEqualTypeOf<{}>();

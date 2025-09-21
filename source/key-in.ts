@@ -39,7 +39,6 @@ export function keyIn<ObjectType extends Record<PropertyKey, unknown>, Key exten
 	key: Key,
 	// The `& {}` prevents TypeScript from narrowing the type in the `else` branch,
 	// since a key not being in the object doesn't mean it isn't that type of key.
-	// eslint-disable-next-line @typescript-eslint/ban-types
 ): key is Extract<Key, Exclude<keyof ObjectType, '__proto__' | 'constructor'>> & {} {
 	// Guard against prototype pollution
 	if (key === '__proto__' || key === 'constructor') {

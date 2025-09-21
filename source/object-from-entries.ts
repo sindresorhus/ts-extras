@@ -21,7 +21,6 @@ const untypedEntries = Object.fromEntries([['a', 123], ['b', 'someString'], ['c'
 ```
 
 @category Improved builtin
-@category Type guard
 */
 export const objectFromEntries = Object.fromEntries as <Entries extends ReadonlyArray<readonly [PropertyKey, unknown]>>(values: Entries) => number extends Entries['length']
 	? {[T in Entries[number] as T[0]]?: T[1]}

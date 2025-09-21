@@ -1,8 +1,9 @@
-import test from 'ava';
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
 import {expectTypeOf} from 'expect-type';
 import {objectEntries} from '../source/index.js';
 
-test('objectEntries()', t => {
+test('objectEntries()', () => {
 	type Entry = ['1' | 'stringKey', number | string];
 
 	const entries = objectEntries({
@@ -12,7 +13,7 @@ test('objectEntries()', t => {
 	});
 
 	expectTypeOf<Entry[]>(entries);
-	t.deepEqual(entries, [['1', 123], ['stringKey', 'someString']]);
+	assert.deepEqual(entries, [['1', 123], ['stringKey', 'someString']]);
 });
 
 // Optional property

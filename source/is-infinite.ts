@@ -23,5 +23,5 @@ isInfinite(Number.NaN);
 @category Type guard
 */
 export function isInfinite(value: unknown): value is NegativeInfinity | PositiveInfinity {
-	return !Number.isNaN(value) && !Number.isFinite(value);
+	return typeof value === 'number' && (value === Infinity || value === -Infinity);
 }

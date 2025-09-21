@@ -1,8 +1,9 @@
-import test from 'ava';
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
 import {expectTypeOf} from 'expect-type';
 import {setHas} from '../source/index.js';
 
-test('setHas()', t => {
+test('setHas()', () => {
 	const values = ['a', 'b', 'c'] as const;
 	const valueSet = new Set(values);
 	const validValue: unknown = 'a';
@@ -10,14 +11,14 @@ test('setHas()', t => {
 	const invalidTypedValue = 1;
 	let testValueType: typeof values[number];
 
-	expectTypeOf(values).items.toMatchTypeOf<typeof validValue>();
-	expectTypeOf(values).items.toMatchTypeOf<typeof invalidValue>();
-	expectTypeOf(values).items.not.toMatchTypeOf<typeof invalidTypedValue>();
+	expectTypeOf(values).items.toExtend<typeof validValue>();
+	expectTypeOf(values).items.toExtend<typeof invalidValue>();
+	expectTypeOf(values).items.not.toExtend<typeof invalidTypedValue>();
 
-	t.true(setHas(valueSet, validValue));
-	t.false(setHas(valueSet, invalidValue));
+	assert.equal(setHas(valueSet, validValue), true);
+	assert.equal(setHas(valueSet, invalidValue), false);
 	// @ts-expect-error
-	t.false(setHas(valueSet, invalidTypedValue));
+	assert.equal(setHas(valueSet, invalidTypedValue), false);
 
 	// eslint-disable-next-line unicorn/prefer-ternary
 	if (setHas(valueSet, validValue)) {
@@ -27,10 +28,10 @@ test('setHas()', t => {
 		testValueType = validValue;
 	}
 
-	t.is(testValueType, 'a');
+	assert.equal(testValueType, 'a');
 });
 
-test('setHas() does not narrow in false branch (issue #59)', t => {
+test('setHas() does not narrow in false branch (issue #59)', () => {
 	const knownSet = new Set(['a', 'b', 'c'] as const);
 	const value: unknown = 'd';
 
@@ -41,7 +42,7 @@ test('setHas() does not narrow in false branch (issue #59)', t => {
 		// Value should remain unknown, not be narrowed
 		// Before the fix, this would incorrectly be narrowed to never
 		expectTypeOf(value).toEqualTypeOf<unknown>();
-		t.pass(); // Value correctly remains unknown
+		assert.ok(true); // Value correctly remains unknown
 	}
 
 	// Test with union type
@@ -53,6 +54,6 @@ test('setHas() does not narrow in false branch (issue #59)', t => {
 	} else {
 		// Value should remain as string | number, not be incorrectly narrowed
 		expectTypeOf(unionValue).toEqualTypeOf<string | number>();
-		t.pass(); // Type correctly preserved
+		assert.ok(true); // Type correctly preserved
 	}
 });

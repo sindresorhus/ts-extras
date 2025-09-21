@@ -28,16 +28,8 @@ const noLast = arrayLast(empty);
 
 @category Improved builtin
 */
-export function arrayLast<ArrayType extends readonly unknown[]>(
-	array: ArrayType,
-): ArrayType extends readonly never[]
-		? undefined
-		: ArrayType extends readonly [...any[], infer Last]
-			? Last
-			: LastArrayElement<ArrayType> | undefined {
-	if (array.length === 0) {
-		return undefined as any; // eslint-disable-line @typescript-eslint/no-unsafe-return
-	}
-
-	return array.at(-1) as any; // eslint-disable-line @typescript-eslint/no-unsafe-return
+export function arrayLast<const ArrayType extends readonly [...unknown[], unknown]>(array: ArrayType): LastArrayElement<ArrayType>;
+export function arrayLast<ArrayType extends readonly unknown[]>(array: ArrayType): ArrayType[number] | undefined;
+export function arrayLast(array: readonly unknown[]) {
+	return array.at(-1);
 }

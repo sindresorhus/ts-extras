@@ -1,7 +1,8 @@
-import test from 'ava';
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
 import {asWritable} from '../source/index.js';
 
-test('asWritable()', t => {
+test('asWritable()', () => {
 	type Fixture = {
 		readonly a: number;
 	};
@@ -13,5 +14,5 @@ test('asWritable()', t => {
 
 	const writableFixture = asWritable(fixture);
 	writableFixture.a = 2;
-	t.is(writableFixture.a, 2);
+	assert.equal(writableFixture.a, 2);
 });

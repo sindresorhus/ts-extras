@@ -1,5 +1,5 @@
 /**
-Check whether a value is present (non-nullable), meaning it is neither `null` or `undefined`.
+Check whether a value is present (non-nullable), meaning it is neither `null` nor `undefined`.
 
 This can be useful as a type guard, as for example, `[1, null].filter(Boolean)` does not always type-guard correctly.
 

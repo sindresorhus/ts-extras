@@ -3,6 +3,8 @@ A strongly-typed version of `Array#concat()` that properly handles arrays of dif
 
 TypeScript's built-in `Array#concat()` has issues with type inference when concatenating arrays of different types or empty arrays. This function provides proper type inference for heterogeneous array concatenation.
 
+Note: This function preserves array holes, matching the native `Array#concat()` behavior.
+
 @example
 ```
 import {arrayConcat} from 'ts-extras';
@@ -46,7 +48,8 @@ export function arrayConcat(
 	array: readonly unknown[],
 	...items: ReadonlyArray<readonly unknown[]>
 ): unknown[] {
-	return [...array, ...items.flat()];
+	// Use native concat to preserve holes (flat() would drop them)
+	return Array.prototype.concat.call(array, ...items);
 }
 
 // Helper type for recursive concatenation of unlimited arrays

@@ -1,22 +1,23 @@
-import test from 'ava';
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
 import {expectTypeOf} from 'expect-type';
 import {arrayIncludes} from '../source/index.js';
 
-test('arrayIncludes()', t => {
+test('arrayIncludes()', () => {
 	const values = ['a', 'b', 'c'] as const;
 	const validValue: unknown = 'a';
 	const invalidValue: unknown = 'd';
 	const invalidTypedValue = 1;
 	let testValueType: typeof values[number];
 
-	expectTypeOf(values).items.toMatchTypeOf<typeof validValue>();
-	expectTypeOf(values).items.toMatchTypeOf<typeof invalidValue>();
-	expectTypeOf(values).items.not.toMatchTypeOf<typeof invalidTypedValue>();
+	expectTypeOf(values).items.toExtend<typeof validValue>();
+	expectTypeOf(values).items.toExtend<typeof invalidValue>();
+	expectTypeOf(values).items.not.toExtend<typeof invalidTypedValue>();
 
-	t.true(arrayIncludes(values, validValue));
-	t.false(arrayIncludes(values, invalidValue));
+	assert.equal(arrayIncludes(values, validValue), true);
+	assert.equal(arrayIncludes(values, invalidValue), false);
 	// @ts-expect-error
-	t.false(arrayIncludes(values, invalidTypedValue));
+	assert.equal(arrayIncludes(values, invalidTypedValue), false);
 
 	if (arrayIncludes(values, validValue)) {
 		// @ts-expect-error
@@ -33,10 +34,10 @@ test('arrayIncludes()', t => {
 		values.push(); // Ensure readonly array is still readonly.
 	}
 
-	t.is(testValueType, 'a');
+	assert.equal(testValueType, 'a');
 });
 
-test('arrayIncludes() does not narrow in false branch (issue #59)', t => {
+test('arrayIncludes() does not narrow in false branch (issue #59)', () => {
 	const knownArray = ['a', 'b', 'c'] as const;
 	const value: unknown = 'd';
 
@@ -47,7 +48,7 @@ test('arrayIncludes() does not narrow in false branch (issue #59)', t => {
 		// Value should remain unknown, not be narrowed
 		// Before the fix, this would incorrectly be narrowed to never
 		expectTypeOf(value).toEqualTypeOf<unknown>();
-		t.pass(); // Value correctly remains unknown
+		assert.ok(true); // Value correctly remains unknown
 	}
 
 	// Test with union type
@@ -59,6 +60,6 @@ test('arrayIncludes() does not narrow in false branch (issue #59)', t => {
 	} else {
 		// Value should remain as string | number, not be incorrectly narrowed
 		expectTypeOf(unionValue).toEqualTypeOf<string | number>();
-		t.pass(); // Type correctly preserved
+		assert.ok(true); // Type correctly preserved
 	}
 });

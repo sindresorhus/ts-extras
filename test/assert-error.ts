@@ -1,14 +1,13 @@
-import test from 'ava';
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
 import {assertError} from '../source/index.js';
 
-test('assertError()', t => {
-	t.notThrows(() => {
+test('assertError()', () => {
+	assert.doesNotThrow(() => {
 		assertError(new Error('x'));
 	});
 
-	t.throws(() => {
+	assert.throws(() => {
 		assertError('x');
-	}, {
-		instanceOf: TypeError,
-	});
+	}, TypeError);
 });

@@ -34,8 +34,6 @@ if (isNotString(mixedValue)) {
 
 @category Type guard
 */
-export function not<T>(
-	predicate: (value: unknown) => value is T,
-): <Value>(value: Value) => value is Exclude<Value, T> {
+export function not<T>(predicate: (value: unknown) => value is T): <Value>(value: Value) => value is Exclude<Value, T> {
 	return <Value>(value: Value): value is Exclude<Value, T> => !predicate(value);
 }

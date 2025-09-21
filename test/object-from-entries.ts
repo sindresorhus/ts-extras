@@ -1,8 +1,9 @@
-import test from 'ava';
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
 import {expectTypeOf} from 'expect-type';
 import {objectFromEntries} from '../source/index.js';
 
-test('objectFromEntries()', t => {
+test('objectFromEntries()', () => {
 	const symbolKey = Symbol('symbolKey');
 
 	const objectFromEntries_ = objectFromEntries([
@@ -15,7 +16,7 @@ test('objectFromEntries()', t => {
 	expectTypeOf<number | undefined>(objectFromEntries_[1]);
 	expectTypeOf<string | undefined>(objectFromEntries_['stringKey']);
 	expectTypeOf<boolean | undefined>(objectFromEntries_[symbolKey]);
-	t.deepEqual(objectFromEntries_, {
+	assert.deepEqual(objectFromEntries_, {
 		1: 123,
 		stringKey: 'someString',
 		[symbolKey]: true,
@@ -31,7 +32,7 @@ test('objectFromEntries()', t => {
 	expectTypeOf<number>(objectFromReadonlyEntries_[1]);
 	expectTypeOf<string>(objectFromReadonlyEntries_.stringKey);
 	expectTypeOf<boolean>(objectFromReadonlyEntries_[symbolKey]);
-	t.deepEqual(objectFromReadonlyEntries_, {
+	assert.deepEqual(objectFromReadonlyEntries_, {
 		1: 123,
 		stringKey: 'someString',
 		[symbolKey]: true,

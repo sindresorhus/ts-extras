@@ -1,5 +1,21 @@
 const {toString} = Object.prototype;
 
+function describeValue(value: unknown): string {
+	try {
+		return JSON.stringify(value);
+	} catch {
+		try {
+			return String(value);
+		} catch {
+			try {
+				return toString.call(value);
+			} catch {
+				return '<Unprintable value>';
+			}
+		}
+	}
+}
+
 /**
 Assert that the given value is an `Error`.
 
@@ -30,7 +46,12 @@ try {
 @category Type guard
 */
 export function assertError(value: unknown): asserts value is Error {
-	if (!(value instanceof Error || toString.call(value) === '[object Error]')) {
-		throw new TypeError(`Expected an \`Error\`, got \`${JSON.stringify(value)}\` (${typeof value})`);
+	// Cross-realm safe: either real instance or has the Error brand.
+	if (value instanceof Error || toString.call(value) === '[object Error]') {
+		return;
 	}
+
+	const kind = toString.call(value);
+	const description = describeValue(value);
+	throw new TypeError(`Expected an Error, got ${kind} (${typeof value}) → ${description}`);
 }

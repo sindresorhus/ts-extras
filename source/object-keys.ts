@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable @typescript-eslint/no-restricted-types */
 
 export type ObjectKeys<T extends object> = `${Exclude<keyof T, symbol>}`;
 

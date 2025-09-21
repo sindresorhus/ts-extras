@@ -14,11 +14,10 @@ import {objectEntries} from 'ts-extras';
 const stronglyTypedEntries = objectEntries({a: 1, b: 2, c: 3});
 //=> Array<['a' | 'b' | 'c', number]>
 
-const untypedEntries = Object.entries(items);
+const untypedEntries = Object.entries({a: 1, b: 2, c: 3});
 //=> Array<[string, number]>
 ```
 
 @category Improved builtin
-@category Type guard
 */
 export const objectEntries = Object.entries as <Type extends Record<PropertyKey, unknown>>(value: Type) => Array<[ObjectKeys<Type>, Required<Type>[ObjectKeys<Type>]]>;

@@ -1,12 +1,13 @@
-import test from 'ava';
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
 import {expectTypeOf} from 'expect-type';
 import {isDefined} from '../source/index.js';
 
-test('isDefined()', t => {
-	t.false(isDefined(undefined));
-	t.true(isDefined(null));
-	t.true(isDefined(1));
-	t.true(isDefined('x'));
+test('isDefined()', () => {
+	assert.equal(isDefined(undefined), false);
+	assert.equal(isDefined(null), true);
+	assert.equal(isDefined(1), true);
+	assert.equal(isDefined('x'), true);
 
 	const fixture = [1, undefined].filter(x => isDefined(x));
 	expectTypeOf(fixture).not.toBeUndefined();

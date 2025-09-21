@@ -1,29 +1,28 @@
 import type {IsEqual} from 'type-fest';
 
 /**
-A utility to ensure type correctness at compile time. Useful for testing and type verification.
+Check if two types are equal at compile time.
 
-This function provides type-level type equality checking using type-fest's IsEqual type.
-The main purpose is compile-time type checking - runtime behavior is not the focus.
+Returns a boolean type (`true` or `false`) at compile time based on whether the types are equal.
+At runtime, this returns nothing (`void`) since it's purely a compile-time utility.
 
 @example
 ```
 import {isEqualType} from 'ts-extras';
 
-// Type-level comparison - returns true/false type at compile time
+// Type-level comparison
 const result1 = isEqualType<string, string>(); // Type: true
 const result2 = isEqualType<string, number>(); // Type: false
 
-// Value-level comparison - checks if two values have the same type
+// Value-level comparison
 const string1 = 'hello';
 const string2 = 'world';
 const number = 42;
 const result3 = isEqualType(string1, string2); // Type: true (both strings)
 const result4 = isEqualType(string1, number);  // Type: false (different types)
-
-// For runtime behavior, use with type assertions or conditional types
-type CheckResult<T, U> = IsEqual<T, U> extends true ? 'match' : 'no-match';
 ```
+
+@note The runtime value is `void`. This function is designed for compile-time type checking only, not runtime behavior.
 
 @category Type guard
 */
@@ -37,11 +36,10 @@ export function isEqualType<A, B>(
 	b: B,
 ): IsEqual<A, B>;
 
-// Implementation
-export function isEqualType<A, B>(): IsEqual<A, B>;
-export function isEqualType<A, B>(_a: A, _b: B): IsEqual<A, B>;
+// Implementation overload
 export function isEqualType<A, B>(): IsEqual<A, B> {
-	// This is primarily a compile-time utility
-	// Runtime always returns true for simplicity
-	return true as IsEqual<A, B>;
+	// This is a compile-time utility - runtime returns nothing
+	// The actual type checking happens at the TypeScript level
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+	return undefined as any;
 }

@@ -24,13 +24,13 @@ import {isDefined} from 'ts-extras';
 **General**
 
 - [`asWritable`](source/as-writable.ts) - Cast the given value to be [`Writable`](https://github.com/sindresorhus/type-fest/blob/main/source/writable.d.ts).
-- [`safeCastTo`](source/safe-cast-to.ts) - Cast a value to the given type safely.
+- [`safeCastTo`](source/safe-cast-to.ts) - Constrain a value to the given type safely.
 
 **Type guard**
 
 - [`isDefined`](source/is-defined.ts) - Check whether a value is defined (not `undefined`).
-- [`isEqualType`](source/is-equal-type.ts) - Ensure type correctness at compile time. Useful for testing and type verification.
-- [`isPresent`](source/is-present.ts) - Check whether a value is present (not `null` or `undefined`).
+- [`isEqualType`](source/is-equal-type.ts) - Check if two types are equal at compile time.
+- [`isPresent`](source/is-present.ts) - Check whether a value is present (not `null` nor `undefined`).
 - [`isEmpty`](source/is-empty.ts) - Check whether an array is empty.
 - [`isFinite`](source/is-finite.ts) - A strongly-typed version of `Number.isFinite()`.
 - [`isInfinite`](source/is-infinite.ts) - Check whether a value is infinite.

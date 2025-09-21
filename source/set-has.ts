@@ -29,7 +29,6 @@ export function setHas<Type extends SuperType, SuperType = unknown>(
 	item: SuperType,
 	// The `& {}` prevents TypeScript from narrowing the type in the `else` branch,
 	// since an item not being in the set doesn't mean it isn't of that type.
-	// eslint-disable-next-line @typescript-eslint/ban-types
 ): item is Type & {} {
 	return set.has(item as Type);
 }

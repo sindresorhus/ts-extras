@@ -1,7 +1,7 @@
 /**
-Cast a value to the given type safely.
+Constrain a value to the given type safely.
 
-The `as` keyword allows unsafe conversions between unrelated types, like converting a number to a string. This function restricts casting to compatible types, preserving type safety.
+Unlike `as`, this refuses incompatible casts at compile time. Use it to _narrow_ or _shape_ values while preserving type safety.
 
 @example
 ```

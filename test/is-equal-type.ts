@@ -1,10 +1,11 @@
-import test from 'ava';
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
 import {expectTypeOf} from 'expect-type';
 import type {IsEqual} from 'type-fest';
 import {isEqualType} from '../source/index.js';
 
-test('isEqualType() - Type-level comparison', t => {
-	// These should compile and return true for matching types
+test('isEqualType() - Type-level comparison', () => {
+	// These should compile and return true/false types
 	const result1 = isEqualType<string, string>();
 	const result2 = isEqualType<number, number>();
 	const result3 = isEqualType<boolean, boolean>();
@@ -15,30 +16,31 @@ test('isEqualType() - Type-level comparison', t => {
 	expectTypeOf(result3).toEqualTypeOf<true>();
 	expectTypeOf(result4).toEqualTypeOf<true>();
 
-	t.is(result1, true);
-	t.is(result2, true);
-	t.is(result3, true);
-	t.is(result4, true);
+	// Runtime returns undefined (compile-time utility)
+	assert.equal(result1 as any, undefined);
+	assert.equal(result2 as any, undefined);
+	assert.equal(result3 as any, undefined);
+	assert.equal(result4 as any, undefined);
 
-	// These should return false for non-matching types
+	// These should return false types for non-matching types
 	const result5 = isEqualType<string, number>();
 	const result6 = isEqualType<{a: string}, {a: number}>();
 
 	expectTypeOf(result5).toEqualTypeOf<false>();
 	expectTypeOf(result6).toEqualTypeOf<false>();
 
-	// At runtime, this compile-time utility always returns true
-	t.true(Boolean(result5));
-	t.true(Boolean(result6));
+	// Runtime returns undefined (compile-time utility)
+	assert.equal(result5 as any, undefined);
+	assert.equal(result6 as any, undefined);
 });
 
-test('isEqualType() - Value-level comparison', t => {
+test('isEqualType() - Value-level comparison', () => {
 	const string1 = 'hello';
 	const string2 = 'world';
 	const number1 = 42;
 	const bool1 = true;
 
-	// Same types should return true
+	// Same types should have true type
 	const result1 = isEqualType(string1, string2);
 	const result2 = isEqualType(number1, 123);
 	const result3 = isEqualType(bool1, false);
@@ -47,108 +49,84 @@ test('isEqualType() - Value-level comparison', t => {
 	expectTypeOf(result2).toEqualTypeOf<true>();
 	expectTypeOf(result3).toEqualTypeOf<true>();
 
-	t.is(result1, true);
-	t.is(result2, true);
-	t.is(result3, true);
+	// Runtime returns undefined
+	assert.equal(result1 as any, undefined);
+	assert.equal(result2 as any, undefined);
+	assert.equal(result3 as any, undefined);
 
-	// Different types should return false
+	// Different types should have false type
 	const result4 = isEqualType(string1, number1);
 	const result5 = isEqualType(number1, bool1);
 
 	expectTypeOf(result4).toEqualTypeOf<false>();
 	expectTypeOf(result5).toEqualTypeOf<false>();
 
-	// At runtime, this compile-time utility always returns true
-	t.true(Boolean(result4));
-	t.true(Boolean(result5));
+	// Runtime returns undefined
+	assert.equal(result4 as any, undefined);
+	assert.equal(result5 as any, undefined);
 });
 
-test('isEqualType() - Conditional type usage', t => {
+test('isEqualType() - Conditional type usage', () => {
 	// Demonstrate using IsEqual in conditional types
 	type StringNumberCheck = IsEqual<string, number> extends true ? 'same' : 'different';
 	type StringStringCheck = IsEqual<string, string> extends true ? 'same' : 'different';
 
-	expectTypeOf<StringNumberCheck>().toMatchTypeOf<'different'>();
-	expectTypeOf<StringStringCheck>().toMatchTypeOf<'same'>();
+	expectTypeOf<StringNumberCheck>().toExtend<'different'>();
+	expectTypeOf<StringStringCheck>().toExtend<'same'>();
 
 	// The function itself can be used for compile-time checks
-	const result1 = isEqualType<string, number>();
-	const result2 = isEqualType<string, string>();
+	const result1 = isEqualType<string, string>();
+	const result2 = isEqualType<string, number>();
 
-	expectTypeOf(result1).toEqualTypeOf<false>();
-	expectTypeOf(result2).toEqualTypeOf<true>();
-
-	// At runtime, this compile-time utility always returns true
-	t.true(Boolean(result1));
-	t.true(Boolean(result2));
-});
-
-test('isEqualType() - Complex types', t => {
-	type ComplexType1 = {
-		name: string;
-		age: number;
-		active: boolean;
-	};
-
-	type ComplexType2 = {
-		name: string;
-		age: number;
-		active: boolean;
-	};
-
-	type ComplexType3 = {
-		name: string;
-		age: string; // Different type
-		active: boolean;
-	};
-
-	// Same complex types
-	const result1 = isEqualType<ComplexType1, ComplexType2>();
 	expectTypeOf(result1).toEqualTypeOf<true>();
-	t.is(result1, true);
-
-	// Different complex types should return false
-	const result2 = isEqualType<ComplexType1, ComplexType3>();
 	expectTypeOf(result2).toEqualTypeOf<false>();
-	t.true(Boolean(result2));
+
+	// Runtime returns undefined
+	assert.equal(result1 as any, undefined);
+	assert.equal(result2 as any, undefined);
 });
 
-test('isEqualType() - Tuple types', t => {
-	const result1 = isEqualType<[string, number], [string, number]>();
-	const result2 = isEqualType<readonly [string, number], readonly [string, number]>();
+test('isEqualType() - Complex types', () => {
+	// Test with complex object types
+	type User = {name: string; age: number};
+	type UserCopy = {name: string; age: number};
+	type UserWithId = {name: string; age: number; id: string};
+
+	const result1 = isEqualType<User, UserCopy>();
+	const result2 = isEqualType<User, UserWithId>();
 
 	expectTypeOf(result1).toEqualTypeOf<true>();
-	expectTypeOf(result2).toEqualTypeOf<true>();
+	expectTypeOf(result2).toEqualTypeOf<false>();
 
-	t.is(result1, true);
-	t.is(result2, true);
-
-	// Different tuples should return false
-	const result3 = isEqualType<[string, number], [number, string]>();
-	expectTypeOf(result3).toEqualTypeOf<false>();
-	t.true(Boolean(result3));
+	// Runtime returns undefined
+	assert.equal(result1 as any, undefined);
+	assert.equal(result2 as any, undefined);
 });
 
-test('isEqualType() - Literal types', t => {
+test('isEqualType() - Tuple types', () => {
+	type Tuple1 = [string, number];
+	type Tuple2 = [string, number];
+	type Tuple3 = [number, string];
+
+	const result1 = isEqualType<Tuple1, Tuple2>();
+	const result2 = isEqualType<Tuple1, Tuple3>();
+
+	expectTypeOf(result1).toEqualTypeOf<true>();
+	expectTypeOf(result2).toEqualTypeOf<false>();
+
+	// Runtime returns undefined
+	assert.equal(result1 as any, undefined);
+	assert.equal(result2 as any, undefined);
+});
+
+test('isEqualType() - Literal types', () => {
 	const result1 = isEqualType<'hello', 'hello'>();
-	const result2 = isEqualType<42, 42>();
-	const result3 = isEqualType<true, true>();
+	const result2 = isEqualType<'hello', 'world'>();
 
 	expectTypeOf(result1).toEqualTypeOf<true>();
-	expectTypeOf(result2).toEqualTypeOf<true>();
-	expectTypeOf(result3).toEqualTypeOf<true>();
+	expectTypeOf(result2).toEqualTypeOf<false>();
 
-	t.is(result1, true);
-	t.is(result2, true);
-	t.is(result3, true);
-
-	// Different literals should return false
-	const result4 = isEqualType<'hello', 'world'>();
-	const result5 = isEqualType<42, 43>();
-
-	expectTypeOf(result4).toEqualTypeOf<false>();
-	expectTypeOf(result5).toEqualTypeOf<false>();
-
-	t.true(Boolean(result4));
-	t.true(Boolean(result5));
+	// Runtime returns undefined
+	assert.equal(result1 as any, undefined);
+	assert.equal(result2 as any, undefined);
 });

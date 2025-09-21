@@ -1,16 +1,17 @@
-import test from 'ava';
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
 import {expectTypeOf} from 'expect-type';
 import {not, isDefined} from '../source/index.js';
 
-test('not() inverts type guards', t => {
+test('not() inverts type guards', () => {
 	const isString = (value: unknown): value is string =>
 		typeof value === 'string';
 
 	const isNotString = not(isString);
 
-	t.true(isNotString(123));
-	t.true(isNotString(true));
-	t.false(isNotString('hello'));
+	assert.equal(isNotString(123), true);
+	assert.equal(isNotString(true), true);
+	assert.equal(isNotString('hello'), false);
 
 	const mixedValue: string | number | boolean = 123 as string | number | boolean;
 	if (isNotString(mixedValue)) {
@@ -18,16 +19,16 @@ test('not() inverts type guards', t => {
 	}
 });
 
-test('not() with nullable types', t => {
+test('not() with nullable types', () => {
 	const isNullish = (value: unknown): value is undefined =>
 		value === null || value === undefined;
 
 	const isNotNullish = not(isNullish);
 
-	t.true(isNotNullish(0));
-	t.true(isNotNullish(''));
-	t.false(isNotNullish(null));
-	t.false(isNotNullish(undefined));
+	assert.equal(isNotNullish(0), true);
+	assert.equal(isNotNullish(''), true);
+	assert.equal(isNotNullish(null), false);
+	assert.equal(isNotNullish(undefined), false);
 
 	const nullableValue: string | undefined = 'test' as string | undefined;
 	if (isNotNullish(nullableValue)) {
@@ -35,7 +36,7 @@ test('not() with nullable types', t => {
 	}
 });
 
-test('not() with array filtering', t => {
+test('not() with array filtering', () => {
 	const isUndefined = (value: unknown): value is undefined =>
 		value === undefined;
 
@@ -45,18 +46,18 @@ test('not() with array filtering', t => {
 	const filtered = values.filter(value => isNotUndefined(value));
 
 	expectTypeOf(filtered).toEqualTypeOf<number[]>();
-	t.deepEqual(filtered, [1, 2, 3]);
+	assert.deepEqual(filtered, [1, 2, 3]);
 });
 
-test('not() with union types', t => {
+test('not() with union types', () => {
 	const isPrimitive = (value: unknown): value is string | number | boolean =>
 		typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean';
 
 	const isNotPrimitive = not(isPrimitive);
 
-	t.false(isNotPrimitive('hello'));
-	t.true(isNotPrimitive({}));
-	t.true(isNotPrimitive([]));
+	assert.equal(isNotPrimitive('hello'), false);
+	assert.equal(isNotPrimitive({}), true);
+	assert.equal(isNotPrimitive([]), true);
 
 	const mixedValue: string | number | boolean | Record<string, unknown> = {};
 	if (isNotPrimitive(mixedValue)) {
@@ -64,15 +65,15 @@ test('not() with union types', t => {
 	}
 });
 
-test('not() with complex array types', t => {
+test('not() with complex array types', () => {
 	const isStringArray = (value: unknown): value is string[] =>
 		Array.isArray(value) && value.every(item => typeof item === 'string');
 
 	const isNotStringArray = not(isStringArray);
 
-	t.false(isNotStringArray(['a', 'b']));
-	t.true(isNotStringArray([1, 2]));
-	t.true(isNotStringArray('not array'));
+	assert.equal(isNotStringArray(['a', 'b']), false);
+	assert.equal(isNotStringArray([1, 2]), true);
+	assert.equal(isNotStringArray('not array'), true);
 
 	const value: string[] | number[] | string = ['a', 'b'] as string[] | number[] | string;
 	if (isNotStringArray(value)) {
@@ -80,20 +81,19 @@ test('not() with complex array types', t => {
 	}
 });
 
-test('not() with library predicates', t => {
+test('not() with library predicates', () => {
 	// Test using not() with isDefined from the library
 	const isNotDefined = not(isDefined);
 
-	t.true(isNotDefined(undefined));
-	t.false(isNotDefined(null));
-	t.false(isNotDefined(0));
+	assert.equal(isNotDefined(undefined), true);
+	assert.equal(isNotDefined(null), false);
+	assert.equal(isNotDefined(0), false);
 
 	const value: string | undefined = 'test' as string | undefined;
 	if (isNotDefined(value)) {
 		// Due to TypeScript's Exclude limitations, this doesn't narrow perfectly
 		// @ts-expect-error - TypeScript's Exclude doesn't work well with not(isDefined)
-		expectTypeOf(value).toMatchTypeOf<string | undefined>();
-		// @ts-expect-error - value is never in this branch according to TypeScript
-		t.is(value, undefined);
+		expectTypeOf(value).toExtend<string | undefined>();
+		assert.equal(value, undefined);
 	}
 });

@@ -1,15 +1,16 @@
-import test from 'ava';
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
 import {expectTypeOf} from 'expect-type';
 import {keyIn} from '../source/index.js';
 
-test('keyIn() narrows key type', t => {
+test('keyIn() narrows key type', () => {
 	const object = {foo: 1, bar: 2};
 
 	// Union type narrowing
 	const key = 'foo' as 'foo' | 'bar' | 'baz';
 	if (keyIn(object, key)) {
 		expectTypeOf(key).toEqualTypeOf<'foo' | 'bar'>();
-		t.true(['foo', 'bar'].includes(key));
+		assert.equal(['foo', 'bar'].includes(key), true);
 	}
 
 	// String to literal narrowing
@@ -17,41 +18,41 @@ test('keyIn() narrows key type', t => {
 	if (keyIn(object, string)) {
 		// When key is string type, keyIn doesn't narrow it to literal types
 		// @ts-expect-error - string doesn't narrow to literals
-		expectTypeOf(string).toMatchTypeOf<'foo' | 'bar'>();
+		expectTypeOf(string).toExtend<'foo' | 'bar'>();
 	}
 
-	t.true(keyIn(object, 'foo'));
-	t.false(keyIn(object, 'baz'));
+	assert.equal(keyIn(object, 'foo'), true);
+	assert.equal(keyIn(object, 'baz'), false);
 });
 
-test('keyIn() with prototype chain', t => {
+test('keyIn() with prototype chain', () => {
 	const object = {foo: 1};
 
 	// ToString is inherited from Object.prototype
-	t.true(keyIn(object, 'toString'));
-	t.true(keyIn(object, 'valueOf'));
-	t.true(keyIn(object, 'foo'));
-	t.false(keyIn(object, 'bar'));
+	assert.equal(keyIn(object, 'toString'), true);
+	assert.equal(keyIn(object, 'valueOf'), true);
+	assert.equal(keyIn(object, 'foo'), true);
+	assert.equal(keyIn(object, 'bar'), false);
 });
 
-test('keyIn() guards against prototype pollution', t => {
+test('keyIn() guards against prototype pollution', () => {
 	const object = {foo: 1};
 
 	// These are always false for security
-	t.false(keyIn(object, '__proto__'));
-	t.false(keyIn(object, 'constructor'));
+	assert.equal(keyIn(object, '__proto__'), false);
+	assert.equal(keyIn(object, 'constructor'), false);
 
 	// Even if explicitly defined
 	const objectWithProto = {__proto__: 'value', constructor: 'value'};
-	t.false(keyIn(objectWithProto, '__proto__'));
-	t.false(keyIn(objectWithProto, 'constructor'));
+	assert.equal(keyIn(objectWithProto, '__proto__'), false);
+	assert.equal(keyIn(objectWithProto, 'constructor'), false);
 
 	// Type narrowing excludes blocked keys
 	const key = '__proto__' as '__proto__' | 'foo';
 	if (keyIn(object, key)) {
 		// Key is now narrowed to exclude '__proto__'
 		expectTypeOf(key).toEqualTypeOf<'foo'>();
-		t.is(key, 'foo');
+		assert.equal(key, 'foo');
 	}
 
 	// Also test with constructor
@@ -59,17 +60,17 @@ test('keyIn() guards against prototype pollution', t => {
 	if (keyIn(object, constructorKey)) {
 		// Constructor is excluded from the narrowed type
 		expectTypeOf(constructorKey).toEqualTypeOf<'foo'>();
-		t.is(constructorKey, 'foo');
+		assert.equal(constructorKey, 'foo');
 	}
 });
 
-test('keyIn() with symbols', t => {
+test('keyIn() with symbols', () => {
 	const symbol1 = Symbol('test1');
 	const symbol2 = Symbol('test2');
 	const object = {[symbol1]: 'value'};
 
-	t.true(keyIn(object, symbol1));
-	t.false(keyIn(object, symbol2));
+	assert.equal(keyIn(object, symbol1), true);
+	assert.equal(keyIn(object, symbol2), false);
 
 	const key = symbol1 as typeof symbol1 | typeof symbol2;
 	if (keyIn(object, key)) {
@@ -77,16 +78,16 @@ test('keyIn() with symbols', t => {
 	}
 });
 
-test('keyIn() with Object.create(null)', t => {
+test('keyIn() with Object.create(null)', () => {
 	const object = Object.create(null) as {foo?: number};
 	object.foo = 1;
 
-	t.true(keyIn(object, 'foo'));
+	assert.equal(keyIn(object, 'foo'), true);
 	// No prototype, so no inherited properties
-	t.false(keyIn(object, 'toString'));
+	assert.equal(keyIn(object, 'toString'), false);
 });
 
-test('keyIn() with index signatures', t => {
+test('keyIn() with index signatures', () => {
 	const object: {[key: string]: unknown; specific: number} = {
 		specific: 1,
 		dynamic: 'test',
@@ -97,12 +98,12 @@ test('keyIn() with index signatures', t => {
 	// With index signature, all strings are valid keys
 	if (keyIn(object, key)) {
 		// Key is not narrowed much because of index signature
-		expectTypeOf(key).toMatchTypeOf<string>();
-		t.pass();
+		expectTypeOf(key).toExtend<string>();
+		assert.ok(true);
 	}
 });
 
-test('keyIn() does not narrow in false branch', t => {
+test('keyIn() does not narrow in false branch', () => {
 	const object = {foo: 1, bar: 2};
 	const key = 'baz' as 'foo' | 'bar' | 'baz';
 
@@ -110,7 +111,7 @@ test('keyIn() does not narrow in false branch', t => {
 		// In the false branch, key should remain 'foo' | 'bar' | 'baz'
 		// This assignment would fail if the type was incorrectly narrowed
 		const preserved: 'foo' | 'bar' | 'baz' = key;
-		t.is(typeof preserved, 'string');
+		assert.equal(typeof preserved, 'string');
 	}
 
 	// Test that true branch still narrows correctly
@@ -118,10 +119,10 @@ test('keyIn() does not narrow in false branch', t => {
 	if (keyIn(object, key2)) {
 		// Key should be narrowed to 'foo' | 'bar'
 		const narrowed: 'foo' | 'bar' = key2;
-		t.is(narrowed, 'foo');
+		assert.equal(narrowed, 'foo');
 	}
 
 	// Additional runtime test
-	t.true(keyIn(object, 'foo'));
-	t.false(keyIn(object, 'baz'));
+	assert.equal(keyIn(object, 'foo'), true);
+	assert.equal(keyIn(object, 'baz'), false);
 });
