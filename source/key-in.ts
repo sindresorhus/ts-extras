@@ -1,3 +1,17 @@
+import type {IsLiteral, UnknownRecord} from 'type-fest';
+
+type HasWidenedKey<Key extends PropertyKey> =
+	string extends Key ? true :
+	number extends Key ? true :
+	symbol extends Key ? true :
+	false;
+
+type NarrowedKey<ObjectType, Key extends PropertyKey> = HasWidenedKey<Key> extends true
+	? Key
+	: IsLiteral<Key> extends true
+		? Extract<Key, Exclude<keyof ObjectType, '__proto__' | 'constructor'>>
+		: Key;
+
 /**
 Check if a key exists in an object and narrow the key type.
 
@@ -34,12 +48,12 @@ if (keyIn(objectWithSymbol, symbol)) {
 
 @category Type guard
 */
-export function keyIn<ObjectType extends Record<PropertyKey, unknown>, Key extends PropertyKey>(
+export function keyIn<ObjectType extends UnknownRecord, Key extends PropertyKey>(
 	object: ObjectType,
 	key: Key,
 	// The `& {}` prevents TypeScript from narrowing the type in the `else` branch,
 	// since a key not being in the object doesn't mean it isn't that type of key.
-): key is Extract<Key, Exclude<keyof ObjectType, '__proto__' | 'constructor'>> & {} {
+): key is NarrowedKey<ObjectType, Key> & {} {
 	// Guard against prototype pollution
 	if (key === '__proto__' || key === 'constructor') {
 		return false;
