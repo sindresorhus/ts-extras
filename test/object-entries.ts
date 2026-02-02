@@ -16,6 +16,20 @@ test('objectEntries()', () => {
 	assert.deepEqual(entries, [['1', 123], ['stringKey', 'someString']]);
 });
 
+test('objectEntries() - array', () => {
+	const entries = objectEntries([1, 2]);
+
+	expectTypeOf<Array<[`${number}`, number]>>(entries);
+	assert.deepEqual(entries, [['0', 1], ['1', 2]]);
+});
+
+test('objectEntries() - tuple', () => {
+	const entries = objectEntries([1, 'a'] as const);
+
+	expectTypeOf<Array<['0' | '1', 1 | 'a']>>(entries);
+	assert.deepEqual(entries, [['0', 1], ['1', 'a']]);
+});
+
 // Optional property
 {
 	type Foo = {
@@ -27,4 +41,16 @@ test('objectEntries()', () => {
 	expectTypeOf<Array<['a', string]>>(entries);
 
 	expectTypeOf<['a', string] | undefined>(entries[0]);
+}
+
+// Interface support
+{
+	interface TestInterface {
+		e: string;
+		f: number;
+	}
+
+	const interfaceInput: TestInterface = {e: 'a', f: 1};
+	const entries = objectEntries(interfaceInput);
+	expectTypeOf<Array<['e' | 'f', string | number]>>(entries);
 }

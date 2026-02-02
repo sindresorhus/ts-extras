@@ -52,6 +52,7 @@ import {isDefined} from 'ts-extras';
 - [`arrayIncludes`](source/array-includes.ts) - A strongly-typed version of `Array#includes()` that properly acts as a type guard.
 - [`arrayLast`](source/array-last.ts) - Return the last item of an array with stronger typing for tuples.
 - [`objectKeys`](source/object-keys.ts) - A strongly-typed version of `Object.keys()`.
+- [`objectValues`](source/object-values.ts) - A strongly-typed version of `Object.values()`.
 - [`objectEntries`](source/object-entries.ts) - A strongly-typed version of `Object.entries()`.
 - [`objectFromEntries`](source/object-from-entries.ts) - A strongly-typed version of `Object.fromEntries()`.
 - [`objectHasOwn`](source/object-has-own.ts) - A strongly-typed version of `Object.hasOwn()`.

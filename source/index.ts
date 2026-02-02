@@ -24,5 +24,6 @@ export {objectFromEntries} from './object-from-entries.js';
 export {objectHasIn} from './object-has-in.js';
 export {objectHasOwn} from './object-has-own.js';
 export {objectKeys} from './object-keys.js';
+export {objectValues} from './object-values.js';
 export {setHas} from './set-has.js';
 export {stringSplit} from './string-split.js';
