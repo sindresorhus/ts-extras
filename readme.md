@@ -47,6 +47,7 @@ import {isDefined} from 'ts-extras';
 
 - [`arrayAt`](source/array-at.ts) - A strongly-typed version of `Array#at()` with improved tuple support (supports `-1` and positive literal indices for tuples).
 - [`arrayConcat`](source/array-concat.ts) - A strongly-typed version of `Array#concat()` that properly handles arrays of different types.
+- [`arrayJoin`](source/array-join.ts) - A strongly-typed version of `Array#join()` that preserves literal string types.
 - [`arrayFirst`](source/array-first.ts) - Return the first item of an array with stronger typing for tuples.
 - [`arrayIncludes`](source/array-includes.ts) - A strongly-typed version of `Array#includes()` that properly acts as a type guard.
 - [`arrayLast`](source/array-last.ts) - Return the last item of an array with stronger typing for tuples.

@@ -133,7 +133,7 @@ test('keyIn() with index signatures', () => {
 	// With index signature, all strings are valid keys
 	if (keyIn(object, key)) {
 		// Key is not narrowed much because of index signature
-		expectTypeOf(key).toExtend<string>();
+		expectTypeOf(key).toEqualTypeOf<'specific' | 'other'>();
 		assert.ok(true);
 	}
 });
