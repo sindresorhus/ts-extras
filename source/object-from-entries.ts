@@ -5,6 +5,8 @@ This is useful since `Object.fromEntries()` always returns `{[key: string]: T}`.
 
 - [TypeScript issues about this](https://github.com/microsoft/TypeScript/issues/35745)
 
+Note: For non-const arrays the return type uses optional keys for soundness. Use `as const` tuples if you need required keys or assert at the call site, for example: `const result = objectFromEntries(entries) as Record<string, Value>`.
+
 @example
 ```
 import {objectFromEntries} from 'ts-extras';
