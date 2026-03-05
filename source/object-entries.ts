@@ -1,13 +1,5 @@
 import {type ObjectKeys} from './object-keys.js';
-
-type ArrayOwnKeys<Type extends readonly unknown[]> = Exclude<keyof Type, keyof unknown[]>;
-type ArrayOwnStringKeys<Type extends readonly unknown[]> = Extract<ArrayOwnKeys<Type>, string | number>;
-type ArrayEntryKey<Type extends readonly unknown[]> = number extends Type['length']
-	? `${number}` | `${ArrayOwnStringKeys<Type>}`
-	: `${ArrayOwnStringKeys<Type>}`;
-type ArrayEntryValue<Type extends readonly unknown[]> = number extends Type['length']
-	? Type[number] | Type[ArrayOwnStringKeys<Type>]
-	: Type[ArrayOwnStringKeys<Type>];
+import type {ArrayEntryKey, ArrayEntryValue} from './internal-types.js';
 
 /**
 A strongly-typed version of `Object.entries()`.

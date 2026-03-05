@@ -7,7 +7,7 @@ This is useful since `Object.fromEntries()` always returns `{[key: string]: T}`.
 
 Note: For non-const arrays the return type uses optional keys for soundness. Use `as const` tuples if you need required keys or assert at the call site, for example: `const result = objectFromEntries(entries) as Record<string, Value>`.
 
-Be aware that `Array#map()` always returns a dynamic-length array even when called on a typed-keys result like `objectKeys()`, so `objectFromEntries(objectKeys(obj).map(…))` will produce optional keys. To avoid this, assert the entries or the result type.
+Be aware that `.map()` always returns a dynamic-length array even when called on a typed-keys result like `objectKeys()`, so `objectFromEntries(objectKeys(obj).map(…))` will produce optional keys. If you need required keys there, assert the entries or the result type at the call site.
 
 @example
 ```

@@ -55,6 +55,7 @@ import {isDefined} from 'ts-extras';
 - [`objectValues`](source/object-values.ts) - A strongly-typed version of `Object.values()`.
 - [`objectEntries`](source/object-entries.ts) - A strongly-typed version of `Object.entries()`.
 - [`objectFromEntries`](source/object-from-entries.ts) - A strongly-typed version of `Object.fromEntries()`.
+- [`objectMapValues`](source/object-map-values.ts) - Map over an object's values while preserving strongly-typed keys.
 - [`objectHasOwn`](source/object-has-own.ts) - A strongly-typed version of `Object.hasOwn()`.
 - [`setHas`](source/set-has.ts) - A strongly-typed version of `Set#has()` that properly acts as a type guard.
 - [`stringSplit`](source/string-split.ts) - A strongly-typed version of `String#split()` that returns a tuple for literal strings.

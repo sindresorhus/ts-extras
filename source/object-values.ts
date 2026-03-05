@@ -1,8 +1,4 @@
-type ArrayOwnKeys<Type extends readonly unknown[]> = Exclude<keyof Type, keyof unknown[]>;
-type ArrayOwnStringKeys<Type extends readonly unknown[]> = Extract<ArrayOwnKeys<Type>, string | number>;
-type ArrayEntryValue<Type extends readonly unknown[]> = number extends Type['length']
-	? Type[number] | Type[ArrayOwnStringKeys<Type>]
-	: Type[ArrayOwnStringKeys<Type>];
+import type {ArrayEntryValue} from './internal-types.js';
 
 /**
 A strongly-typed version of `Object.values()`.
