@@ -51,3 +51,44 @@ The value union that `Object.entries()` / `Object.values()` would produce for a 
 export type ArrayEntryValue<Type extends readonly unknown[]> = number extends Type['length']
 	? Type[number] | Type[ArrayOwnStringKeys<Type>]
 	: Type[ArrayOwnStringKeys<Type>];
+
+// Shared internal type helpers for isPropertyDefined/isPropertyPresent.
+
+type HasWidenedTemplateSegment<Segment extends string> =
+	string extends Segment ? true :
+	`${number}` extends Segment ? true :
+	`${bigint}` extends Segment ? true :
+	false;
+
+type HasWidenedStringKey<Key extends string> =
+	string extends Key ? true :
+	Key extends `${infer Prefix}${infer Suffix}`
+		? HasWidenedTemplateSegment<Prefix> extends true ? true :
+			HasWidenedTemplateSegment<Suffix> extends true ? true :
+			false
+		: false;
+
+export type HasWidenedKey<Key extends PropertyKey> =
+	Key extends string
+		? HasWidenedStringKey<Key> extends true ? true :
+			Extract<Key, object> extends never ? false :
+			true
+		: Key extends number
+			? number extends Key ? true :
+				Extract<Key, object> extends never ? false :
+				true
+			: Key extends symbol
+				? symbol extends Key ? true :
+					Extract<Key, object> extends never ? false :
+					true
+				: false;
+
+export type ObjectType<Value> = unknown extends Value ? object : Extract<Value, object>;
+
+type ObjectWithoutProperty<ObjectValue extends object, Key extends PropertyKey> = {
+	[Property in keyof ObjectValue as Property extends Key ? never : Property]: ObjectValue[Property];
+};
+
+export type ObjectWithFallbackProperty<ObjectValue extends object, Key extends PropertyKey> = ObjectWithoutProperty<ObjectValue, Key> & {
+	[Property in Key]-?: unknown;
+};

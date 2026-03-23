@@ -12,6 +12,8 @@ export {assertPresent} from './assert-present.js';
 export {isDefined} from './is-defined.js';
 export {isEqualType} from './is-equal-type.js';
 export {isPresent} from './is-present.js';
+export {isPropertyDefined} from './is-property-defined.js';
+export {isPropertyPresent} from './is-property-present.js';
 export {isEmpty} from './is-empty.js';
 export {isFinite} from './is-finite.js';
 export {isInfinite} from './is-infinite.js';

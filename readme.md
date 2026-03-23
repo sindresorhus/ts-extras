@@ -31,6 +31,8 @@ import {isDefined} from 'ts-extras';
 - [`isDefined`](source/is-defined.ts) - Check whether a value is defined (not `undefined`).
 - [`isEqualType`](source/is-equal-type.ts) - Check if two types are equal at compile time.
 - [`isPresent`](source/is-present.ts) - Check whether a value is present (not `null` nor `undefined`).
+- [`isPropertyDefined`](source/is-property-defined.ts) - Check whether a specific property of a value is defined (not `undefined`).
+- [`isPropertyPresent`](source/is-property-present.ts) - Check whether a specific property of a value is present (not `null` nor `undefined`).
 - [`isEmpty`](source/is-empty.ts) - Check whether an array is empty.
 - [`isFinite`](source/is-finite.ts) - A strongly-typed version of `Number.isFinite()`.
 - [`isInfinite`](source/is-infinite.ts) - Check whether a value is infinite.
