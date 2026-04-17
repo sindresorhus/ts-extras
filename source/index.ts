@@ -8,6 +8,7 @@ export {arrayLast} from './array-last.js';
 export {asWritable} from './as-writable.js';
 export {assertDefined} from './assert-defined.js';
 export {assertError} from './assert-error.js';
+export {assertNever} from './assert-never.js';
 export {assertPresent} from './assert-present.js';
 export {isDefined} from './is-defined.js';
 export {isEqualType} from './is-equal-type.js';

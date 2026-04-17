@@ -44,6 +44,7 @@ import {isDefined} from 'ts-extras';
 - [`assertDefined`](source/assert-defined.ts) - Assert that the given value is defined, meaning it is not `undefined`.
 - [`assertPresent`](source/assert-present.ts) - Assert that the given value is present (non-nullable), meaning it is neither `null` nor `undefined`.
 - [`assertError`](source/assert-error.ts) - Assert that the given value is an `Error`.
+- [`assertNever`](source/assert-never.ts) - Assert that a code path is unreachable.
 
 **Improved builtin**
 
