@@ -24,6 +24,7 @@ import {isDefined} from 'ts-extras';
 **General**
 
 - [`asWritable`](source/as-writable.ts) - Cast the given value to be [`Writable`](https://github.com/sindresorhus/type-fest/blob/main/source/writable.d.ts).
+- [`objectUpdate`](source/object-update.ts) - Apply a type-checked partial update to an object in place.
 - [`safeCastTo`](source/safe-cast-to.ts) - Constrain a value to the given type safely.
 
 **Type guard**
@@ -54,6 +55,7 @@ import {isDefined} from 'ts-extras';
 - [`arrayFirst`](source/array-first.ts) - Return the first item of an array with stronger typing for tuples.
 - [`arrayIncludes`](source/array-includes.ts) - A strongly-typed version of `Array#includes()` that properly acts as a type guard.
 - [`arrayLast`](source/array-last.ts) - Return the last item of an array with stronger typing for tuples.
+- [`objectAssign`](source/object-assign.ts) - A strongly-typed version of `Object.assign()`.
 - [`objectKeys`](source/object-keys.ts) - A strongly-typed version of `Object.keys()`.
 - [`objectValues`](source/object-values.ts) - A strongly-typed version of `Object.values()`.
 - [`objectEntries`](source/object-entries.ts) - A strongly-typed version of `Object.entries()`.
