@@ -10,4 +10,8 @@ test('assertError()', () => {
 	assert.throws(() => {
 		assertError('x');
 	}, TypeError);
+
+	assert.throws(() => {
+		assertError('x', 'Custom message');
+	}, {message: 'Custom message'});
 });

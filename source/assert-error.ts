@@ -23,6 +23,8 @@ If the value is not an `Error`, a helpful `TypeError` will be thrown.
 
 This can be useful as any value could potentially be thrown, but in practice, it's always an `Error`. However, because of this, TypeScript makes the caught error in a try/catch statement `unknown`, which is inconvenient to deal with.
 
+@param message - Custom error message to use instead of the default.
+
 @example
 ```
 import {assertError} from 'ts-extras';
@@ -41,17 +43,18 @@ try {
 
 	throw error;
 }
+
+assertError('not an error', 'Expected an Error instance');
+//=> TypeError: Expected an Error instance
 ```
 
 @category Type guard
 */
-export function assertError(value: unknown): asserts value is Error {
+export function assertError(value: unknown, message?: string): asserts value is Error {
 	// Cross-realm safe: either real instance or has the Error brand.
 	if (value instanceof Error || toString.call(value) === '[object Error]') {
 		return;
 	}
 
-	const kind = toString.call(value);
-	const description = describeValue(value);
-	throw new TypeError(`Expected an Error, got ${kind} (${typeof value}) → ${description}`);
+	throw new TypeError(message ?? `Expected an Error, got ${toString.call(value)} (${typeof value}) → ${describeValue(value)}`);
 }

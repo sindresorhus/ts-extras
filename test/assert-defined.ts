@@ -12,6 +12,10 @@ test('assertDefined()', () => {
 		assertDefined(undefined);
 	}, TypeError);
 
+	assert.throws(() => {
+		assertDefined(undefined, 'Custom message');
+	}, {message: 'Custom message'});
+
 	const maybeDefined = 'defined' as string | undefined;
 	assertDefined(maybeDefined);
 	expectTypeOf(maybeDefined).toExtend<string>();

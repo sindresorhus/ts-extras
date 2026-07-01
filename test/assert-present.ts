@@ -12,6 +12,10 @@ test('assertPresent()', () => {
 		assertPresent(null);
 	}, TypeError);
 
+	assert.throws(() => {
+		assertPresent(null, 'Custom message');
+	}, {message: 'Custom message'});
+
 	// eslint-disable-next-line @typescript-eslint/no-restricted-types
 	const maybePresent = 'present' as string | undefined | null;
 	assertPresent(maybePresent);
