@@ -1,6 +1,6 @@
 {
 	"name": "ts-extras",
-	"version": "1.2.0",
+	"version": "1.3.0",
 	"description": "Essential utilities for TypeScript projects",
 	"license": "MIT",
 	"repository": "sindresorhus/ts-extras",
