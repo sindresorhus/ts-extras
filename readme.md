@@ -42,6 +42,7 @@ import {isDefined} from 'ts-extras';
 - [`keyIn`](source/key-in.ts) - Check if a key is in an object and narrow the key to the object's keys.
 - [`not`](source/not.ts) - Invert a type predicate function.
 - [`objectHasIn`](source/object-has-in.ts) - Check if an object has a property (including inherited) and narrow the object type.
+- [`assert`](source/assert.ts) - Assert that the given condition is truthy.
 - [`assertDefined`](source/assert-defined.ts) - Assert that the given value is defined, meaning it is not `undefined`.
 - [`assertPresent`](source/assert-present.ts) - Assert that the given value is present (non-nullable), meaning it is neither `null` nor `undefined`.
 - [`assertError`](source/assert-error.ts) - Assert that the given value is an `Error`.
