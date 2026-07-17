@@ -6,6 +6,7 @@ export {arrayJoin} from './array-join.js';
 export {arrayFirst} from './array-first.js';
 export {arrayLast} from './array-last.js';
 export {asWritable} from './as-writable.js';
+export {assert} from './assert.js';
 export {assertDefined} from './assert-defined.js';
 export {assertError} from './assert-error.js';
 export {assertNever} from './assert-never.js';
