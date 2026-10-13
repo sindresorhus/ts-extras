@@ -29,6 +29,7 @@ export {objectFromEntries} from './object-from-entries.js';
 export {objectHasIn} from './object-has-in.js';
 export {objectHasOwn} from './object-has-own.js';
 export {objectKeys} from './object-keys.js';
+export type {ObjectKeys} from './object-keys.js';
 export {objectMapValues} from './object-map-values.js';
 export {objectUpdate} from './object-update.js';
 export {objectValues} from './object-values.js';
