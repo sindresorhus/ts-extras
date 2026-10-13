@@ -5,11 +5,7 @@
 	"license": "MIT",
 	"repository": "sindresorhus/ts-extras",
 	"funding": "https://github.com/sponsors/sindresorhus",
-	"author": {
-		"name": "Sindre Sorhus",
-		"email": "sindresorhus@gmail.com",
-		"url": "https://sindresorhus.com"
-	},
+	"author": "Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com)",
 	"type": "module",
 	"exports": {
 		"types": "./distribution/index.d.ts",
@@ -17,11 +13,11 @@
 	},
 	"sideEffects": false,
 	"engines": {
-		"node": ">=20"
+		"node": ">=22"
 	},
 	"scripts": {
 		"build": "del-cli distribution && tsc",
-		"test": "node --test --import=tsx/esm test/*.ts && tsc --project test && npm run build",
+		"test": "xo && node --test --import=tsx/esm test/*.ts && tsc --project test && npm run build",
 		"prepack": "npm run build"
 	},
 	"files": [
@@ -42,21 +38,129 @@
 		"helpers"
 	],
 	"dependencies": {
-		"type-fest": "^5.0.1"
+		"type-fest": "^5.10.0"
 	},
 	"devDependencies": {
-		"@sindresorhus/tsconfig": "^8.0.1",
-		"@types/node": "^20.0.0",
-		"del-cli": "^7.0.0",
-		"expect-type": "^1.2.2",
-		"tsx": "^4.20.5",
-		"typescript": "^5.9.2",
-		"xo": "^1.2.2"
+		"@sindresorhus/tsconfig": "^8.1.0",
+		"@types/node": "^26.6.5",
+		"del-cli": "^8.0.1",
+		"expect-type": "^1.4.0",
+		"tsx": "^4.23.15",
+		"typescript": "^6.0.3",
+		"xo": "^5.0.1"
 	},
-	"xo": {
-		"rules": {
-			"@typescript-eslint/ban-ts-comment": "off",
-			"@typescript-eslint/naming-convention": "off"
+	"xo": [
+		{
+			"ignores": [
+				"Stuff/**"
+			]
+		},
+		{
+			"rules": {
+				"@typescript-eslint/ban-ts-comment": "off",
+				"@typescript-eslint/naming-convention": "off",
+				"@typescript-eslint/no-floating-promises": [
+					"error",
+					{
+						"checkThenables": true,
+						"ignoreVoid": true,
+						"ignoreIIFE": true,
+						"allowForKnownSafeCalls": [
+							{
+								"from": "package",
+								"package": "node:test",
+								"name": [
+									"test",
+									"suite",
+									"describe",
+									"it"
+								]
+							}
+						]
+					}
+				],
+				"jsdoc/check-tag-names": [
+					"error",
+					{
+						"definedTags": [
+							"note",
+							"category"
+						]
+					}
+				],
+				"@typescript-eslint/no-restricted-types": "off",
+				"jsdoc/require-param": "off",
+				"unicorn/consistent-boolean-name": "off",
+				"@typescript-eslint/no-empty-object-type": "off",
+				"jsdoc/check-param-names": "off"
+			}
+		},
+		{
+			"files": [
+				"test/**"
+			],
+			"rules": {
+				"func-name-matching": "off",
+				"func-names": "off",
+				"no-constant-condition": "off",
+				"no-sparse-arrays": "off",
+				"node-test/no-conditional-assertion": "off",
+				"node-test/no-constant-assertion": "off",
+				"node-test/no-useless-assertion": "off",
+				"node-test/require-assertion": "off",
+				"prefer-arrow-callback": "off",
+				"prefer-object-spread": "off",
+				"regexp/no-super-linear-backtracking": "off",
+				"regexp/no-super-linear-move": "off",
+				"regexp/prefer-named-capture-group": "off",
+				"@stylistic/quote-props": "off",
+				"@typescript-eslint/array-type": "off",
+				"@typescript-eslint/class-literal-property-style": "off",
+				"@typescript-eslint/consistent-indexed-object-style": "off",
+				"@typescript-eslint/consistent-type-assertions": "off",
+				"@typescript-eslint/consistent-type-definitions": "off",
+				"@typescript-eslint/dot-notation": "off",
+				"@typescript-eslint/no-base-to-string": "off",
+				"@typescript-eslint/no-confusing-void-expression": "off",
+				"@typescript-eslint/no-duplicate-type-constituents": "off",
+				"@typescript-eslint/no-empty-function": "off",
+				"@typescript-eslint/no-extraneous-class": "off",
+				"@typescript-eslint/no-inferrable-types": "off",
+				"@typescript-eslint/no-meaningless-void-operator": "off",
+				"@typescript-eslint/no-unnecessary-type-assertion": "off",
+				"@typescript-eslint/no-unnecessary-type-conversion": "off",
+				"@typescript-eslint/no-unsafe-argument": "off",
+				"@typescript-eslint/no-unsafe-assignment": "off",
+				"@typescript-eslint/no-unsafe-call": "off",
+				"@typescript-eslint/no-unsafe-function-type": "off",
+				"@typescript-eslint/no-unsafe-member-access": "off",
+				"@typescript-eslint/no-unsafe-return": "off",
+				"@typescript-eslint/no-unused-expressions": "off",
+				"@typescript-eslint/no-unused-private-class-members": "off",
+				"@typescript-eslint/no-wrapper-object-types": "off",
+				"@typescript-eslint/prefer-as-const": "off",
+				"@typescript-eslint/prefer-find": "off",
+				"@typescript-eslint/prefer-readonly": "off",
+				"@typescript-eslint/strict-boolean-expressions": "off",
+				"@typescript-eslint/strict-void-return": "off",
+				"@typescript-eslint/switch-exhaustiveness-check": "off",
+				"unicorn/consistent-class-member-order": "off",
+				"unicorn/new-for-builtins": "off",
+				"unicorn/no-array-callback-reference": "off",
+				"unicorn/no-computed-property-existence-check": "off",
+				"unicorn/no-duplicate-if-branches": "off",
+				"unicorn/no-immediate-mutation": "off",
+				"unicorn/no-uncalled-method": "off",
+				"unicorn/no-useless-coercion": "off",
+				"unicorn/prefer-array-find": "off",
+				"unicorn/prefer-early-return": "off",
+				"unicorn/prefer-iterator-to-array": "off",
+				"unicorn/prefer-minimal-ternary": "off",
+				"unicorn/prefer-native-coercion-functions": "off",
+				"unicorn/prefer-ternary": "off",
+				"unicorn/prefer-type-literal-last": "off",
+				"unicorn/prefer-unicode-code-point-escapes": "off"
+			}
 		}
-	}
+	]
 }

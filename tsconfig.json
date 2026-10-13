@@ -2,5 +2,8 @@
 	"extends": "@sindresorhus/tsconfig",
 	"include": [
 		"source"
-	]
+	],
+	"compilerOptions": {
+		"rootDir": "source"
+	}
 }

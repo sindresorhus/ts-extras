@@ -3,6 +3,7 @@
 	"include": ["."],
 	"compilerOptions": {
 		"noEmit": true,
-		"types": ["node"]
+		"types": ["node"],
+		"rootDir": ".."
 	}
 }
