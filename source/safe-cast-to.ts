@@ -5,6 +5,8 @@ Unlike `as`, this refuses incompatible casts at compile time. Use it to _narrow_
 
 @example
 ```
+import {safeCastTo} from 'ts-extras';
+
 type Foo = {
 	a: string;
 	b?: number;

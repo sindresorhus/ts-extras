@@ -40,7 +40,7 @@ test('isEqualType() - Value-level comparison', () => {
 	const number1 = 42;
 	const bool1 = true;
 
-	// Same types should have true type
+	// The arguments widen, so a string compared with a different string is still `string` versus `string`, and the same holds for the number and boolean pairs below.
 	const result1 = isEqualType(string1, string2);
 	const result2 = isEqualType(number1, 123);
 	const result3 = isEqualType(bool1, false);
