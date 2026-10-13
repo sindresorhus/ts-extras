@@ -24,7 +24,7 @@ assertDefined(notUnicorn, 'Unicorn is required');
 
 @category Type guard
 */
-export function assertDefined<T>(value: T | undefined, message?: string): asserts value is T {
+export function assertDefined<T>(value: T | undefined, message?: string): asserts value is T & ({} | null) {
 	if (!isDefined(value)) {
 		throw new TypeError(message ?? 'Expected a defined value, got `undefined`');
 	}

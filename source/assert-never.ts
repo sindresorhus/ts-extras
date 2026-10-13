@@ -1,3 +1,5 @@
+import {describeValue} from './describe-value.js';
+
 /**
 Assert that a code path is unreachable.
 
@@ -36,17 +38,4 @@ function render(status: Status): string {
 */
 export function assertNever(value: never): never {
 	throw new Error(`Unreachable: \`${describeValue(value)}\``);
-}
-
-function describeValue(value: unknown): string {
-	// Runtime misuse should still produce an Error even for values that cannot be string-coerced directly.
-	try {
-		return String(value);
-	} catch {
-		try {
-			return Object.prototype.toString.call(value);
-		} catch {
-			return '<Unprintable value>';
-		}
-	}
 }
