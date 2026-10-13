@@ -11,8 +11,12 @@ import {isDefined} from 'ts-extras';
 //=> [1, 2]
 ```
 
+@note Only `undefined` is excluded. Other falsy values, including `null`, are defined.
+
+@note An unknown value narrows to `{} | null` when defined, and to `undefined` otherwise.
+
 @category Type guard
 */
-export function isDefined<T>(value: T | undefined): value is T {
+export function isDefined<T>(value: T | undefined): value is T & ({} | null) {
 	return value !== undefined;
 }
