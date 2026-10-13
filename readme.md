@@ -25,20 +25,18 @@ import {isDefined} from 'ts-extras';
 
 - [`asWritable`](source/as-writable.ts) - Cast the given value to be [`Writable`](https://github.com/sindresorhus/type-fest/blob/main/source/writable.d.ts).
 - [`objectUpdate`](source/object-update.ts) - Apply a type-checked partial update to an object in place.
+- [`isEqualType`](source/is-equal-type.ts) - Check if two types are equal at compile time.
 - [`safeCastTo`](source/safe-cast-to.ts) - Constrain a value to the given type safely.
+- [`ObjectKeys`](source/object-keys.ts) - The keys `objectKeys()` reports for a value of the given type.
 
 **Type guard**
 
-- [`isDefined`](source/is-defined.ts) - Check whether a value is defined (not `undefined`).
-- [`isEqualType`](source/is-equal-type.ts) - Check if two types are equal at compile time.
-- [`isPresent`](source/is-present.ts) - Check whether a value is present (not `null` nor `undefined`).
-- [`isPropertyDefined`](source/is-property-defined.ts) - Check whether a specific property of a value is defined (not `undefined`).
-- [`isPropertyPresent`](source/is-property-present.ts) - Check whether a specific property of a value is present (not `null` nor `undefined`).
+- [`isDefined`](source/is-defined.ts) - Check whether a value is defined, meaning it is not `undefined`.
+- [`isPresent`](source/is-present.ts) - Check whether a value is present (non-nullable), meaning it is neither `null` nor `undefined`.
+- [`isPropertyDefined`](source/is-property-defined.ts) - Check whether a specific own property of a value is defined, meaning it is not `undefined`.
+- [`isPropertyPresent`](source/is-property-present.ts) - Check whether a specific own property of a value is present (non-nullable), meaning it is neither `null` nor `undefined`.
 - [`isEmpty`](source/is-empty.ts) - Check whether an array is empty.
-- [`isFinite`](source/is-finite.ts) - A strongly-typed version of `Number.isFinite()`.
 - [`isInfinite`](source/is-infinite.ts) - Check whether a value is infinite.
-- [`isInteger`](source/is-integer.ts) - A strongly-typed version of `Number.isInteger()`.
-- [`isSafeInteger`](source/is-safe-integer.ts) - A strongly-typed version of `Number.isSafeInteger()`.
 - [`keyIn`](source/key-in.ts) - Check if a key is in an object and narrow the key to the object's keys.
 - [`not`](source/not.ts) - Invert a type predicate function.
 - [`objectHasIn`](source/object-has-in.ts) - Check if an object has a property (including inherited) and narrow the object type.
@@ -56,15 +54,20 @@ import {isDefined} from 'ts-extras';
 - [`arrayFirst`](source/array-first.ts) - Return the first item of an array with stronger typing for tuples.
 - [`arrayIncludes`](source/array-includes.ts) - A strongly-typed version of `Array#includes()` that properly acts as a type guard.
 - [`arrayLast`](source/array-last.ts) - Return the last item of an array with stronger typing for tuples.
+- [`isFinite`](source/is-finite.ts) - A strongly-typed version of `Number.isFinite()`.
+- [`isInteger`](source/is-integer.ts) - A strongly-typed version of `Number.isInteger()`.
+- [`isSafeInteger`](source/is-safe-integer.ts) - A strongly-typed version of `Number.isSafeInteger()`.
 - [`objectAssign`](source/object-assign.ts) - A strongly-typed version of `Object.assign()`.
 - [`objectKeys`](source/object-keys.ts) - A strongly-typed version of `Object.keys()`.
 - [`objectValues`](source/object-values.ts) - A strongly-typed version of `Object.values()`.
 - [`objectEntries`](source/object-entries.ts) - A strongly-typed version of `Object.entries()`.
 - [`objectFromEntries`](source/object-from-entries.ts) - A strongly-typed version of `Object.fromEntries()`.
-- [`objectMapValues`](source/object-map-values.ts) - Map over an object's values while preserving strongly-typed keys.
-- [`objectHasOwn`](source/object-has-own.ts) - A strongly-typed version of `Object.hasOwn()`.
+- [`objectMapValues`](source/object-map-values.ts) - Map over an object's values while keeping the result's keys strongly typed.
+- [`objectHasOwn`](source/object-has-own.ts) - A strongly-typed version of `Object.hasOwn()` that narrows the object type.
 - [`setHas`](source/set-has.ts) - A strongly-typed version of `Set#has()` that properly acts as a type guard.
 - [`stringSplit`](source/string-split.ts) - A strongly-typed version of `String#split()` that returns a tuple for literal strings.
+
+`isPropertyDefined`, `isPropertyPresent`, and `not` narrow when passed directly to `.filter()`, such as `items.filter(isPropertyDefined('value'))`. In an `if`/`else`, the property guards' `else` branch assumes that a declared property is an own data property, so a value whose property comes from an accessor or the prototype can reach a branch typed `never`, and so can a value checked with a union key, such as `'a' | 'b'`. For `not`, an input member that only overlaps the guarded type can do the same.
 
 ## FAQ
 
@@ -74,39 +77,54 @@ These functions solve different problems despite all checking property existence
 
 **`keyIn`** - **Key narrowing** for union types:
 - Uses the `in` operator, checking the prototype chain
-- Narrows the *key* variable to only keys that exist in the object
+- Narrows a union of literal keys when every matching key is declared in every member of the object type
+- An optional key narrows too, but the false branch then also excludes it, even though it may be absent at runtime
+- Returns a boolean without narrowing for index signatures, keys present in only some union members, widened keys, opaque objects, and inherited names not declared in the object type
+- Key narrowing assumes that queried properties present at runtime appear in `keyof` the object's type. Extra own or custom-prototype properties hidden by a narrower type are unsupported for narrowing; the runtime check still finds them.
 - Best for: "Which of these possible keys actually exists?"
 - Guards against `__proto__` and `constructor` for security
 
 **`objectHasIn`** - **Object narrowing** with prototype chain:
 - Uses the `in` operator, checking the prototype chain
-- Narrows the *object* type to include the checked property
+- Narrows the *object* type to include the checked property, including unions such as `{a: number} | {b: string}` and nullable values such as `{a: number} | null`, like the `in` operator does
+- Returns a boolean without narrowing when an input member already satisfies the property proof without declaring the key as required, such as a widened key on a `Record` type, so both branches remain usable
 - Best for: "Can I safely access this property (including inherited)?"
 - Guards against `__proto__` and `constructor` for security
 
 **`objectHasOwn`** - **Object narrowing** for own properties:
-- Uses `Object.hasOwn()`, checking only own properties
-- Narrows the *object* type to include the checked property
+- Uses `Object.hasOwn()`, checking only own properties, and answers `false` rather than throwing for `null` and `undefined`
+- Narrows the *object* type to include the checked property, including unions and nullable values, like the `in` operator does
+- Returns a boolean without narrowing when an input member already satisfies the property proof without declaring the key as required, such as a widened key on a `Record` type, so both branches remain usable
+- Assumes a declared required property is own, so a property from the prototype, such as a class method, can reach an `else` branch typed `never`
 - Best for: "Can I safely access this own property on this object?"
 
 ```typescript
+import {keyIn, objectHasIn, objectHasOwn} from 'ts-extras';
+
 // keyIn - narrows the key (prototype chain)
+const object = {foo: 1, bar: 2};
 const key = 'foo' as 'foo' | 'bar' | 'baz';
 if (keyIn(object, key)) {
 	// `key` is now: 'foo' | 'bar' (only existing keys)
 	console.log(object[key]); // Safe
 }
 
+// Inherited names are checked at runtime, but are not guaranteed on an object with no prototype.
+const maybeInherited = 'toString' as 'toString' | 'nope';
+if (keyIn(object, maybeInherited)) {
+	// `maybeInherited` remains: 'toString' | 'nope' in both branches
+}
+
 // objectHasIn - narrows the object (prototype chain)
 const data: unknown = {foo: 1};
 if (objectHasIn(data, 'toString')) {
-	// `data` is now: unknown & {toString: unknown}
+	// `data` is now: Record<'toString', unknown>
 	console.log(data.toString); // Safe (inherited method)
 }
 
 // objectHasOwn - narrows the object (own properties only)
 if (objectHasOwn(data, 'foo')) {
-	// `data` is now: unknown & {foo: unknown}
+	// `data` is now: Record<'foo', unknown>
 	console.log(data.foo); // Safe (own property)
 }
 ```
