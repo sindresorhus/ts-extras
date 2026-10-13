@@ -27,6 +27,8 @@ const noFirst = arrayFirst(empty);
 @category Improved builtin
 */
 export function arrayFirst<const ArrayType extends readonly [unknown, ...unknown[]]>(array: ArrayType): ArrayType[0];
+// A trailing element means the length is at least one, so the first element is never absent. A rest-first tuple does not match the leading-element overload, and the general one would add an `undefined` the runtime cannot produce.
+export function arrayFirst<const ArrayType extends readonly [...unknown[], unknown]>(array: ArrayType): ArrayType[0];
 export function arrayFirst<ArrayType extends readonly unknown[]>(array: ArrayType): ArrayType[number] | undefined;
 export function arrayFirst(array: readonly unknown[]) {
 	return array[0];

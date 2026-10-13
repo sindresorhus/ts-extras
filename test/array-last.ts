@@ -53,3 +53,13 @@ test('arrayLast() with single element tuple', () => {
 	expectTypeOf(result).toEqualTypeOf<'only'>();
 	assert.equal(result, 'only');
 });
+
+test('arrayLast() with a leading element is never undefined', () => {
+	// A leading element means the length is at least one, so the last element is always there. The shape does not match the trailing-element overload, so the result must not include an `undefined` the runtime cannot produce.
+	const tuple = [1, ...[2, 3] as number[]] as [number, ...number[]];
+	const result = arrayLast(tuple);
+
+	expectTypeOf(result).toEqualTypeOf<number>();
+	assert.equal(result, 3);
+	assert.equal(arrayLast([1, 2, 3]), 3);
+});

@@ -53,3 +53,13 @@ test('arrayFirst() with single element tuple', () => {
 	expectTypeOf(result).toEqualTypeOf<'only'>();
 	assert.equal(result, 'only');
 });
+
+test('arrayFirst() with a trailing element is never undefined', () => {
+	// A trailing element means the length is at least one, so the first element is always there. A rest-first tuple does not match the leading-element overload, so the result must not include an `undefined` the runtime cannot produce.
+	const tuple: [...number[], number] = [2, 1];
+	const result = arrayFirst(tuple);
+
+	expectTypeOf(result).toEqualTypeOf<number>();
+	assert.equal(result, 2);
+	assert.equal(arrayFirst(['a', 'b']), 'a');
+});
