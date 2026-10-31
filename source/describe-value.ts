@@ -1,9 +1,22 @@
 // A description is one line in a log, not the value itself, so it is bounded at a thousand characters and an ellipsis marks where it was cut. Nothing else about the value is bounded: the message has to stay readable, and a megabyte of it is not.
 const maximumLength = 1000;
 
-// `JSON.stringify()` writes a non-finite number as `null` and throws on a bigint, so both are rendered here as their own text, quoted. A message that names a value the caller never passed is worse than one that is slightly less canonical, and a throw would lose the contents of the whole object.
+// `JSON.stringify()` throws on a bigint, writes a non-finite number as `null`, and writes `undefined`, a function, or a symbol as `null` in an array and drops it from an object, so all of them are rendered here as their own text, quoted, and a function by its name. A message that names a value the caller never passed, or hides one that was, is worse than one that is slightly less canonical, and a throw would lose the contents of the whole object.
 function renderUnserializable(_key: string, value: unknown): unknown {
-	return typeof value === 'bigint' || (typeof value === 'number' && !Number.isFinite(value)) ? String(value) : value;
+	const isUnserializable = value === undefined
+		|| typeof value === 'bigint'
+		|| typeof value === 'function'
+		|| typeof value === 'symbol'
+		|| (typeof value === 'number' && !Number.isFinite(value));
+
+	return isUnserializable ? primitiveOrFunctionText(value) : value;
+}
+
+// A function's source text can fill the whole message and says little about which value it was, so a function is named the way `util.inspect()` names a plain function. Reading `name` can throw, such as on a revoked proxy, so every caller must catch.
+function primitiveOrFunctionText(value: unknown): string {
+	return typeof value === 'function'
+		? (value.name === '' ? '[Function (anonymous)]' : `[Function: ${value.name}]`)
+		: String(value);
 }
 
 /**
@@ -21,7 +34,7 @@ function describe(value: unknown): string {
 		return JSON.stringify(value);
 	}
 
-	// Any other primitive reads best through `String()`: a symbol works at all (a template literal throws on one), and `NaN` and the infinities keep their own text, which `JSON.stringify()` maps to `null`.
+	// Any other primitive reads best through `String()`: a symbol works at all (a template literal throws on one), and `NaN` and the infinities keep their own text, which `JSON.stringify()` maps to `null`. A function also goes this way, and is named instead of shown as its source text.
 	if (value === null || typeof value !== 'object') {
 		return safeString(value);
 	}
@@ -85,7 +98,7 @@ function shorten(text: string): string {
 // `String()` succeeds on a self-referential array, since `Array#join` detects the cycle and returns an empty string, and an empty description names nothing. The brand is better than nothing.
 function safeString(value: unknown): string {
 	try {
-		const text = String(value);
+		const text = primitiveOrFunctionText(value);
 		if (text !== '') {
 			return text;
 		}

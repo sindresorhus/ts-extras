@@ -149,6 +149,21 @@ test('assertNever() describes whatever it is handed', () => {
 		assertNever(new Date(NaN) as never);
 	}, {message: 'Unreachable: `Invalid Date`'});
 
+	// Regression: `JSON.stringify()` writes `undefined`, a function, and a symbol as `null` in an array and drops them from an object, which names a value that was never passed, or hides one that was. They are rendered as their own text, quoted, like a non-finite number.
+	// A function is named rather than shown as its source text, which can fill the whole message.
+	const namedFunction = () => 1;
+	for (const [value, description] of [
+		[[undefined], '["undefined"]'],
+		[[Symbol('s')], '["Symbol(s)"]'],
+		[[namedFunction], '["[Function: namedFunction]"]'],
+		[[() => 1], '["[Function (anonymous)]"]'],
+		[{a: undefined, method() {}}, '{"a":"undefined","method":"[Function: method]"}'],
+	] as const) {
+		assert.throws(() => {
+			assertNever(value as never);
+		}, {message: `Unreachable: \`${description}\``});
+	}
+
 	// A value whose text cannot be read keeps the `{}` it already serialized to.
 	for (const value of [
 		new (class {

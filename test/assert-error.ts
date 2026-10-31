@@ -50,15 +50,10 @@ test('assertError() describes values that JSON.stringify() cannot serialize', ()
 	}, {message: 'Expected an Error, got [object Symbol] (symbol) → Symbol(x)'});
 
 	const namedFunction = () => {};
-	// The exact source text depends on how the file is transpiled, so only check that the function is described as a function rather than reported as `undefined`.
+	// A function is described by its name, not its source text, and not reported as `undefined`.
 	assert.throws(() => {
 		assertError(namedFunction);
-	}, (error: unknown) => {
-		assert.ok(error instanceof TypeError);
-		assert.match(error.message, /Expected an Error, got \[object Function\] \(function\) → /v);
-		assert.doesNotMatch(error.message, /→ undefined$/v);
-		return true;
-	});
+	}, {name: 'TypeError', message: 'Expected an Error, got [object Function] (function) → [Function: namedFunction]'});
 
 	// `undefined` itself reads as `undefined`, because it is stringified.
 	assert.throws(() => {
