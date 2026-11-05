@@ -4,13 +4,32 @@ import {assignWithoutOwnProto} from './internal-proto.js';
 import type {CanonicalNumericString} from './internal-types.js';
 
 // Source keys that would set a required target property to `undefined`: keys whose source value admits `undefined` while the writable target property does not. `WritableValue` also recognizes numeric keys written as strings. `UpdatableShape` maps these to `never` so the update is rejected, just as TypeScript forbids assigning `undefined` to a required property.
+// Each side is asked whether its property can hold an explicit `undefined`, not whether reading it can give one. Reading an optional property always can, but only the written value matters here, and the answer follows `exactOptionalPropertyTypes`: without it every optional property can hold `undefined`, and with it only one that declares `| undefined` can. So `Partial<User>` is rejected without the setting and accepted with it, and a target property the source names directly accepts `undefined` only where TypeScript itself would.
 type UnsafeUndefinedKeys<Target extends object, Source extends object> = {
-	[Key in keyof Source]-?: undefined extends Source[Key]
-		? undefined extends WritableValue<Target, Key>
+	[Key in keyof Source]-?: Record<Key, undefined> extends Pick<Source, Key>
+		? TargetAcceptsUndefined<Target, Key> extends true
 			? never
 			: Key
 		: never;
 }[keyof Source];
+
+// A key the target declares, under this spelling or the other numeric one, is checked on that property, so its optional modifier counts. A key the target only covers through an index signature has no property of its own to ask, so its value type decides.
+// The string spelling of a numeric key cannot match `keyof` when the target has a numeric index signature, since that key set is the broad `number`, and `MatchedWritableKey` cannot match it either. Converting the spelling first lets `Pick` read the declared property, and the signature only when the target declares no such key, so both spellings get the same verdict.
+type DeclaredTargetKey<Target extends object, Key> = Key extends keyof Target
+	? Key
+	: Key extends CanonicalNumericString<Key & string>
+		? Key extends `${infer NumericKey extends number}`
+			? NumericKey extends keyof Target ? NumericKey : MatchedWritableKey<Target, Key>
+			: MatchedWritableKey<Target, Key>
+		: MatchedWritableKey<Target, Key>;
+
+type TargetAcceptsUndefined<
+	Target extends object,
+	Key,
+	DeclaredKey = DeclaredTargetKey<Target, Key>,
+> = [DeclaredKey] extends [never]
+	? undefined extends WritableValue<Target, Key> ? true : false
+	: Record<DeclaredKey & keyof Target, undefined> extends Pick<Target, DeclaredKey & keyof Target> ? true : false;
 
 // The shape a source may have: only the writable properties of the target, each typed as the target's own value type. `readonly` properties map to `never` so the compiler rejects updating them, just as it rejects a direct `target.id = …` assignment. Union targets are rejected outright; narrow to a specific variant first.
 // A numeric-literal key and its string form are the same runtime key, so the string forms are compared. Comparing the types directly would reject a valid update: `{0: true}` against a `Record<string, …>` target, because `0` does not extend `string`.
@@ -80,7 +99,7 @@ Union-typed targets are intentionally unsupported. Narrow to a specific union va
 
 The source type must expose at least one known key. Broad `object`/`{}` sources and empty no-op updates are unsupported because their keys and values cannot be checked.
 
-@note A source that may write `undefined` to a required property is rejected. So `Partial<Pick<User, 'name'>>` does not compile when `name` is required, but `Pick<User, 'name'>` does.
+@note A source that may write `undefined` to a required property is rejected. Without `exactOptionalPropertyTypes`, an optional property may hold `undefined`, so `Partial<Pick<User, 'name'>>` does not compile when `name` is required, but `Pick<User, 'name'>` does. With the setting, only a property that declares `| undefined` may hold it, so both compile, and writing `undefined` to an optional target property is rejected, as TypeScript itself does.
 
 @note A source with an index signature, such as `Record<string, number>`, is best-effort, since it may overwrite a `readonly` property.
 

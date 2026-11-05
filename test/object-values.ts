@@ -2,7 +2,12 @@ import {test} from 'node:test';
 import {Buffer} from 'node:buffer';
 import assert from 'node:assert/strict';
 import {expectTypeOf} from 'expect-type';
-import {objectKeys, objectValues} from '../source/index.js';
+import {
+	objectEntries,
+	objectKeys,
+	objectValues,
+	type ObjectKeys,
+} from '../source/index.js';
 
 interface TestInterface {
 	e: string;
@@ -182,6 +187,25 @@ test('objectValues() - a plain object is not mistaken for an ArrayBufferView', (
 	expectTypeOf(values).toEqualTypeOf<Array<ArrayBuffer | number>>();
 	assert.deepEqual(objectKeys(header), ['buffer', 'byteLength', 'byteOffset']);
 	assert.equal(values.length, 3);
+});
+
+test('object utilities preserve named fields on array-like buffer descriptors', () => {
+	type Header = {buffer: ArrayBuffer; byteLength: number; byteOffset: number; length: number; [index: number]: number};
+	type HeaderKey = `${number}` | 'buffer' | 'byteLength' | 'byteOffset' | 'length';
+	const header: Header = {
+		0: 42, buffer: new ArrayBuffer(8), byteLength: 8, byteOffset: 0, length: 1,
+	};
+	const values = objectValues(header);
+	const keys = objectKeys(header);
+	const entries = objectEntries(header);
+
+	expectTypeOf(values).toEqualTypeOf<Array<ArrayBuffer | number>>();
+	expectTypeOf(keys).toEqualTypeOf<HeaderKey[]>();
+	expectTypeOf(entries).toEqualTypeOf<Array<[HeaderKey, ArrayBuffer | number]>>();
+	expectTypeOf<ObjectKeys<Header>>().toEqualTypeOf<HeaderKey>();
+	assert.deepEqual(values, [42, header.buffer, 8, 0, 1]);
+	assert.deepEqual(keys, ['0', 'buffer', 'byteLength', 'byteOffset', 'length']);
+	assert.deepEqual(entries, Object.entries(header));
 });
 
 test('objectValues() keeps the value types of a union', () => {

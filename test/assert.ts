@@ -71,3 +71,36 @@ test('assert() narrows whatever it is given', () => {
 	assertCondition(object);
 	expectTypeOf(object).toEqualTypeOf<{a: number}>();
 });
+
+test('assert() calls a message function only when the assertion fails', () => {
+	let calls = 0;
+	const message = () => {
+		calls++;
+		return 'Lazy message';
+	};
+
+	assertCondition(true, message);
+	assert.equal(calls, 0);
+
+	assert.throws(() => {
+		assertCondition(false, message);
+	}, {name: 'Error', message: 'Lazy message'});
+	assert.equal(calls, 1);
+
+	// An empty returned message is a message, not a reason to fall back.
+	assert.throws(() => {
+		assertCondition(false, () => '');
+	}, {message: ''});
+
+	// A message function that throws lets its own error through, so the failure is not hidden.
+	assert.throws(() => {
+		assertCondition(false, () => {
+			throw new TypeError('broken message');
+		});
+	}, {name: 'TypeError', message: 'broken message'});
+
+	// It narrows the same way.
+	const value = 'unicorn' as string | undefined;
+	assertCondition(value, () => 'Expected a value');
+	expectTypeOf(value).toEqualTypeOf<string>();
+});

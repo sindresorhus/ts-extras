@@ -1,11 +1,13 @@
 import type {
 	IsAny,
 	IsLiteral,
+	IsStringLiteral,
 	IsTuple,
 	IsUnion,
 	OmitIndexSignature,
 	ReadonlyKeysOf,
 	RequiredKeysOf,
+	TypedArray,
 } from 'type-fest';
 
 // Shared internal type helpers for Object.entries/values/keys-style utilities.
@@ -44,8 +46,8 @@ Like `ArrayOwnKeys` but narrowed to `string | number` (excludes symbols).
 */
 type ArrayOwnStringKeys<Type extends readonly unknown[]> = Extract<ArrayOwnKeys<Type>, string | number>;
 
-// An `ArrayBufferView` that also stores its elements as indexed own properties, which is a typed array or `Buffer`. The extra `ArrayLike` requirement is what separates them from a plain object that happens to have `buffer`, `byteLength` and `byteOffset`, and from a `DataView`, which is an `ArrayBufferView` but has no indices. Both of those keep the conservative object typing instead.
-export type IndexedCollection = ArrayBufferView & ArrayLike<unknown>;
+// A typed array or `Buffer`, recognized by its full typed-array type. An `ArrayBufferView` with `ArrayLike` properties can also be an ordinary object with enumerable buffer metadata, so that shape alone cannot take the indexed path. Those objects and `DataView` keep the conservative object typing instead.
+export type IndexedCollection = TypedArray;
 
 /**
 The element type of an indexed collection, such as a typed array or `Buffer`. A view that is not indexable still holds numbers or bigints, since only a `DataView` is excluded from the paths that reach here, and it has no elements to map.
@@ -234,3 +236,10 @@ export type BlocksNarrowing<Member, Key extends PropertyKey, MemberProof> = Memb
 		// A widened key only blocks a member with an explicit index signature for it. A type literal also satisfies the proof, through an implicit index signature, but TypeScript narrows with the subtype relation, which ignores implicit signatures, so its false branch stays usable and it can narrow.
 		: [Key] extends [keyof Member] ? true : false
 	: false;
+
+// A search string that names one exact string, for the string guards. A wide string, a template such as `` `on${string}` ``, or a union names a set, and the runtime checks only the one value it is given, so a false result proves nothing about the other members, and the `else` branch would drop them. Branded literals are excluded because interpolating a brand into a template literal does not match the corresponding unbranded strings.
+export type SingleStringLiteral<Type extends string> = IsUnion<Type> extends true
+	? never
+	: [Extract<Type, object>] extends [never]
+		? IsStringLiteral<Type> extends true ? Type : never
+		: never;

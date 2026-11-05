@@ -1,0 +1,9 @@
+{
+	"extends": "../tsconfig.json",
+	"include": ["."],
+	"exclude": [],
+	"compilerOptions": {
+		// The parent turns this off to test what most users see. The files here pin behavior that only exists with it on. They are type-only, so `node --test` does not run them.
+		"exactOptionalPropertyTypes": true
+	}
+}

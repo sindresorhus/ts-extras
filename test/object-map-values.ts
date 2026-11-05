@@ -715,6 +715,9 @@ test('objectMapValues() - optional tuple preserves trailing optional element', (
 	const expectedMapped: [string, string?] = mapped;
 	const expectedLength: 1 | 2 = mapped.length;
 
+	// A present slot holds the callback's result, so it is never `undefined`. The shorter member covers the absent slot.
+	expectTypeOf(mapped).toEqualTypeOf<[string] | [string, string]>();
+
 	void expectedMapped;
 	void expectedLength;
 	assert.deepEqual(mapped, ['1', '2']);
@@ -1203,7 +1206,7 @@ test('objectMapValues() follows Object.entries for what it visits', () => {
 });
 
 test('objectMapValues() - a plain object with the view properties is not a typed array', () => {
-	// `ArrayBufferView` is just `{buffer, byteLength, byteOffset}`, so any object with those three matches it. Such an object must not take the indexed path, where the callback is promised a number and is handed an `ArrayBuffer`. The `ArrayLike` half of `IndexedCollection` is what separates a real view, which stores its elements as indexed own properties, from a look-alike.
+	// `ArrayBufferView` is just `{buffer, byteLength, byteOffset}`, so any object with those three matches it. Such an object must not take the indexed path, where the callback is promised a number and is handed an `ArrayBuffer`. The full typed-array type required by `IndexedCollection` separates a real view from an ordinary object with buffer metadata.
 	type Header = {buffer: ArrayBuffer; byteLength: number; byteOffset: number};
 	const header: Header = {buffer: new ArrayBuffer(8), byteLength: 8, byteOffset: 0};
 

@@ -36,6 +36,9 @@ import {isDefined} from 'ts-extras';
 - [`isPropertyDefined`](source/is-property-defined.ts) - Check whether a specific own property of a value is defined, meaning it is not `undefined`.
 - [`isPropertyPresent`](source/is-property-present.ts) - Check whether a specific own property of a value is present (non-nullable), meaning it is neither `null` nor `undefined`.
 - [`isEmpty`](source/is-empty.ts) - Check whether an array is empty.
+- [`isNonEmpty`](source/is-non-empty.ts) - Check whether an array has at least one element.
+- [`hasAtLeast`](source/has-at-least.ts) - Check whether an array has at least the given number of elements.
+- [`isTruthy`](source/is-truthy.ts) - Check whether a value is truthy. Use it as a type guard in `.filter()`.
 - [`isInfinite`](source/is-infinite.ts) - Check whether a value is infinite.
 - [`keyIn`](source/key-in.ts) - Check if a key is in an object and narrow the key to the object's keys.
 - [`not`](source/not.ts) - Invert a type predicate function.
@@ -53,7 +56,10 @@ import {isDefined} from 'ts-extras';
 - [`arrayJoin`](source/array-join.ts) - A strongly-typed version of `Array#join()` that preserves literal string types.
 - [`arrayFirst`](source/array-first.ts) - Return the first item of an array with stronger typing for tuples.
 - [`arrayIncludes`](source/array-includes.ts) - A strongly-typed version of `Array#includes()` that properly acts as a type guard.
+- [`arrayIndexOf`](source/array-index-of.ts) - A strongly-typed version of `Array#indexOf()` that accepts an item wider than the array's element type.
+- [`arrayIsArray`](source/array-is-array.ts) - A strongly-typed version of `Array.isArray()`.
 - [`arrayLast`](source/array-last.ts) - Return the last item of an array with stronger typing for tuples.
+- [`arrayLastIndexOf`](source/array-last-index-of.ts) - A strongly-typed version of `Array#lastIndexOf()` that accepts an item wider than the array's element type.
 - [`isFinite`](source/is-finite.ts) - A strongly-typed version of `Number.isFinite()`.
 - [`isInteger`](source/is-integer.ts) - A strongly-typed version of `Number.isInteger()`.
 - [`isSafeInteger`](source/is-safe-integer.ts) - A strongly-typed version of `Number.isSafeInteger()`.
@@ -64,8 +70,11 @@ import {isDefined} from 'ts-extras';
 - [`objectFromEntries`](source/object-from-entries.ts) - A strongly-typed version of `Object.fromEntries()`.
 - [`objectMapValues`](source/object-map-values.ts) - Map over an object's values while keeping the result's keys strongly typed.
 - [`objectHasOwn`](source/object-has-own.ts) - A strongly-typed version of `Object.hasOwn()` that narrows the object type.
+- [`mapHas`](source/map-has.ts) - A strongly-typed version of `Map#has()` that properly acts as a type guard.
 - [`setHas`](source/set-has.ts) - A strongly-typed version of `Set#has()` that properly acts as a type guard.
 - [`stringSplit`](source/string-split.ts) - A strongly-typed version of `String#split()` that returns a tuple for literal strings.
+- [`stringStartsWith`](source/string-starts-with.ts) - A strongly-typed version of `String#startsWith()` that narrows the string to a template literal type.
+- [`stringEndsWith`](source/string-ends-with.ts) - A strongly-typed version of `String#endsWith()` that narrows the string to a template literal type.
 
 `isPropertyDefined`, `isPropertyPresent`, and `not` narrow when passed directly to `.filter()`, such as `items.filter(isPropertyDefined('value'))`. In an `if`/`else`, the property guards' `else` branch assumes that a declared property is an own data property, so a value whose property comes from an accessor or the prototype can reach a branch typed `never`, and so can a value checked with a union key, such as `'a' | 'b'`. For `not`, an input member that only overlaps the guarded type can do the same.
 

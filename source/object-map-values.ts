@@ -31,10 +31,8 @@ type TupleExtraKeys<Type extends readonly unknown[]> = number extends Type['leng
 	: Extract<Exclude<ArrayOwnKeys<Type>, FixedTupleIndexKeys<Type>>, keyof Type>;
 // Numeric tuple extra keys are the explicit widening boundary for this API. Once tuple extras look like array indices, we stop promising tuple shape and fall back to array results.
 type NumericTupleExtraKeys<Type extends readonly unknown[]> = Extract<TupleExtraKeys<Type>, number | `${number}`>;
-type MappedPlainTupleElement<Type extends readonly unknown[], Key extends keyof Type, NewValue> = number extends Extract<Key, number>
-	? NewValue
-	: {} extends Pick<Type, Key> ? NewValue | undefined : NewValue;
-type MappedPlainTupleValues<Type extends readonly unknown[], NewValue> = {-readonly [Key in keyof Type]: MappedPlainTupleElement<Type, Key, NewValue>};
+// A slot that is present holds what the callback returned, so it is never `undefined` on its own account. A slot that may be absent is described by the tuple's shape instead, such as a shorter member of `MappedTupleIntersectionElements`, so adding `| undefined` to the slot would only claim an explicit `undefined` that `exactOptionalPropertyTypes` rules out.
+type MappedPlainTupleValues<Type extends readonly unknown[], NewValue> = {-readonly [Key in keyof Type]: NewValue};
 type NumericLiteralKeys<Type extends readonly unknown[]> = keyof {
 	[Key in Extract<keyof MappedPlainTupleValues<Type, never>, number> as number extends Key ? never : Key]: unknown;
 };
@@ -43,11 +41,10 @@ type VariadicTupleExtraKeys<Type extends readonly unknown[]> = Extract<
 	Exclude<keyof Type, VariadicTupleTupleKeys<Type> | keyof unknown[] | 'length'> | Exclude<ArrayOwnKeys<Type>, VariadicTupleTupleKeys<Type>>,
 	keyof Type
 >;
-type MappedTupleElement<Type extends readonly unknown[], Index extends number, NewValue> = {} extends Pick<Type, Index> ? NewValue | undefined : NewValue;
 type MappedTupleIntersectionElements<Type extends readonly unknown[], NewValue, Mapped extends unknown[] = []> = HasTupleIndex<Type, Mapped['length']> extends true
 	? {} extends Pick<Type, Mapped['length']>
-		? Mapped | MappedTupleIntersectionElements<Type, NewValue, [...Mapped, MappedTupleElement<Type, Mapped['length'], NewValue>]>
-		: MappedTupleIntersectionElements<Type, NewValue, [...Mapped, MappedTupleElement<Type, Mapped['length'], NewValue>]>
+		? Mapped | MappedTupleIntersectionElements<Type, NewValue, [...Mapped, NewValue]>
+		: MappedTupleIntersectionElements<Type, NewValue, [...Mapped, NewValue]>
 	: Mapped;
 
 // Intersecting a tuple with an object that re-declares one of its own element keys, as in `[1, 2] & {0: number}`, stops TypeScript from treating the mapped result as a tuple, so it comes out as a plain object with a numeric index and a mistyped `length`. Widen to an array, which is what a numeric extra key already produces.
@@ -77,7 +74,7 @@ type MappedArrayValues<Type extends readonly unknown[], NewValue> = IsTuple<Type
 	? MappedTupleValues<Type, NewValue>
 	: NewValue[] & MappedArrayOwnValues<Type, NewValue>;
 type IndexedCollectionMappedValues<NewValue> = Partial<Record<number, NewValue>>;
-// `ArrayBufferView` is only `{buffer, byteLength, byteOffset}`, so a plain object with those three matches it, and the runtime hands its callback an `ArrayBuffer`, not a number. A real view stores its elements as indexed own properties, which is the `ArrayLike` half of `IndexedCollection`, and that is what separates it from a look-alike. A value typed as the `ArrayBufferView` interface itself is still a view of some kind, so it keeps the indexed path too.
+// `ArrayBufferView` is only `{buffer, byteLength, byteOffset}`, so a plain object with those three matches it, and the runtime hands its callback an `ArrayBuffer`, not a number. `IndexedCollection` requires the full typed-array type to separate a real view from an ordinary array-like object with buffer metadata. A value typed as the `ArrayBufferView` interface itself is still a view of some kind, so it keeps the indexed path too.
 type IsTypedArrayOrBuffer<Type extends object> = Type extends readonly unknown[]
 	? false
 	: Type extends IndexedCollection
