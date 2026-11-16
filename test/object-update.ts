@@ -45,12 +45,63 @@ test('objectUpdate() rejects unknown keys from a pre-typed variable', () => {
 	objectUpdate(user, patch);
 });
 
-test('objectUpdate() rejects unsafe partial variables for required keys', () => {
+test('objectUpdate() rejects a pre-typed source that may write `undefined` to a required key', () => {
 	const user: User = {name: 'Sindre', age: 41};
-	const patch: Partial<User> = {age: undefined};
+	const patch: {age?: number | undefined} = {age: undefined};
 
-	// @ts-expect-error - `Partial<User>` may set required keys to `undefined` when `exactOptionalPropertyTypes` is off
+	// @ts-expect-error - `age` may hold `undefined`, which the required target property does not allow.
 	objectUpdate(user, patch);
+});
+
+test('objectUpdate() checks writing `undefined` against whether each property declares it', () => {
+	// An optional property can hold `undefined` only when it declares `| undefined`, so the check for writing `undefined` follows that, as TypeScript itself does.
+	if (false) {
+		const user = {} as User;
+
+		// A `Partial` over required keys cannot hold `undefined`, so it is a safe update.
+		const partialUser = {} as Partial<User>;
+		objectUpdate(user, partialUser);
+
+		// One that declares `| undefined` accepts it.
+		const explicitTarget = {} as {a?: number | undefined};
+		objectUpdate(explicitTarget, {a: undefined});
+
+		// A required target property that declares `| undefined` accepts an explicit undefined, from a literal or a pre-typed source.
+		const requiredUndefinedTarget = {} as {a: number | undefined};
+		const explicitSource = {} as {a?: number | undefined};
+		objectUpdate(requiredUndefinedTarget, explicitSource);
+		objectUpdate(requiredUndefinedTarget, {a: undefined});
+
+		// The same through the other spelling of a numeric key.
+		const numericTarget = {} as {0?: number};
+		// @ts-expect-error - `0` cannot hold `undefined`.
+		objectUpdate(numericTarget, {'0': undefined});
+
+		const stringTarget = {} as {'0'?: number};
+		// @ts-expect-error - `'0'` cannot hold `undefined`.
+		objectUpdate(stringTarget, {0: undefined});
+
+		const explicitNumericTarget = {} as {0?: number | undefined};
+		objectUpdate(explicitNumericTarget, {'0': undefined});
+
+		// Beside a numeric index signature, the string spelling is still checked on the declared property, not on the signature's wider value type.
+		const mixedTarget = {} as {[key: number]: number | undefined; 0?: number};
+		// @ts-expect-error - `0` cannot hold `undefined`, even though the index signature's value can.
+		objectUpdate(mixedTarget, {'0': undefined});
+
+		const mixedStrictTarget = {} as {[key: number]: number; 0?: number};
+		// @ts-expect-error - `0` cannot hold `undefined`.
+		objectUpdate(mixedStrictTarget, {'0': undefined});
+
+		// One that declares `| undefined` accepts it, even beside an index signature.
+		const mixedExplicitTarget = {} as {[key: number]: number | undefined; 0?: number | undefined};
+		objectUpdate(mixedExplicitTarget, {'0': undefined});
+
+		// A record whose values cannot be `undefined` rejects it.
+		const recordTarget = {} as Record<string, number>;
+		// @ts-expect-error - the index signature's value cannot be `undefined`.
+		objectUpdate(recordTarget, {a: undefined});
+	}
 });
 
 test('objectUpdate() rejects broad object patch variables', () => {
@@ -77,7 +128,7 @@ test('objectUpdate() rejects readonly properties', () => {
 });
 
 test('objectUpdate() works with optional keys', () => {
-	const config: {timeout?: number; retries: number} = {retries: 3};
+	const config: {timeout?: number | undefined; retries: number} = {retries: 3};
 
 	// An optional key may be set to `undefined` or omitted entirely
 	objectUpdate(config, {timeout: undefined});
@@ -308,7 +359,7 @@ test('objectUpdate() accepts exactly what a direct assignment accepts', () => {
 	const optional: {a?: number; b: string} = {b: 'x'};
 	objectUpdate(optional, {b: 'y'});
 	objectUpdate(optional, {a: 2});
-	// Plain TypeScript accepts this too, since `exactOptionalPropertyTypes` is off.
+	// @ts-expect-error - `a` cannot hold `undefined`, and plain TypeScript rejects it too.
 	objectUpdate(optional, {a: undefined});
 
 	const recordString: Record<string, number> = {a: 1};
@@ -691,8 +742,8 @@ test('objectUpdate() checks a readonly symbol key', () => {
 	assert.equal(writable[key], 2);
 });
 
-test('objectUpdate() builds an update from a Pick, not from a Partial', () => {
-	// A `Partial` says a required target property might hold `undefined`, and the update really could write one, so it is rejected. A `Pick` keeps the target's own optionality, which is the shape an update is built with. The `@note` in the source says so.
+test('objectUpdate() accepts a Pick or a Partial', () => {
+	// An optional property cannot hold `undefined` unless it declares it, so a `Partial` over a required key cannot write one, and is accepted like a `Pick`. A source that declares `| undefined` for a required key is rejected, which an earlier test pins. The `@note` in the source says so.
 	interface Account {
 		readonly id: number;
 		name: string;
@@ -710,12 +761,10 @@ test('objectUpdate() builds an update from a Pick, not from a Partial', () => {
 	objectUpdate(user, picked);
 	assert.equal(user.name, 'Grace');
 
-	// A `Partial` over a required key is not, because it admits `undefined` for it.
+	// A `Partial` over a required key is fine too, because an optional property cannot hold `undefined` unless it declares it.
 	const partial: Partial<Pick<Account, 'name'>> = {name: 'Alan'};
-	if (false) {
-		// @ts-expect-error - `name` may hold `undefined`, which the target does not allow.
-		objectUpdate(user, partial);
-	}
+	objectUpdate(user, partial);
+	assert.equal(user.name, 'Alan');
 
 	// A `Partial` over only optional keys is fine.
 	const optionalOnly: Partial<Pick<Account, 'email'>> = {email: 'a@b.c'};
@@ -725,7 +774,7 @@ test('objectUpdate() builds an update from a Pick, not from a Partial', () => {
 
 test('objectUpdate() rejects undefined through a numeric key alias', () => {
 	const target: {0: string} = {0: 'safe'};
-	const patch: {'0'?: string} = {'0': undefined};
+	const patch: {'0'?: string | undefined} = {'0': undefined};
 
 	if (false) {
 		// @ts-expect-error - the string spelling still names the required numeric property.
@@ -766,7 +815,7 @@ test('objectUpdate() rejects an optional undefined-only numeric alias for a requ
 	const patch: {'0'?: undefined} = {'0': undefined};
 
 	if (false) {
-		// @ts-expect-error - Optional never admits undefined, so the unsafe alias must be rejected explicitly.
+		// @ts-expect-error - `'0'` can only hold `undefined`, and the string spelling names the required numeric property `0`, which does not allow it.
 		objectUpdate(target, patch);
 	}
 

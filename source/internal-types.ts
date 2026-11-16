@@ -164,7 +164,7 @@ export type OwnEnumerableKeys<Type extends object> = Type extends Function ? Fun
 
 // `keyof` a union is the intersection of its members' keys, so the values are gathered one member at a time. Indexing the whole union with that key set gives `unknown`.
 // An empty key set answers `never` explicitly, because indexing a type with it is not `never`: for a type whose only keys are symbols, it gives the symbol index signature's value type, which `Object.values()` never returns.
-// Boundary: values are read through `PresentValues`, so an optional property does not add the `undefined` its `?` implies. `Object.values()` skips an absent key, so that `undefined` is never returned, and keeping it breaks the common `objectValues(partialRecord).reduce((sum, n) => sum + n, 0)`, which v1.3.0 accepted. With `exactOptionalPropertyTypes`, an explicit `| undefined` is kept, since the property can then really hold `undefined`. Without it, TypeScript cannot tell `a?: string` from `a?: string | undefined`, so an explicit `undefined` value is not described. Do not read through `Type` directly to fix that.
+// Boundary: values are read through `PresentValues`, so an optional property does not add the `undefined` its `?` implies. `Object.values()` skips an absent key, so that `undefined` is never returned, and keeping it breaks the common `objectValues(partialRecord).reduce((sum, n) => sum + n, 0)`, which v1.3.0 accepted. An explicit `| undefined` is kept, since the property can then really hold `undefined`. Do not read through `Type` directly.
 export type OwnEnumerableValues<Type> = Type extends readonly unknown[] | IndexedCollection
 	? ArrayEntryValue<Type>
 	: Type extends object

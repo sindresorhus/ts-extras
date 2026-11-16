@@ -202,12 +202,12 @@ test('objectHasOwn() keeps the value type of a key the value already declares', 
 
 test('presence guards keep optional property inputs usable when the key is absent', () => {
 	for (const guard of [objectHasOwn, objectHasIn]) {
-		function inspect(value: {key?: number; label: string}) {
+		function inspect(value: {key?: number | undefined; label: string}) {
 			if (guard(value, 'key')) {
 				return `present: ${value.label}`;
 			}
 
-			expectTypeOf(value).toEqualTypeOf<{key?: number; label: string}>();
+			expectTypeOf(value).toEqualTypeOf<{key?: number | undefined; label: string}>();
 			return `missing: ${value.label}`;
 		}
 

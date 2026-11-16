@@ -115,7 +115,7 @@ test('arrayJoin() keeps a template literal for a widened number', () => {
 });
 
 test('arrayJoin() does not promise a joined string an optional element cannot produce', () => {
-	// A tuple with an optional element has more than one length, so the runtime joins only the elements that are there: `['a']` joins to `'a'`, which the promised union does not contain. An explicit `undefined` element is different, and still exact, because the join puts an empty string where it is.
+	// A tuple with an optional element has more than one length, so the runtime joins only the elements that are there: `['a']` joins to `'a'`, and the result is a plain `string`. An explicit `undefined` element is different, and still exact, because the join puts an empty string where it is.
 	const optional: readonly ['a', 'b'?] = ['a'];
 	expectTypeOf(arrayJoin(optional, '-')).toEqualTypeOf<string>();
 	assert.equal(arrayJoin(optional, '-'), 'a');

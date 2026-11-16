@@ -1053,7 +1053,7 @@ for (const {name, guard} of guards) {
 
 	test(`${name}() narrows when passed directly to filter`, () => {
 		// Regression guard: this was the primary documented use in v1.3.0. An overloaded predicate is inferred from its base signature when passed to `.filter()`, so the guard must return a single generic signature.
-		const items: Array<{value?: number}> = [{value: 1}, {}, {value: undefined}];
+		const items: Array<{value?: number | undefined}> = [{value: 1}, {}, {value: undefined}];
 		const predicate = guard('value');
 		const direct = items.filter(predicate);
 		const wrapped = items.filter(item => predicate(item));

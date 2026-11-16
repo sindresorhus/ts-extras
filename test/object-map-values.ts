@@ -124,7 +124,7 @@ test('objectMapValues() preserves optionality', () => {
 });
 
 test('objectMapValues() callback preserves undefined for optional keys', () => {
-	const object = {value: undefined} as {value?: string};
+	const object = {value: undefined} as {value?: string | undefined};
 
 	objectMapValues(object, value => {
 		expectTypeOf(value).toEqualTypeOf<string | undefined>();
@@ -744,12 +744,13 @@ test('objectMapValues() - required undefined tuple elements do not widen the res
 });
 
 test('objectMapValues() - sparse tuple', () => {
-	// A hole in a tuple literal is typed as a required slot holding `undefined`, so it cannot be told apart from an explicit `undefined` element. The result therefore types the hole as a present string, while the runtime keeps it as a hole. This is a documented boundary.
+	// A hole in a tuple literal is typed as an optional `never` slot, and every element after it as optional too, so the result is a union of the lengths the tuple may have. Reading the hole may give `undefined`, as the runtime does. The later slots are also typed as possibly absent, though the runtime always has them. This is sound but imprecise, and a documented boundary.
 	const mapped = objectMapValues([1, , 3] as const, value => String(value));
 
+	expectTypeOf(mapped).toEqualTypeOf<[string] | [string, string] | [string, string, string]>();
 	expectTypeOf(mapped[0]).toEqualTypeOf<string>();
-	expectTypeOf(mapped[1]).toEqualTypeOf<string>();
-	expectTypeOf(mapped[2]).toEqualTypeOf<string>();
+	expectTypeOf(mapped[1]).toEqualTypeOf<string | undefined>();
+	expectTypeOf(mapped[2]).toEqualTypeOf<string | undefined>();
 
 	assert.deepEqual(mapped, ['1', , '3']);
 	assert.equal(1 in mapped, false);
@@ -1243,7 +1244,7 @@ test('objectMapValues() types a plain array result as a plain array', () => {
 
 	// A fixed tuple and an object are unaffected.
 	expectTypeOf(objectMapValues([1, 2] as const, value => String(value))).toEqualTypeOf<[string, string]>();
-	expectTypeOf(objectMapValues({x: 1}, value => String(value))).toEqualTypeOf<{x?: string | undefined}>();
+	expectTypeOf(objectMapValues({x: 1}, value => String(value))).toEqualTypeOf<{x?: string}>();
 });
 
 test('objectMapValues() does not leave an empty intersection in a tuple result', () => {
@@ -1263,7 +1264,7 @@ test('objectMapValues() gives the same result as the map form it replaces', () =
 	const mapped = objectMapValues(object, value => String(value));
 	const viaMap = objectFromEntries(objectKeys(object).map(key => [key, String(object[key])] as const));
 
-	expectTypeOf(mapped).toEqualTypeOf<{count?: string | undefined; label?: string | undefined}>();
+	expectTypeOf(mapped).toEqualTypeOf<{count?: string; label?: string}>();
 	expectTypeOf(mapped).toEqualTypeOf<typeof viaMap>();
 	assert.deepEqual(mapped, {count: '1', label: 'x'});
 	assert.deepEqual(viaMap, mapped);

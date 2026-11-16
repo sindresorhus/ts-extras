@@ -21,7 +21,7 @@ readme.md        → One-line entry per export (lint enforces)
 
 - Mirror the builtin at runtime. The types promise only what the builtin can deliver; when its own typing is unsound, return a conservative merged type instead.
 - Doc comments: `/** */`, no `*` prefix, `@example` with `//=>` output, `@note` for caveats, `@category`. Every source file has a matching test file; pin exact result types with `expectTypeOf(…).toEqualTypeOf<…>()`, not just runtime values.
-- The test tsconfig runs with `noUncheckedIndexedAccess` and without `exactOptionalPropertyTypes`: `{x?: T}` reads as `T | undefined`, and an index-signature read adds `| undefined`. Check new expectations against it, not an ad-hoc invocation.
+- Like type-fest, this package requires `exactOptionalPropertyTypes`. Disabling it is unsupported. The test tsconfig runs with it and with `noUncheckedIndexedAccess`: `{x?: T}` can only hold `undefined` when it declares `| undefined`, and an index-signature read adds `| undefined`. Check new expectations against it, not an ad-hoc invocation.
 - `items.filter(guard('value'))` and `items.filter(item => guard('value')(item))` go through different signatures. Cover both for the main cases.
 - Internal helpers live in `source/internal-types.ts` and `source/internal-proto.ts`. They are not exported.
 

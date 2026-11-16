@@ -10,6 +10,8 @@
 npm install ts-extras
 ```
 
+*Requires TypeScript >=6 and [`{exactOptionalPropertyTypes: true}`](https://www.typescriptlang.org/tsconfig#exactOptionalPropertyTypes) in your tsconfig. Disabling it is unsupported.*
+
 ## Usage
 
 ```js

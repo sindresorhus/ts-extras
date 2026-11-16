@@ -4,7 +4,7 @@ import {assignWithoutOwnProto} from './internal-proto.js';
 import type {CanonicalNumericString} from './internal-types.js';
 
 // Source keys that would set a required target property to `undefined`: keys whose source value admits `undefined` while the writable target property does not. `WritableValue` also recognizes numeric keys written as strings. `UpdatableShape` maps these to `never` so the update is rejected, just as TypeScript forbids assigning `undefined` to a required property.
-// Each side is asked whether its property can hold an explicit `undefined`, not whether reading it can give one. Reading an optional property always can, but only the written value matters here, and the answer follows `exactOptionalPropertyTypes`: without it every optional property can hold `undefined`, and with it only one that declares `| undefined` can. So `Partial<User>` is rejected without the setting and accepted with it, and a target property the source names directly accepts `undefined` only where TypeScript itself would.
+// Each side is asked whether its property can hold an explicit `undefined`, not whether reading it can give one. Reading an optional property always can, but only the written value matters here, and with `exactOptionalPropertyTypes` only a property that declares `| undefined` can hold it. So `Partial<User>` is accepted, and a target property the source names directly accepts `undefined` only where TypeScript itself would.
 type UnsafeUndefinedKeys<Target extends object, Source extends object> = {
 	[Key in keyof Source]-?: Record<Key, undefined> extends Pick<Source, Key>
 		? TargetAcceptsUndefined<Target, Key> extends true
@@ -99,7 +99,7 @@ Union-typed targets are intentionally unsupported. Narrow to a specific union va
 
 The source type must expose at least one known key. Broad `object`/`{}` sources and empty no-op updates are unsupported because their keys and values cannot be checked.
 
-@note A source that may write `undefined` to a required property is rejected. Without `exactOptionalPropertyTypes`, an optional property may hold `undefined`, so `Partial<Pick<User, 'name'>>` does not compile when `name` is required, but `Pick<User, 'name'>` does. With the setting, only a property that declares `| undefined` may hold it, so both compile, and writing `undefined` to an optional target property is rejected, as TypeScript itself does.
+@note A source that may write `undefined` to a required property is rejected. Only a property that declares `| undefined` may hold it, so `Partial<Pick<User, 'name'>>` compiles when `name` is required, but `{name?: string | undefined}` does not. Writing `undefined` to an optional target property that does not declare `| undefined` is rejected, as TypeScript itself does.
 
 @note A source with an index signature, such as `Record<string, number>`, is best-effort, since it may overwrite a `readonly` property.
 

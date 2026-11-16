@@ -157,9 +157,9 @@ test('objectValues() does not add `undefined` for an optional property', () => {
 	expectTypeOf(values).toEqualTypeOf<number[]>();
 	assert.equal(values.reduce((sum, count) => sum + count, 0), 3);
 
-	// Boundary: without `exactOptionalPropertyTypes`, TypeScript cannot tell `a?: string` from `a?: string | undefined`, so an explicit `undefined` value is not described.
-	const object: {a?: string} = {a: undefined};
-	expectTypeOf(objectValues(object)).toEqualTypeOf<string[]>();
+	// A property that declares `| undefined` can hold it, so the `undefined` is kept.
+	const object: {a?: string | undefined} = {a: undefined};
+	expectTypeOf(objectValues(object)).toEqualTypeOf<Array<string | undefined>>();
 	assert.deepEqual(objectValues(object), [undefined]);
 
 	// A generic input stays readable.

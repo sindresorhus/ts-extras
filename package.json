@@ -17,7 +17,7 @@
 	},
 	"scripts": {
 		"build": "del-cli distribution && tsc",
-		"test": "xo && node --test --import=tsx/esm test/*.ts && tsc --project test && tsc --project test/exact-optional-property-types && npm run build",
+		"test": "xo && node --test --import=tsx/esm test/*.ts && tsc --project test && npm run build",
 		"prepack": "npm run build"
 	},
 	"files": [
@@ -38,7 +38,7 @@
 		"helpers"
 	],
 	"dependencies": {
-		"type-fest": "^5.10.0"
+		"type-fest": "^6.0.0"
 	},
 	"devDependencies": {
 		"@sindresorhus/tsconfig": "^9.0.0",

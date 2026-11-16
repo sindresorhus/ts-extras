@@ -167,7 +167,7 @@ test('objectAssign() preserves readonly target keys for optional source keys', (
 	const entity: {readonly id: number; name: string} = {id: 1, name: 'x'};
 
 	const result = objectAssign(entity, {} as {id?: string});
-	expectTypeOf(result.id).toEqualTypeOf<number | string | undefined>();
+	expectTypeOf(result.id).toEqualTypeOf<number | string>();
 
 	if (false) {
 		// @ts-expect-error - 'id' remains readonly because the optional source key may be omitted.
@@ -443,9 +443,13 @@ test('objectAssign() replaces nested objects wholesale', () => {
 });
 
 test('objectAssign() handles optional source keys soundly', () => {
-	// The key may or may not be overridden at runtime, so the result is a union that also includes `undefined` since the optional value can be `undefined`.
+	// The key may or may not be overridden at runtime, so the result is a union. An optional property that does not declare `| undefined` cannot hold it, so the result has no `undefined`.
 	const result = objectAssign({a: 1}, {} as {a?: string});
-	expectTypeOf(result.a).toEqualTypeOf<string | number | undefined>();
+	expectTypeOf(result.a).toEqualTypeOf<string | number>();
+
+	// One that declares `| undefined` can, so the result keeps it.
+	const explicit = objectAssign({a: 1}, {} as {a?: string | undefined});
+	expectTypeOf(explicit.a).toEqualTypeOf<string | number | undefined>();
 });
 
 test('objectAssign() accepts nullish sources as no-ops', () => {
@@ -518,14 +522,14 @@ test('objectAssign() preserves numeric keys', () => {
 	expectTypeOf(result).toEqualTypeOf<{0: string; 1?: number}>();
 	assert.deepEqual(result, {0: 'a', 1: 2});
 
-	// A numeric enum member is its own type, so a source key of that type is shared, while a plain numeric literal is not, the same way `{200: …}` does not satisfy `Record<Status, …>`. Type-fest's `ObjectMerge` drops the unshared key from the displayed shape. `declare enum` has no runtime form, so these pins are type-only.
+	// A numeric enum member is its own type, so a source key of that type is shared, while a plain numeric literal is not, the same way `{200: …}` does not satisfy `Record<Status, …>`. The literal is a source-only key here, but type-fest's `ObjectMerge` then matches it to the enum member, so the merged shape has both keys. `declare enum` has no runtime form, so these pins are type-only.
 	if (false) {
 		const fromEnum = objectAssign({} as Record<Status, string>, {[Status.Ok]: 'updated'});
 		expectTypeOf(fromEnum[Status.Ok]).toEqualTypeOf<string>();
 		expectTypeOf(fromEnum[Status.NotFound]).toEqualTypeOf<string>();
 
 		const fromLiteral = objectAssign({} as Record<Status, string>, {200: 'updated'});
-		expectTypeOf(fromLiteral).toEqualTypeOf<{404: string}>();
+		expectTypeOf(fromLiteral).toEqualTypeOf<{200: string; 404: string}>();
 	}
 });
 
@@ -668,8 +672,8 @@ test('objectAssign() widens union sources through the other shapes', () => {
 	// Interfaces, not just type literals.
 	expectTypeOf(objectAssign({a: 1}, union())).toEqualTypeOf<{
 		a: string | number;
-		b?: number | undefined;
-		kind?: 'x' | 'y' | undefined;
+		b?: number;
+		kind?: 'x' | 'y';
 	}>();
 
 	// A spread of a non-tuple array of the same union.
@@ -847,7 +851,7 @@ test('objectAssign() reports a sound result for every source shape', () => {
 
 	// An optional source key cannot narrow a required target key away.
 	const optionalSource = objectAssign({a: 1}, {} as {a?: string});
-	expectTypeOf(optionalSource.a).toEqualTypeOf<number | string | undefined>();
+	expectTypeOf(optionalSource.a).toEqualTypeOf<number | string>();
 
 	// A readonly target key stays readonly, and the rest of the shape survives.
 	const readonlyResult = objectAssign({a: 1} as {readonly a: number}, {b: 2});
@@ -1215,9 +1219,9 @@ test('objectAssign() already includes numeric alias values from ordinary record 
 	const broadStringSource = objectAssign({0: 1}, stringSource as Record<string, string>);
 	const broadNumericSource = objectAssign({'0': 1}, numericSource as Record<number, string>);
 
-	// The unshared source key is optional, so the merge marks it with an `undefined` it cannot actually produce.
-	expectTypeOf(numericTarget[0]).toEqualTypeOf<number | string | undefined>();
-	expectTypeOf(stringTarget['0']).toEqualTypeOf<number | string | undefined>();
+	// Type-fest's `ObjectMerge` matches the two spellings of a numeric key, so the source value is merged into the target's key.
+	expectTypeOf(numericTarget[0]).toEqualTypeOf<number | string>();
+	expectTypeOf(stringTarget['0']).toEqualTypeOf<number | string>();
 	expectTypeOf(broadStringSource[0]).toEqualTypeOf<number | string | undefined>();
 	expectTypeOf(broadNumericSource['0']).toEqualTypeOf<number | string | undefined>();
 	assert.deepEqual(numericTarget, {0: 'updated'});
@@ -1226,14 +1230,14 @@ test('objectAssign() already includes numeric alias values from ordinary record 
 	assert.deepEqual(broadNumericSource, {'0': 'updated'});
 });
 
-test('objectAssign() leaves non-finite numeric keys from ordinary record sources unmerged', () => {
-	// A numeric index signature shares no key with names the target spells out, so the target's declared types survive.
+test('objectAssign() merges a numeric index signature from an ordinary record source into non-finite numeric keys, except NaN', () => {
+	// Type-fest's `ObjectMerge` reads `Infinity` and `-Infinity` as numeric keys, so the index signature's value is merged into them, with the `undefined` an index signature read adds. It does not read `NaN` as one, so its declared type survives, though the runtime overwrites it too. This is a known gap.
 	for (const key of [Infinity, -Infinity, NaN]) {
 		const source: Record<number, string> = {[key]: 'updated'};
 		const result = objectAssign({Infinity: 1, '-Infinity': 2, NaN: 3}, source);
 
-		expectTypeOf(result.Infinity).toEqualTypeOf<number>();
-		expectTypeOf(result['-Infinity']).toEqualTypeOf<number>();
+		expectTypeOf(result.Infinity).toEqualTypeOf<number | string | undefined>();
+		expectTypeOf(result['-Infinity']).toEqualTypeOf<number | string | undefined>();
 		expectTypeOf(result.NaN).toEqualTypeOf<number>();
 		assert.equal(result[String(key) as 'Infinity' | '-Infinity' | 'NaN'], 'updated');
 	}

@@ -18,7 +18,7 @@ writableContext.user = {id: 2};
 
 @note The result loses call signatures, construct signatures, and `#private` fields, so a function, a class, or an instance with a private field is no longer callable, constructable, or assignable to its original type.
 
-@note Only top-level properties are made writable. For a union, only the keys that every member has become writable; the other keys keep their `readonly` modifier.
+@note Only top-level properties are made writable. For a union, each member is made writable on its own.
 
 @category General
 */

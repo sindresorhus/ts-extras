@@ -1,12 +1,9 @@
 {
 	"extends": "@sindresorhus/tsconfig",
 	"include": ["."],
-	"exclude": ["exact-optional-property-types"],
 	"compilerOptions": {
 		"noEmit": true,
 		"types": ["node"],
-		"rootDir": "..",
-		// `@sindresorhus/tsconfig` turns this on, but most users of this package have it off, so the type tests pin the behavior they see. The types must also stay correct with it on, so behavior that only exists with it on is pinned in `exact-optional-property-types/`, which has its own config with the setting on.
-		"exactOptionalPropertyTypes": false
+		"rootDir": ".."
 	}
 }

@@ -54,16 +54,16 @@ test('asWritable() removes readonly at the level it can reach', () => {
 	indexed['a'] = 1;
 	assert.equal(indexed['a'], 1);
 
-	// `Writable` makes the keys of the whole union writable, which is the intersection of the members' keys. Disjoint members share none, so neither loses its modifier.
+	// `Writable` is applied to each member of a union on its own, so every member loses its modifiers, even when the members share no key.
 	const union = asWritable({} as Union);
-	expectTypeOf(union).toEqualTypeOf<Union>();
+	expectTypeOf(union).toEqualTypeOf<{a: number} | {b: number}>();
 
-	// A key that every member has is writable in each member, and the other keys stay readonly.
+	// A key that only one member has is writable in that member too, not only the keys every member has.
 	const shared = asWritable({a: 1} as {readonly a: number} | {readonly a: number; readonly b: 1});
+	expectTypeOf(shared).toEqualTypeOf<{a: number} | {a: number; b: 1}>();
 	shared.a = 2;
 	assert.equal(shared.a, 2);
 	if ('b' in shared) {
-		// @ts-expect-error - `b` is only in one member, so it keeps its modifier.
 		shared.b = 1;
 	}
 });

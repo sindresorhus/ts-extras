@@ -6,10 +6,10 @@ type Joined<
 > = Items extends unknown
 	// Each member of a union of tuples is joined on its own, so `['a', 'b'] | ['c']` gives `'a-b' | 'c'`. Checking the length of the whole union would mistake two fixed lengths for an optional element.
 	? number extends Items['length']
-		// A rest element, and a plain array, both have a `number` length, so `Join` would read the shape as fixed and promise delimiters the runtime never writes: `['a']` joins to `'a'`, which is not in `` `a-${string}` ``.
+		// A rest element, and a plain array, both have a `number` length. `Join` answers a rest element with a union such as `` 'a' | `a-${string}` ``, and this keeps it as a plain `string`, like a plain array.
 		? string
 		: IsUnion<Items['length']> extends true
-			// A tuple with an optional element has more than one length, so the runtime joins only the elements that are there. `Join` reads the missing one as an empty string, which promises a trailing delimiter for a value that has none.
+			// A tuple with an optional element has more than one length, so the runtime joins only the elements that are there. `Join` answers with a union of the shapes it may have, which includes a trailing delimiter, such as `'a-'`, that only an explicit `undefined` element can produce. This keeps it as a plain `string`.
 			? string
 			: Join<Items, Delimiter>
 	: never;
