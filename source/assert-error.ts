@@ -18,7 +18,7 @@ If the value is not an `Error`, a helpful `TypeError` will be thrown.
 
 This can be useful as any value could potentially be thrown, but in practice, it's always an `Error`. However, because of this, TypeScript makes the caught error in a try/catch statement `unknown`, which is inconvenient to deal with.
 
-@param message - Custom error message to use instead of the default.
+@param message - Custom error message to use instead of the default, or a function that returns it, called only when the assertion fails.
 
 @note Cross-realm errors and objects created with `Object.create(Error.prototype)` are accepted. Objects that only fake the brand with `Symbol.toStringTag` are rejected, and so is a real cross-realm error that sets its own `Symbol.toStringTag`, since the two cannot be told apart.
 
@@ -52,7 +52,7 @@ assertError('not an error', 'Expected an Error instance');
 
 @category Type guard
 */
-export function assertError(value: unknown, message?: string): asserts value is Error {
+export function assertError(value: unknown, message?: string | (() => string)): asserts value is Error {
 	// Cross-realm safe: either a real instance or a genuine Error brand.
 	if (isError(value)) {
 		return;
@@ -61,5 +61,5 @@ export function assertError(value: unknown, message?: string): asserts value is 
 	const brand = brandOf(value);
 	// A brand of `[object Error]` on a value that is not an `Error` instance means the value set `Symbol.toStringTag`, which is the very signal this function distrusts. Showing it as if it described the value would read as though the value were an error.
 	const brandHint = brand === '[object Error]' ? ' (a forged Error brand)' : '';
-	throw new TypeError(message ?? `Expected an Error, got ${brand} (${typeof value})${brandHint} → ${describeValue(value)}`);
+	throw new TypeError((typeof message === 'function' ? message() : message) ?? `Expected an Error, got ${brand} (${typeof value})${brandHint} → ${describeValue(value)}`);
 }

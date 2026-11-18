@@ -122,3 +122,24 @@ test('assertDefined() narrows an inferred unknown while preserving object and fu
 	expectTypeOf(callback).toEqualTypeOf<() => string>();
 	assert.equal(callback(), 'defined');
 });
+
+test('assertDefined() calls a message function only when the assertion fails', () => {
+	let calls = 0;
+	const message = () => {
+		calls++;
+		return 'Lazy message';
+	};
+
+	assertDefined('defined', message);
+	assert.equal(calls, 0);
+
+	assert.throws(() => {
+		assertDefined(undefined, message);
+	}, {name: 'TypeError', message: 'Lazy message'});
+	assert.equal(calls, 1);
+
+	// An empty returned message is a message, not a reason to fall back.
+	assert.throws(() => {
+		assertDefined(undefined, () => '');
+	}, {name: 'TypeError', message: ''});
+});

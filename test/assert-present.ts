@@ -58,3 +58,24 @@ test('assertPresent() rejects both nullish values and keeps a custom message', (
 	assertPresent(nullable);
 	expectTypeOf(nullable).toEqualTypeOf<string>();
 });
+
+test('assertPresent() calls a message function only when the assertion fails', () => {
+	let calls = 0;
+	const message = () => {
+		calls++;
+		return 'Lazy message';
+	};
+
+	assertPresent('present', message);
+	assert.equal(calls, 0);
+
+	assert.throws(() => {
+		assertPresent(null, message);
+	}, {name: 'TypeError', message: 'Lazy message'});
+	assert.equal(calls, 1);
+
+	// An empty returned message is a message, not a reason to fall back.
+	assert.throws(() => {
+		assertPresent(null, () => '');
+	}, {name: 'TypeError', message: ''});
+});

@@ -277,3 +277,24 @@ test('assertError() describes a self-referential array', () => {
 		assertError('');
 	}, {message: 'Expected an Error, got [object String] (string) → ""'});
 });
+
+test('assertError() calls a message function only when the assertion fails', () => {
+	let calls = 0;
+	const message = () => {
+		calls++;
+		return 'Lazy message';
+	};
+
+	assertError(new Error('x'), message);
+	assert.equal(calls, 0);
+
+	assert.throws(() => {
+		assertError('x', message);
+	}, {name: 'TypeError', message: 'Lazy message'});
+	assert.equal(calls, 1);
+
+	// An empty returned message is a message, not a reason to fall back.
+	assert.throws(() => {
+		assertError('x', () => '');
+	}, {name: 'TypeError', message: ''});
+});
