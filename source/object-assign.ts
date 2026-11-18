@@ -122,7 +122,7 @@ This is useful since `Object.assign()` returns the intersection `Target & Source
 
 @note A source key that a target index signature covers is typed as present on the result, the same way TypeScript types reading it from the target, even though a getter on a class-instance source is not copied. Its value unions with the signature's value type.
 
-@note For a source with no implicit index signature, such as an interface or a class instance, keys are compared exactly as `keyof` names them. A source key spelled `'0'` is a different key from a target key spelled `0`, a numeric enum key is not matched by its plain numeric value, and a numeric index signature source shares no key with a string-indexed target, so the source contributes nothing for these keys. The runtime still copies every property. Match the target's spelling, or handle such a source manually. For any source, a numeric index signature does not match a target key named `NaN`, though the runtime may overwrite it.
+@note For a source with no implicit index signature, such as an interface or a class instance, keys are compared exactly as `keyof` names them. A source key spelled `'0'` is a different key from a target key spelled `0`, a numeric enum key is not matched by its plain numeric value, and a numeric index signature source shares no key with a string-indexed target, so the source contributes nothing for these keys. The runtime still copies every property. Match the target's spelling, or handle such a source manually.
 
 @example
 ```

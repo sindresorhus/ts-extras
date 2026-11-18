@@ -38,7 +38,7 @@
 		"helpers"
 	],
 	"dependencies": {
-		"type-fest": "^6.0.0"
+		"type-fest": "^6.0.2"
 	},
 	"devDependencies": {
 		"@sindresorhus/tsconfig": "^9.0.0",

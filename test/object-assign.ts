@@ -1230,15 +1230,15 @@ test('objectAssign() already includes numeric alias values from ordinary record 
 	assert.deepEqual(broadNumericSource, {'0': 'updated'});
 });
 
-test('objectAssign() merges a numeric index signature from an ordinary record source into non-finite numeric keys, except NaN', () => {
-	// Type-fest's `ObjectMerge` reads `Infinity` and `-Infinity` as numeric keys, so the index signature's value is merged into them, with the `undefined` an index signature read adds. It does not read `NaN` as one, so its declared type survives, though the runtime overwrites it too. This is a known gap.
+test('objectAssign() merges a numeric index signature from an ordinary record source into non-finite numeric keys', () => {
+	// Type-fest's `ObjectMerge` reads `Infinity`, `-Infinity`, and `NaN` as numeric keys, so the index signature's value is merged into them, with the `undefined` an index signature read adds.
 	for (const key of [Infinity, -Infinity, NaN]) {
 		const source: Record<number, string> = {[key]: 'updated'};
 		const result = objectAssign({Infinity: 1, '-Infinity': 2, NaN: 3}, source);
 
 		expectTypeOf(result.Infinity).toEqualTypeOf<number | string | undefined>();
 		expectTypeOf(result['-Infinity']).toEqualTypeOf<number | string | undefined>();
-		expectTypeOf(result.NaN).toEqualTypeOf<number>();
+		expectTypeOf(result.NaN).toEqualTypeOf<number | string | undefined>();
 		assert.equal(result[String(key) as 'Infinity' | '-Infinity' | 'NaN'], 'updated');
 	}
 });
